@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/admin';
-import { store } from '@/routes/forum';
+import { update } from '@/routes/forum';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -16,31 +16,43 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CreateForum() {
+interface Forum {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    parent_forum_id: number | null;
+}
+
+interface Props {
+    forum: Forum;
+}
+
+export default function EditForum({ forum }: Props) {
 
 
-    const { data, setData, post, processing, errors } = useForm({
-        title: '',
-        slug: '',
-        description: '',
-        parent_forum_id: '',
+    const { data, setData, put, processing, errors } = useForm({
+        title: forum.title,
+        slug: forum.slug,
+        description: forum.description,
+        parent_forum_id: forum.parent_forum_id,
     })
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(store.url());
+        put(update.url(forum.id));
     }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Forum" />
+            <Head title="Update Forum" />
 
             <div className='m-4'>
                 <Link href={index()}>
                     <Button>Back </Button>
                 </Link>
                 <div className='w-8/12 m-4'>
-                    <h1 className='text-2xl'>Add a New Forum</h1>
+                    <h1 className='text-2xl'>Update Forum</h1>
                     <form className='space-y-4' onSubmit={handleSubmit}>
                         <div className='space-y-1'>
                             <Label htmlFor="forum title">Title</Label>
@@ -63,11 +75,11 @@ export default function CreateForum() {
                         </div>
                         <div>
                             <Label htmlFor="forum parent_forum_id">Parent ID</Label>
-                            <Input placeholder="Parent ID" value={data.parent_forum_id}
-                                onChange={(e) => setData('parent_forum_id', e.target.value)} />
+                            <Input placeholder="Parent ID" value={data.parent_forum_id ?? ''}
+                                onChange={(e) => setData('parent_forum_id', Number(e.target.value))} />
                             {errors['parent_forum_id'] && <InputError message={errors['parent_forum_id']} />}
                         </div>
-                        <Button type='submit' disabled={processing}>Add Forum</Button>
+                        <Button type='submit' disabled={processing}>Update Forum</Button>
                     </form>
                 </div>
             </div>

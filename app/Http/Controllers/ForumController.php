@@ -22,14 +22,7 @@ class ForumController extends Controller
      */
     public function create(Request $request)
     {
-        $request->validate([
-            'title'=>'required|string|max:64',
-            'slug'=>'required|string|alpha_dash',
-            'description'=>'string|nullable',
-            'parent_forum_id'=>'numeric|nullable',
-        ]);
-        Forum::create($request->all());
-        return redirect()->route('admin.index');
+        return Inertia::render('Admin/CreateForum');
     }
 
     /**
@@ -38,6 +31,14 @@ class ForumController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title'=>'required|string|max:64',
+            'slug'=>'required|string|alpha_dash',
+            'description'=>'string|nullable',
+            'parent_forum_id'=>'numeric|nullable',
+        ]);
+        Forum::create($request->all());
+        return redirect()->route('admin.index');
     }
 
     /**
@@ -54,14 +55,31 @@ class ForumController extends Controller
     public function edit(Forum $forum)
     {
         //
+        return Inertia::render('Admin/EditForum', [
+            'forum' => $forum
+        ]);
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Forum $forum)
     {
         //
+        $request->validate([
+            'title'=>'required|string|max:64',
+            'slug'=>'required|string|alpha_dash',
+            'description'=>'string|nullable',
+            'parent_forum_id'=>'numeric|nullable',
+        ]);
+        $forum->update([
+            'title' => $request->input('title'),
+            'slug' => $request->input('slug'),
+            'description' => $request->input('description'),
+            'parent_forum_id' => $request->input('parent_forum_id'),
+        ]);
+        return redirect()->route(route: 'admin.index');
+ 
     }
 
     /**
@@ -69,6 +87,7 @@ class ForumController extends Controller
      */
     public function destroy(Forum $forum)
     {
-        //
+        $forum->delete();
+        return redirect()->route(route: 'admin.index');
     }
 }

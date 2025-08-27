@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ForumController;
+use App\Models\Forum;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,12 +17,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     Route::get('admin', function() {
-        return Inertia::render('Admin/Index');
+        $forums = Forum::all();
+        return Inertia::render('Admin/Index', compact('forums'));
     })->name('admin.index');
-    Route::get('admin/create', function() {
-        return Inertia::render('Admin/CreateForum');
-    })->name('admin.createForum');
-    Route::post('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+
+
+
+
+    Route::get('admin/forum/create', [ForumController::class,'create'])->name('admin.createForum');
+    Route::get('admin/forum/{forum}/edit', [ForumController::class,'edit'])->name('admin.editForum');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::delete('/forum/{forum}', [ForumController::class, "destroy"])->name('forum.remove');
+    Route::put('/forum/{forum}', [ForumController::class, 'update'])->name('forum.update');
 
 });
 
