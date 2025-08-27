@@ -16,14 +16,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Admin Related Routes
     Route::get('admin', function() {
         $forums = Forum::all();
         return Inertia::render('Admin/Index', compact('forums'));
     })->name('admin.index');
-
-
-
-
+    // Forum Creation, Editing, Deletion
     Route::get('admin/forum/create', [ForumController::class,'create'])->name('admin.createForum');
     Route::get('admin/forum/{forum}/edit', [ForumController::class,'edit'])->name('admin.editForum');
     Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
