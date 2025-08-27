@@ -20,9 +20,16 @@ class ForumController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'title'=>'required|string|max:64',
+            'slug'=>'required|string|alpha_dash',
+            'description'=>'string|nullable',
+            'parent_forum_id'=>'numeric|nullable',
+        ]);
+        Forum::create($request->all());
+        return redirect()->route('admin.index');
     }
 
     /**

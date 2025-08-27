@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/create', function() {
         return Inertia::render('Admin/CreateForum');
     })->name('admin.createForum');
+    Route::post('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+
 });
 
 require __DIR__.'/settings.php';
