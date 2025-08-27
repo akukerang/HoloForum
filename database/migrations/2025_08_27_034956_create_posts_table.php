@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->longText('content');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Created by
+            $table->foreignId('thread_id')->constrained('threads')->cascadeOnDelete(); // Parent thread
+            
+            // TODO: Reactions
             $table->timestamps();
         });
     }

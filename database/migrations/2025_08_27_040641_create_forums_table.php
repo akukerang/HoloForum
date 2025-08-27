@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_categories', function (Blueprint $table) {
+        Schema::create('forums', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('slug')->unique(); // url slug
+            $table->text('description')->nullable();
+            $table->foreignId('parent_forum_id') // parent forum
+                  ->nullable()
+                  ->constrained('forums')
+                  ->nullOnDelete(); 
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_categories');
+        Schema::dropIfExists('forums');
     }
 };
