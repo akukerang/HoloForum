@@ -15,6 +15,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+    Route::get('admin', function() {
+        return Inertia::render('Admin/Index');
+    })->name('admin.index');
+    Route::get('admin/create', function() {
+        return Inertia::render('Admin/CreateForum');
+    })->name('admin.createForum');
 });
 
 require __DIR__.'/settings.php';
