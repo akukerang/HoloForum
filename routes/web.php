@@ -35,7 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     Route::get('admin/thread/create', [ThreadController::class, 'adminCreate'])->name('admin.createThread');
-    Route::post('admin/thread', [ThreadController::class, 'store'])->name('admin.storeThread');
+    Route::get('admin/thread/{thread}/edit', [ThreadController::class, 'adminEdit'])->name('admin.editThread');
+
+    Route::post('thread', [ThreadController::class, 'store'])->name('thread.storeThread');
+    Route::put('/thread/{thread}', [ThreadController::class, 'update'])->name('thread.updateThread');
+    Route::delete('/thread/{thread}', [ThreadController::class, 'destroy'])->name('thread.removeThread');
 
 
 

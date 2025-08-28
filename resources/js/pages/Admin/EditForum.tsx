@@ -12,7 +12,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Add Forum',
-        href: '/admin/create',
+        href: '/admin/thread/edit',
     },
 ];
 

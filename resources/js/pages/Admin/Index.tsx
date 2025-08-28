@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
-import { createForum, editForum } from '@/routes/admin';
+import { createForum, editForum, editThread } from '@/routes/admin';
 import { remove } from '@/routes/forum';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -14,6 +14,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { adminCreate } from '@/actions/App/Http/Controllers/ThreadController';
+import { removeThread } from '@/routes/thread';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -51,6 +52,12 @@ export default function Index({ forums, threads }: PageProps) {
     const handleForumDelete = (id: number, name: string) => {
         if (confirm(`Do you want to delete forum: ${id}. ${name}`)) {
             destroy(remove.url({ forum: id }))
+        }
+    }
+
+    const handleThreadDelete = (id: number, title: string) => {
+        if (confirm(`Do you want to delete thread: ${id}. ${title}`)) {
+            destroy(removeThread.url({ thread: id }))
         }
     }
 
@@ -156,12 +163,12 @@ export default function Index({ forums, threads }: PageProps) {
             cell: ({ row }) => {
                 return (
                     <div className='flex gap-2'>
-                        {/* <Link href={editForum(row.getValue('id'))}> */}
-                        <Button variant="outline"><SquarePen /></Button>
-                        {/* </Link> */}
+                        <Link href={editThread(row.getValue('id'))}>
+                            <Button variant="outline"><SquarePen /></Button>
+                        </Link>
                         <Button variant="destructive"
-                        // disabled={processing}
-                        // onClick={() => handleForumDelete(row.getValue('id'), row.getValue('title'))}
+                            disabled={processing}
+                            onClick={() => handleThreadDelete(row.getValue('id'), row.getValue('title'))}
                         >
                             <Trash />
                         </Button>

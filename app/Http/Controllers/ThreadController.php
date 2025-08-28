@@ -58,7 +58,9 @@ class ThreadController extends Controller
     }
 
     public function adminEdit(Thread $thread){
-
+        return Inertia::render('Admin/EditThread', [
+            'thread' => $thread
+        ]);
     }   
 
     /**
@@ -67,6 +69,13 @@ class ThreadController extends Controller
     public function update(Request $request, Thread $thread)
     {
         //
+        $data = $request->validate([
+            'title'=>'required|string|max:64',
+            'forum_id'=>'required|numeric|exists:forums,id',
+            'user_id'=>'required|numeric|exists:users,id',
+        ]);
+        $thread->update($data);
+        return redirect()->route('admin.index');    
     }
 
     /**
@@ -75,5 +84,7 @@ class ThreadController extends Controller
     public function destroy(Thread $thread)
     {
         //
+        $thread->delete();
+        return redirect()->route('admin.index');
     }
 }
