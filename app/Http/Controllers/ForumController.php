@@ -33,13 +33,13 @@ class ForumController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+       $data =  $request->validate([
             'title'=>'required|string|max:64',
             'slug'=>'required|string|alpha_dash',
             'description'=>'string|nullable',
             'parent_forum_id'=>'numeric|nullable',
         ]);
-        Forum::create($request->all());
+        Forum::create($data);
         return redirect()->route('admin.index');
     }
 

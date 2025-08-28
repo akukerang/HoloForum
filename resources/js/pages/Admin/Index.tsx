@@ -7,6 +7,13 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, SquarePen, Trash } from 'lucide-react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import { adminCreate } from '@/actions/App/Http/Controllers/ThreadController';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,23 +30,31 @@ interface Forum {
     parent_forum_id: number | null;
 }
 
+interface Thread {
+    id: number;
+    title: string;
+    user_id: number;
+    forum_id: number;
+}
+
 interface PageProps {
     forums: Forum[];
+    threads: Thread[];
 }
 
 
-export default function Index({ forums }: PageProps) {
+export default function Index({ forums, threads }: PageProps) {
 
     const { processing, delete: destroy } = useForm();
 
 
-    const handleDelete = (id: number, name: string) => {
+    const handleForumDelete = (id: number, name: string) => {
         if (confirm(`Do you want to delete forum: ${id}. ${name}`)) {
             destroy(remove.url({ forum: id }))
         }
     }
 
-    const columns: ColumnDef<Forum>[] = [
+    const forumColumns: ColumnDef<Forum>[] = [
         {
             accessorKey: 'id',
             header: 'ID',
@@ -89,7 +104,7 @@ export default function Index({ forums }: PageProps) {
                         </Link>
                         <Button variant="destructive"
                             disabled={processing}
-                            onClick={() => handleDelete(row.getValue('id'), row.getValue('title'))}>
+                            onClick={() => handleForumDelete(row.getValue('id'), row.getValue('title'))}>
                             <Trash />
                         </Button>
                     </div>
@@ -98,16 +113,97 @@ export default function Index({ forums }: PageProps) {
         }
     ]
 
+    const threadColumn: ColumnDef<Thread>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+        },
+        {
+            accessorKey: 'title',
+            header: 'Title',
+        },
+        {
+            accessorKey: "forum_id",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Forum ID
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+        },
+        {
+            accessorKey: "user_id",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        User ID
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+        },
+        {
+            accessorKey: 'actions',
+            header: 'Actions',
+            cell: ({ row }) => {
+                return (
+                    <div className='flex gap-2'>
+                        {/* <Link href={editForum(row.getValue('id'))}> */}
+                        <Button variant="outline"><SquarePen /></Button>
+                        {/* </Link> */}
+                        <Button variant="destructive"
+                        // disabled={processing}
+                        // onClick={() => handleForumDelete(row.getValue('id'), row.getValue('title'))}
+                        >
+                            <Trash />
+                        </Button>
+                    </div>
+                )
+            }
+        },
+    ]
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <h1>Admin Page</h1>
-                <Link href={createForum()}>
-                    <Button variant="outline">Create Forum</Button>
-                </Link>
-                <h1>Forum List</h1>
-                <DataTable columns={columns} data={forums} />
+                <h1 className='text-xl'>Admin Page</h1>
+                <div className='flex flex-row gap-2'>
+                    <Link href={createForum()}>
+                        <Button variant="outline">Create Forum</Button>
+                    </Link>
+                    <Link href={adminCreate()}>
+                        <Button variant="outline">Create Thread</Button>
+                    </Link>
+                </div>
+                <Accordion type="single" collapsible className="w-full bg-card">
+                    <AccordionItem value='forum-list'>
+                        <AccordionTrigger className="p-4">
+                            <div className="text-lg ">Forums</div>
+                        </AccordionTrigger>
+                        <AccordionContent className="gap-1 flex flex-col">
+                            <DataTable columns={forumColumns} data={forums} />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+                <Accordion type="single" collapsible className="w-full bg-card">
+                    <AccordionItem value='forum-list'>
+                        <AccordionTrigger className="p-4">
+                            <div className="text-lg ">Threads</div>
+                        </AccordionTrigger>
+                        <AccordionContent className="gap-1 flex flex-col">
+                            <DataTable columns={threadColumn} data={threads} />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
             </div>
         </AppLayout>
     );

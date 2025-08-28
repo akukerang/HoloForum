@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ThreadController;
 use App\Models\Forum;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,7 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Related Routes
     Route::get('admin', function() {
         $forums = Forum::all();
-        return Inertia::render('Admin/Index', compact('forums'));
+        $threads = Thread::all();
+        return Inertia::render('Admin/Index', compact('forums', 'threads'));
     })->name('admin.index');
     // Forum Creation, Editing, Deletion
     Route::get('admin/forum/create', [ForumController::class,'create'])->name('admin.createForum');
@@ -29,6 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
     Route::delete('/forum/{forum}', [ForumController::class, "destroy"])->name('forum.remove');
     Route::put('/forum/{forum}', [ForumController::class, 'update'])->name('forum.update');
+
+
+    Route::get('admin/thread/create', [ThreadController::class, 'adminCreate'])->name('admin.createThread');
+    Route::post('admin/thread', [ThreadController::class, 'store'])->name('admin.storeThread');
+
+
 
 });
 
