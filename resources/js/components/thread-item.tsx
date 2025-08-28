@@ -24,8 +24,8 @@ export function ThreadItem({ thread }: { thread: Thread }) {
         <li className="bg-background py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
             <div className="flex-1">
                 <Link href={"#"}>
-                    <h1 className="text-lg hover:text-muted-foreground ">{thread.title}</h1>
-                    <p className="text-sm text-muted-foreground">By {thread.user.name} at {formatDate(thread.created_at)}</p>
+                    <h1 className="text-md font-bold hover:text-muted-foreground ">{thread.title}</h1>
+                    <p className="text-sm text-muted-foreground">By {thread.user.name}, {formatDate(thread.created_at)}</p>
 
                 </Link>
             </div>
