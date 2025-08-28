@@ -1,4 +1,3 @@
-import { forumShow } from "@/routes/forum";
 import { Link } from "@inertiajs/react";
 import { MessagesSquare } from "lucide-react";
 
@@ -12,7 +11,7 @@ interface Forum {
 
 export function ForumItem({ forum }: { forum: Forum }) {
     return (
-        <li className="bg-background py-4 px-6 w-full flex gap-x-8 items-center" id={forum.id.toString()}>
+        <li className="bg-background py-4 px-6 w-full flex gap-x-8 items-center border-b" id={forum.id.toString()}>
             <div className="flex items-center justify-center w-12 h-12">
                 <MessagesSquare />
             </div>
