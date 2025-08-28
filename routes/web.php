@@ -12,7 +12,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
-Route::get('/forum/{forum}', [ForumController::class, 'show'])->name('forum.show');
+Route::get('/forum/{forum}', [ForumController::class, 'show'])->name('forum.forumShow');
+
+
+
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -28,4 +28,9 @@ class Forum extends Model
         return $this->hasManyThrough(Post::class, Thread::class)->count();
     }
 
+    public function getRouteKeyName() // use slug for route
+    {
+        return 'slug';
+    }
+
 }
