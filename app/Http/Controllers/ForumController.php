@@ -48,7 +48,10 @@ class ForumController extends Controller
      */
     public function show(Forum $forum)
     {
-        //
+        // //
+        // return Inertia::render('Forum/Show', [
+        //     'forum' => $forum->load('children')
+        // ]);
     }
 
     /**

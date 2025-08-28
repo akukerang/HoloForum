@@ -20,6 +20,12 @@ class Forum extends Model
         return $this->belongsTo(Forum::class, 'parent_forum_id');
     }
 
+    public function threads() {
+        return $this->hasMany(Thread::class);
+    }
 
+    public function postCount() { // Number of posts belonging to forum, from all threads
+        return $this->hasManyThrough(Post::class, Thread::class)->count();
+    }
 
 }
