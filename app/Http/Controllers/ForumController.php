@@ -13,8 +13,10 @@ class ForumController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Forum/Index');
-
+        $categories = Forum::with('children')->whereNull('parent_forum_id')->get();
+        return Inertia::render('Forum/Index', [
+            'categories' => $categories
+        ]);
     }
 
     /**
