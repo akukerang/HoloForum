@@ -1,4 +1,6 @@
 import { ThreadItem } from '@/components/thread-item';
+import { ThreadList } from '@/components/thread-list';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -9,8 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/forum',
     },
 ];
-
-
 
 interface Thread {
     id: number;
@@ -36,7 +36,6 @@ interface Props {
     forum: Forum;
 }
 
-
 export default function Index() {
     const { forum } = usePage().props as unknown as Props;
     return (
@@ -48,15 +47,11 @@ export default function Index() {
                         <h1 className="text-2xl font-bold">{forum.title}</h1>
                         <p className="text-sm text-gray-500">{forum.description}</p>
                     </div>
+                    <div className="flex items-center h-full">
+                        <Button variant="default">New Thread</Button>
+                    </div>
                     <div className='flex flex-col my-4 bg-card gap-1'>
-                        {forum.threads.length > 0 ? (
-                            <>
-                                {forum.threads.map((thread) => (
-                                    <ThreadItem thread={thread} />
-                                ))}
-                            </>
-                        ) : "No threads"
-                        }
+                        <ThreadList threads={forum.threads} />
                     </div>
 
                 </div>
