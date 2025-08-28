@@ -21,6 +21,8 @@ interface Forum {
     title: string;
     slug: string;
     description: string;
+    threads_count: number;
+
 }
 
 interface Props {

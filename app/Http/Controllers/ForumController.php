@@ -13,7 +13,10 @@ class ForumController extends Controller
      */
     public function index()
     {
-        $categories = Forum::with('children')->whereNull('parent_forum_id')->get();
+        $categories = Forum::with(['children' => function ($query) {
+            $query->withCount('threads'); 
+        }])->withCount('threads')->whereNull('parent_forum_id')->get();
+
         return Inertia::render('Forum/Index', [
             'categories' => $categories
         ]);
@@ -50,6 +53,7 @@ class ForumController extends Controller
     {
         $forum->load('threads'); // load threads corresponding to thread
         $forum->load(['threads.user']); // loads threads AND their users
+        
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum
         ]);

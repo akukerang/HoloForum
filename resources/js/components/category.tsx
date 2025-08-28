@@ -18,6 +18,7 @@ interface Forum {
     title: string;
     slug: string;
     description: string;
+    threads_count: number;
 }
 
 export function Category({ category }: { category: Category }) {

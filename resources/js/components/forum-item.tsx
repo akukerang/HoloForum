@@ -6,6 +6,7 @@ interface Forum {
     title: string;
     slug: string;
     description: string;
+    threads_count: number;
 }
 
 
@@ -26,8 +27,8 @@ export function ForumItem({ forum }: { forum: Forum }) {
             </div>
 
             <div className="text-center">
-                <h1 className="text-lg font-bold">403</h1>
-                <p className="text-sm text-muted-foreground">posts</p>
+                <h1 className="text-lg font-bold">{forum.threads_count}</h1>
+                <p className="text-sm text-muted-foreground">threads</p>
             </div>
         </li>
     );
