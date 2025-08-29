@@ -18,7 +18,7 @@ export function ForumItem({ forum }: { forum: Forum }) {
             </div>
 
             <div className="flex-1">
-                <Link href={`forum/${forum.slug}`}>
+                <Link href={`forum/${forum.id}`}>
                     <h1 className="text-lg hover:text-muted-foreground">{forum.title}</h1>
                 </Link>
                 <p className="text-sm text-muted-foreground">

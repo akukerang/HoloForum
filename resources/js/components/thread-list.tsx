@@ -23,6 +23,8 @@ interface Thread {
     title: string;
     user: User;
     created_at: string;
+    posts_count: number;
+
 }
 
 interface User {

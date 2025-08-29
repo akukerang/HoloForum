@@ -23,7 +23,7 @@ interface Forum {
 
 export function Category({ category }: { category: Category }) {
     return (
-        <Accordion type="single" collapsible className="w-full bg-card">
+        <Accordion type="single" collapsible className="w-full bg-card shadow-sm rounded-lg">
             <AccordionItem value={`category-${category.id}`}>
                 <AccordionTrigger className="p-4 border-b">
                     <div className="text-lg ">{category.title}</div>

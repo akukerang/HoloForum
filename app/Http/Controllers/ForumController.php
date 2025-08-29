@@ -51,8 +51,12 @@ class ForumController extends Controller
      */
     public function show(Forum $forum)
     {
-        $forum->load('threads'); // load threads corresponding to thread
-        $forum->load(['threads.user']); // loads threads AND their users
+        $forum->load([
+        'threads' => function ($query) {
+            $query->withCount('posts')   // adds posts_count column to each thread
+                  ->with('user');        // also load the user who created the thread
+        }
+    ]);
         
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum

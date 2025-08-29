@@ -20,10 +20,6 @@ class Thread extends Model
         return $this->hasMany(Post::class);
     }
 
-    public function postCount() { // number of post for thread
-        return $this->hasMany(Post::class)->count();
-    }
-
     public function lastPostTime() { // timestamp for latest post
         return $this->hasMany(Post::class)->latest()->first()->created_at;
     }

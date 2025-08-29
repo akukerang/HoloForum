@@ -24,13 +24,13 @@ class Forum extends Model
         return $this->hasMany(Thread::class);
     }
 
-    public function postCount() { // Number of posts belonging to forum, from all threads
-        return $this->hasManyThrough(Post::class, Thread::class)->count();
+    public function posts() { // Number of posts belonging to forum, from all threads
+        return $this->hasManyThrough(Post::class, Thread::class);
     }
 
-    public function getRouteKeyName() // use slug for route
-    {
-        return 'slug';
-    }
+    // public function getRouteKeyName() // use slug for route
+    // {
+    //     return 'slug';
+    // }
 
 }
