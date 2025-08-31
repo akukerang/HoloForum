@@ -200,7 +200,7 @@ export function ThreadList({ threads }: Props) {
                         </div>
 
                     </div>
-                    {currentThreads.map((thread: any) => (
+                    {currentThreads.map((thread: Thread) => (
                         <ThreadItem key={thread.id} thread={thread} />
                     ))}
                 </>

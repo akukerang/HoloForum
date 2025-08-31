@@ -15,10 +15,6 @@ interface User {
     name: string;
 }
 
-interface Forum {
-    title: string;
-}
-
 interface Post {
     id: number;
     content: string;
@@ -152,7 +148,7 @@ export function PostList({ posts }: { posts: Post[] }) {
                         </Pagination>
                     )}
 
-                    {currentPosts.map((post: any) => (
+                    {currentPosts.map((post: Post) => (
                         <PostItem key={post.id} post={post} />
                     ))}
 
