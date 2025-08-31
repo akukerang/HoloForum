@@ -11,7 +11,7 @@ import { useState } from "react"
 import { PostItem } from "./post-item";
 
 interface User {
-    id: string;
+    id: number;
     name: string;
 }
 
@@ -47,15 +47,11 @@ export function PostList({ posts }: { posts: Post[] }) {
 
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-4 bg-card rounded-lg shadow-md">
             {postCount > 0 ? (
                 <>
-                    {currentPosts.map((post: any) => (
-                        <PostItem key={post.id} post={post} />
-                    ))}
-
                     {totalPages > 1 && (
-                        <Pagination className="justify-start">
+                        <Pagination className="justify-start bg-card border-y-2 p-2 rounded-t-lg shadow-t-md">
                             <PaginationContent>
                                 {/* Previous */}
                                 <PaginationItem>
@@ -156,7 +152,111 @@ export function PostList({ posts }: { posts: Post[] }) {
                         </Pagination>
                     )}
 
+                    {currentPosts.map((post: any) => (
+                        <PostItem key={post.id} post={post} />
+                    ))}
 
+                    {totalPages > 1 && (
+                        <Pagination className="justify-start bg-card border-y-2 p-2 rounded-t-lg shadow-t-md">
+                            <PaginationContent>
+                                {/* Previous */}
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        size="default"
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePageChange(page - 1)
+                                        }}
+                                    />
+                                </PaginationItem>
+
+                                {/* First page */}
+                                <PaginationItem>
+                                    <PaginationLink
+                                        size="default"
+                                        href="#"
+                                        isActive={page === 1}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePageChange(1)
+                                        }}
+                                    >
+                                        1
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {/* Ellipsis before current */}
+                                {page > 3 && (
+                                    <PaginationItem>
+                                        <PaginationEllipsis />
+                                    </PaginationItem>
+                                )}
+
+                                {/* Middle pages (current ±1) */}
+                                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                    .filter(
+                                        (p) =>
+                                            p !== 1 &&
+                                            p !== totalPages &&
+                                            Math.abs(p - page) <= 1
+                                    )
+                                    .map((p) => (
+                                        <PaginationItem key={p}>
+                                            <PaginationLink
+                                                size="default"
+
+                                                href="#"
+                                                isActive={page === p}
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    handlePageChange(p)
+                                                }}
+                                            >
+                                                {p}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    ))}
+
+                                {/* Ellipsis after current */}
+                                {page < totalPages - 2 && (
+                                    <PaginationItem>
+                                        <PaginationEllipsis />
+                                    </PaginationItem>
+                                )}
+
+                                {/* Last page */}
+                                {totalPages > 1 && (
+                                    <PaginationItem>
+                                        <PaginationLink
+                                            size="default"
+
+                                            href="#"
+                                            isActive={page === totalPages}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handlePageChange(totalPages)
+                                            }}
+                                        >
+                                            {totalPages}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                )}
+
+                                {/* Next */}
+                                <PaginationItem>
+                                    <PaginationNext
+                                        size="default"
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePageChange(page + 1)
+                                        }}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
 
 
                 </>

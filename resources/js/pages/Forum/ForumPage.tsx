@@ -1,4 +1,3 @@
-import { ThreadItem } from '@/components/thread-item';
 import { ThreadList } from '@/components/thread-list';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';

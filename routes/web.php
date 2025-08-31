@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ThreadController;
 use App\Models\Forum;
 use App\Models\Thread;
@@ -48,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('thread', [ThreadController::class, 'store'])->name('thread.storeThread');
     Route::put('/thread/{thread}', [ThreadController::class, 'update'])->name('thread.updateThread');
     Route::delete('/thread/{thread}', [ThreadController::class, 'destroy'])->name('thread.removeThread');
+
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
+
 });
 
 require __DIR__.'/settings.php';

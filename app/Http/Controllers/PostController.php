@@ -28,7 +28,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'content'=>'required|string',
+            'thread_id'=>'required|numeric|exists:threads,id',
+            'user_id'=>'required|numeric|exists:users,id',
+        ]);
+        Post::create($data);
     }
 
     /**
