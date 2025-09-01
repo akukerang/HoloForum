@@ -22,9 +22,12 @@ interface Post {
     created_at: string;
 }
 
+interface Props {
+    posts: Post[];
+    currentUser: User;
+}
 
-
-export function PostList({ posts }: { posts: Post[] }) {
+export function PostList({ posts, currentUser }: Props) {
     const [page, setPage] = useState(1);
 
     const postCount = posts.length;
@@ -149,7 +152,7 @@ export function PostList({ posts }: { posts: Post[] }) {
                     )}
 
                     {currentPosts.map((post: Post) => (
-                        <PostItem key={post.id} post={post} />
+                        <PostItem key={post.id} post={post} currentUser={currentUser} />
                     ))}
 
                     {totalPages > 1 && (

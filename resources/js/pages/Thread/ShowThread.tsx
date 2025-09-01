@@ -68,7 +68,7 @@ export default function ShowThread({ thread, user }: Props) {
                         </Link>
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <PostList posts={thread.posts} />
+                        <PostList posts={thread.posts} currentUser={user} />
                     </div>
                     <Reply user_id={user.id} thread_id={thread.id} />
                 </div>

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.delete');
 
 });
 
