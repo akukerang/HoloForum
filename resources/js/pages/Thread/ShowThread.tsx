@@ -5,8 +5,6 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 
-
-
 interface Thread {
     id: number;
     title: string;

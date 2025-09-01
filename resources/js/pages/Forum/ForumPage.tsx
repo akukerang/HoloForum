@@ -2,7 +2,7 @@ import { ThreadList } from '@/components/thread-list';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,12 +11,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Thread {
+
+interface Forum {
     id: number;
     title: string;
-    user: User;
-    created_at: string;
-    posts_count: number;
+    slug: string;
+    description: string;
 }
 
 interface User {
@@ -24,20 +24,34 @@ interface User {
     name: string;
 }
 
-interface Forum {
+
+interface Thread {
     id: number;
     title: string;
-    slug: string;
-    description: string;
-    threads: Thread[];
+    user: User;
+    created_at: string;
+    posts_count: number;
+    forum_id: number;
+}
+interface ThreadPaginate {
+    data: Thread[];
+    links: {
+        url: string;
+        label: string;
+        active: boolean;
+    }[]
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
 }
 
 interface Props {
     forum: Forum;
+    threads: ThreadPaginate;
 }
 
-export default function Index() {
-    const { forum } = usePage().props as unknown as Props;
+export default function Index({ forum, threads }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Forum" />
@@ -53,7 +67,7 @@ export default function Index() {
                         </Link>
                     </div>
                     <div className='flex flex-col my-4 bg-card gap-1 p-2 rounded-lg shadow-sm'>
-                        <ThreadList threads={forum.threads} />
+                        <ThreadList threads={threads} />
                     </div>
 
                 </div>
