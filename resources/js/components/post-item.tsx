@@ -19,7 +19,6 @@ interface Props {
     currentUser: User;
 }
 
-
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
@@ -36,17 +35,14 @@ export function PostItem({ post, currentUser }: Props) {
     }
 
     return (
-        <li className="py-4 px-2 w-full flex gap-x-8 items-center" id={post.id.toString()}>
+        <li className="py-4 px-4 w-full flex gap-x-8 items-center" id={post.id.toString()}>
             <div className="flex flex-col items-center gap-y-2 w-1/8">
                 <img src="https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg" alt={post.user.name} className="h-16" />
                 <h1 className="font-bold">{post.user.name}</h1>
             </div>
-            <div className="w-7/8 flex flex-row">
-                <div className="flex-1 px-6 py-8 rounded-xl border-2 shadow-xs">
-                    <p className="text-sm text-muted-foreground pb-4">Posted {formatDate(post.created_at)}</p>
-                    <h1 className="text-sm">{post.content}</h1>
-                </div>
-                <div className="p-2">
+            <div className="w-7/8 flex flex-col px-6 py-8 rounded-xl border-2 shadow-xs align-top">
+                <div className="flex flex-row justify-between pb-6">
+                    <p className="text-sm text-muted-foreground">Posted {formatDate(post.created_at)}</p>
                     {
                         currentUser.id === post.user.id && (
                             <button className="flex items-center" onClick={() => handleDelete(post.id)} disabled={processing}>
@@ -55,7 +51,11 @@ export function PostItem({ post, currentUser }: Props) {
                         )
                     }
                 </div>
+                <p className="text-sm">{post.content}</p>
+
+
             </div>
+
         </li>
     );
 }
