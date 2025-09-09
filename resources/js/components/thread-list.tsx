@@ -8,40 +8,14 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import PaginationCustom from "./pagination";
-
-
-interface Thread {
-    id: number;
-    title: string;
-    user: User;
-    created_at: string;
-    posts_count: number;
-    forum_id: number;
-}
-
-interface User {
-    id: number;
-    name: string;
-}
-
-interface ThreadPaginate {
-    data: Thread[];
-    links: {
-        url: string;
-        label: string;
-        active: boolean;
-    }[]
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-}
+import { Thread, ThreadPaginate } from "@/types";
 
 interface Props {
     threads: ThreadPaginate;
+    forum_id: number;
 }
 
-export function ThreadList({ threads }: Props) {
+export function ThreadList({ threads, forum_id }: Props) {
 
     const threadCount = threads.total;
     const totalPages = threads.last_page;
@@ -75,7 +49,7 @@ export function ThreadList({ threads }: Props) {
                 <>
                     <div className="flex border-b p-2">
                         <PaginationCustom currentPage={currentPage} lastPage={totalPages}
-                            baseUrl={`/forum/${threads.data[0].forum_id}?page=`} />
+                            baseUrl={`/forum/${forum_id}?page=`} />
                         <div>
                             <Select
                             // onValueChange={(value) => {

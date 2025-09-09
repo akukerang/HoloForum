@@ -1,13 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { MessagesSquare } from "lucide-react";
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-    threads_count: number;
-}
+import { Forum } from "@/types";
 
 
 export function ForumItem({ forum }: { forum: Forum }) {

@@ -40,3 +40,56 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Forum {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    parent_forum_id: number | null;
+    threads_count: number;
+    created_at: string;
+}
+
+export interface Thread {
+    id: number;
+    title: string;
+    user: User;
+    forum: Forum;
+    posts_count: number | null;
+    created_at: string;
+}
+
+export interface ThreadPaginate {
+    data: Thread[];
+    links: {
+        url: string;
+        label: string;
+        active: boolean;
+    }[]
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
+
+export interface Post {
+    id: number;
+    content: string;
+    user: User;
+    thread: Thread;
+    created_at: string;
+}
+
+interface PostPaginate {
+    data: Post[];
+    links: {
+        url: string;
+        label: string;
+        active: boolean;
+    }[]
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}

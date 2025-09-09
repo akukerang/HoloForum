@@ -2,6 +2,7 @@ import { Category } from '@/components/category';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { Forum } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,15 +15,6 @@ interface Category {
     id: number;
     title: string;
     children: Forum[];
-}
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-    threads_count: number;
-
 }
 
 interface Props {

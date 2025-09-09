@@ -9,15 +9,8 @@ import AppLayout from '@/layouts/app-layout';
 import { storeThread } from '@/routes/thread';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
+import { Forum, User } from "@/types";
 
-interface Forum {
-    id: number;
-    title: string;
-}
-
-interface User {
-    id: number
-}
 interface Props {
     forum: Forum;
     user: User;

@@ -1,3 +1,4 @@
+import { Forum } from "@/types";
 import { ForumItem } from "./forum-item";
 import {
     Accordion,
@@ -11,14 +12,6 @@ interface Category {
     id: number;
     title: string;
     children: Forum[];
-}
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-    threads_count: number;
 }
 
 export function Category({ category }: { category: Category }) {

@@ -1,30 +1,6 @@
 import PaginationCustom from "./pagination";
 import { PostItem } from "./post-item";
-
-interface User {
-    id: number;
-    name: string;
-}
-
-interface Post {
-    id: number;
-    content: string;
-    user: User;
-    created_at: string;
-}
-
-interface PostPaginate {
-    data: Post[];
-    links: {
-        url: string;
-        label: string;
-        active: boolean;
-    }[]
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-}
+import { Post, PostPaginate, User } from "@/types";
 
 interface Props {
     posts: PostPaginate;

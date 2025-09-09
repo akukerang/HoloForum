@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/accordion"
 import { adminCreate } from '@/actions/App/Http/Controllers/ThreadController';
 import { removeThread } from '@/routes/thread';
+import { Thread, Forum } from "@/types";
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,21 +24,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/admin',
     },
 ];
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string | null;
-    parent_forum_id: number | null;
-}
-
-interface Thread {
-    id: number;
-    title: string;
-    user_id: number;
-    forum_id: number;
-}
 
 interface PageProps {
     forums: Forum[];

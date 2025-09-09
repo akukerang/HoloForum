@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { Forum, ThreadPaginate } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,40 +12,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-}
-
-
-interface Thread {
-    id: number;
-    title: string;
-    user: User;
-    created_at: string;
-    posts_count: number;
-    forum_id: number;
-}
-interface ThreadPaginate {
-    data: Thread[];
-    links: {
-        url: string;
-        label: string;
-        active: boolean;
-    }[]
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-}
 
 interface Props {
     forum: Forum;
@@ -67,7 +34,7 @@ export default function Index({ forum, threads }: Props) {
                         </Link>
                     </div>
                     <div className='flex flex-col my-4 bg-card gap-1 p-2 rounded-lg shadow-sm'>
-                        <ThreadList threads={threads} />
+                        <ThreadList threads={threads} forum_id={forum.id} />
                     </div>
 
                 </div>

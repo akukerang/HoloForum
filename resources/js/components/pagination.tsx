@@ -44,8 +44,6 @@ export default function PaginationCustom({
         pages.push(lastPage)
     }
 
-    console.log(currentPage, lastPage)
-
     return (
         <Pagination className="justify-start">
             <PaginationContent>

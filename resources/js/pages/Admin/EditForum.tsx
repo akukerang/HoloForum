@@ -8,6 +8,7 @@ import { index } from '@/routes/admin';
 import { update } from '@/routes/forum';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Forum } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -15,14 +16,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/admin/thread/edit',
     },
 ];
-
-interface Forum {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-    parent_forum_id: number | null;
-}
 
 interface Props {
     forum: Forum;

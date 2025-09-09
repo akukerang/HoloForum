@@ -4,44 +4,7 @@ import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, Link } from "@inertiajs/react";
-
-interface Thread {
-    id: number;
-    title: string;
-    user: User;
-    forum: Forum;
-    created_at: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-}
-
-interface Forum {
-    title: string;
-}
-
-interface Post {
-    id: number;
-    content: string;
-    user: User;
-    created_at: string;
-}
-
-interface PostPaginate {
-    data: Post[];
-    links: {
-        url: string;
-        label: string;
-        active: boolean;
-    }[]
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-}
-
+import { PostPaginate, Thread, User } from "@/types";
 
 
 
@@ -65,8 +28,6 @@ export default function ShowThread({ thread, posts, user }: Props) {
             href: '/forum',
         },
     ];
-
-    console.log(posts)
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

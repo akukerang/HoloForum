@@ -1,18 +1,6 @@
 import { showThread } from "@/routes/thread";
 import { Link } from "@inertiajs/react";
-
-interface Thread {
-    id: number;
-    title: string;
-    user: User;
-    created_at: string;
-    posts_count: number;
-}
-
-interface User {
-    id: number;
-    name: string;
-}
+import { Thread } from "@/types";
 
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
