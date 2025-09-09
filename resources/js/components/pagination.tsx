@@ -7,7 +7,6 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import { Link } from "@inertiajs/react"
 
 interface Props {
     currentPage: number
@@ -45,17 +44,18 @@ export default function PaginationCustom({
         pages.push(lastPage)
     }
 
+    console.log(currentPage, lastPage)
+
     return (
         <Pagination className="justify-start">
             <PaginationContent>
                 {/* Prev button */}
-                <PaginationItem>
-                    <Link disabled={currentPage < 1} href={`${baseUrl}${currentPage - 1}`}>
-                        <PaginationPrevious size="default">
-                        </PaginationPrevious>
-                    </Link>
+                {currentPage > 1 ? (
+                    <PaginationItem>
+                        <PaginationPrevious size="default" href={`${baseUrl}${currentPage - 1}`} />
+                    </PaginationItem>
+                ) : null}
 
-                </PaginationItem>
 
                 {/* Page links */}
                 {pages.map((page, idx) =>
@@ -68,21 +68,20 @@ export default function PaginationCustom({
                             <PaginationLink
                                 size="default"
                                 isActive={page === currentPage}
+                                href={`${baseUrl}${page}`}
                             >
-                                <Link href={`${baseUrl}${page}`}>{page}</Link>
-
+                                {page}
                             </PaginationLink>
                         </PaginationItem>
                     )
                 )}
 
                 {/* Next button */}
-                <PaginationItem>
-                    <Link disabled={currentPage == lastPage} href={`${baseUrl}${currentPage + 1}`}>
-                        <PaginationNext size="default">
-                        </PaginationNext>
-                    </Link>
-                </PaginationItem>
+                {currentPage < lastPage ? (
+                    <PaginationItem>
+                        <PaginationNext size="default" href={`${baseUrl}${currentPage + 1}`} />
+                    </PaginationItem>
+                ) : null}
             </PaginationContent>
         </Pagination >
     )
