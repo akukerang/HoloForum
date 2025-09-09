@@ -10,7 +10,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Add Thread',
+        title: 'Admin - New Thread',
         href: '/admin/thread/create',
     },
 ];
@@ -30,7 +30,7 @@ export default function CreateThread() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Thread" />
+            <Head title="New Thread" />
 
             <div className='m-4'>
                 <Link href={index()}>

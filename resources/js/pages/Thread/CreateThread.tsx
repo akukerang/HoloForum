@@ -20,7 +20,7 @@ export default function CreateThread({ user, forum }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Create Thread',
+            title: 'Create a New Thread',
             href: `/forum/${forum.id}/thread/create`,
         },
     ];
@@ -39,8 +39,7 @@ export default function CreateThread({ user, forum }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="New Thread" />
-
+            <Head title="Create a New Thread" />
             <div className='m-4'>
                 <div className='w-8/12 m-4'>
                     <h1 className='text-2xl'>New Thread</h1>

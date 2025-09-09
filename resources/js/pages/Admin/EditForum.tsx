@@ -10,19 +10,17 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Forum } from "@/types";
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Add Forum',
-        href: '/admin/thread/edit',
-    },
-];
-
 interface Props {
     forum: Forum;
 }
 
 export default function EditForum({ forum }: Props) {
-
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Admin - Edit Forum',
+            href: `/admin/forum/${forum.id}/edit`,
+        },
+    ];
 
     const { data, setData, put, processing, errors } = useForm({
         title: forum.title,
@@ -38,7 +36,7 @@ export default function EditForum({ forum }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Update Forum" />
+            <Head title="Edit Forum" />
 
             <div className='m-4'>
                 <Link href={index()}>

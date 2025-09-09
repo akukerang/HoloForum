@@ -24,14 +24,14 @@ export default function ShowThread({ thread, posts, user }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Forum',
-            href: '/forum',
+            title: `${thread.title} - ${thread.forum.title}`,
+            href: `/thread/${thread.forum.id}`,
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Forum" />
+            <Head title={`${thread.title} - ${thread.forum.title}`} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 bg-secondary items-center">
                 <div className='w-full flex flex-col gap-2'>
                     <div className='bg-card p-6 flex flex-col gap-y-2 rounded-xl shadow-sm'>

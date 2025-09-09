@@ -26,7 +26,7 @@ export default function EditThread({ thread }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Edit Thread',
+            title: 'Admin - Edit Thread',
             href: `/admin/thread/${thread.id}/edit`,
         },
     ];

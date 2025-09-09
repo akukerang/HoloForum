@@ -5,12 +5,6 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Forum, ThreadPaginate } from "@/types";
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Forum',
-        href: '/forum',
-    },
-];
 
 
 interface Props {
@@ -18,10 +12,18 @@ interface Props {
     threads: ThreadPaginate;
 }
 
-export default function Index({ forum, threads }: Props) {
+export default function ShowForum({ forum, threads }: Props) {
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: forum.title,
+            href: `/forum/${forum.id}`,
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Forum" />
+            <Head title={forum.title} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 bg-secondary items-center">
                 <div className='w-3/4 flex flex-col gap-4'>
                     <div className='bg-card p-6 flex flex-col gap-y-2 rounded-xl shadow-sm'>

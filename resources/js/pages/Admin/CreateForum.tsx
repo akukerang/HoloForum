@@ -11,8 +11,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Add Forum',
-        href: '/admin/create',
+        title: 'Admin - New Forum',
+        href: '/admin/forum/create',
     },
 ];
 
@@ -33,7 +33,7 @@ export default function CreateForum() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Forum" />
+            <Head title="New Forum" />
 
             <div className='m-4'>
                 <Link href={index()}>
