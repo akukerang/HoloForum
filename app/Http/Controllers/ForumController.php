@@ -56,7 +56,7 @@ class ForumController extends Controller
             ->withCount('posts')
             ->with('user')
             ->latest()
-            ->paginate(2); // 10 threads per page
+            ->paginate(10); // 10 threads per page
         
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum,

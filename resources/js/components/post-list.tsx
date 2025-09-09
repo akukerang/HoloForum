@@ -1,13 +1,4 @@
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useState } from "react"
+import PaginationCustom from "./pagination";
 import { PostItem } from "./post-item";
 
 interface User {
@@ -22,241 +13,48 @@ interface Post {
     created_at: string;
 }
 
-interface Props {
-    posts: Post[];
-    currentUser: User;
+interface PostPaginate {
+    data: Post[];
+    links: {
+        url: string;
+        label: string;
+        active: boolean;
+    }[]
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
 }
 
-export function PostList({ posts, currentUser }: Props) {
-    const [page, setPage] = useState(1);
+interface Props {
+    posts: PostPaginate;
+    currentUser: User;
+    thread_id: number;
+}
 
-    const postCount = posts.length;
-    const postsPerPage = 10;
-    const totalPages = Math.ceil(postCount / postsPerPage);
-
-    const startIndex = (page - 1) * postsPerPage
-    const endIndex = startIndex + postsPerPage
-    const currentPosts = posts.slice(startIndex, endIndex)
-
-    const handlePageChange = (newPage: number) => {
-        if (newPage >= 1 && newPage <= totalPages) {
-            setPage(newPage)
-        }
-    }
-
+export function PostList({ posts, currentUser, thread_id }: Props) {
+    const postCount = posts.total;
+    const totalPages = posts.last_page;
+    const currentPage = posts.current_page;
 
     return (
         <div className="flex flex-col gap-4 bg-card rounded-lg shadow-md">
             {postCount > 0 ? (
                 <>
-                    {totalPages > 1 && (
-                        <Pagination className="justify-start bg-card border-y-2 p-2 rounded-t-lg shadow-t-md">
-                            <PaginationContent>
-                                {/* Previous */}
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        size="default"
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(page - 1)
-                                        }}
-                                    />
-                                </PaginationItem>
+                    <div className="flex border-b p-2">
+                        <PaginationCustom currentPage={currentPage} lastPage={totalPages}
+                            baseUrl={`/thread/${thread_id}?page=`} />
+                    </div>
 
-                                {/* First page */}
-                                <PaginationItem>
-                                    <PaginationLink
-                                        size="default"
-                                        href="#"
-                                        isActive={page === 1}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(1)
-                                        }}
-                                    >
-                                        1
-                                    </PaginationLink>
-                                </PaginationItem>
 
-                                {/* Ellipsis before current */}
-                                {page > 3 && (
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                )}
-
-                                {/* Middle pages (current ±1) */}
-                                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                                    .filter(
-                                        (p) =>
-                                            p !== 1 &&
-                                            p !== totalPages &&
-                                            Math.abs(p - page) <= 1
-                                    )
-                                    .map((p) => (
-                                        <PaginationItem key={p}>
-                                            <PaginationLink
-                                                size="default"
-
-                                                href="#"
-                                                isActive={page === p}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    handlePageChange(p)
-                                                }}
-                                            >
-                                                {p}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    ))}
-
-                                {/* Ellipsis after current */}
-                                {page < totalPages - 2 && (
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                )}
-
-                                {/* Last page */}
-                                {totalPages > 1 && (
-                                    <PaginationItem>
-                                        <PaginationLink
-                                            size="default"
-
-                                            href="#"
-                                            isActive={page === totalPages}
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                handlePageChange(totalPages)
-                                            }}
-                                        >
-                                            {totalPages}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                )}
-
-                                {/* Next */}
-                                <PaginationItem>
-                                    <PaginationNext
-                                        size="default"
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(page + 1)
-                                        }}
-                                    />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    )}
-
-                    {currentPosts.map((post: Post) => (
+                    {posts.data.map((post: Post) => (
                         <PostItem key={post.id} post={post} currentUser={currentUser} />
                     ))}
 
-                    {totalPages > 1 && (
-                        <Pagination className="justify-start bg-card border-y-2 p-2 rounded-t-lg shadow-t-md">
-                            <PaginationContent>
-                                {/* Previous */}
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        size="default"
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(page - 1)
-                                        }}
-                                    />
-                                </PaginationItem>
-
-                                {/* First page */}
-                                <PaginationItem>
-                                    <PaginationLink
-                                        size="default"
-                                        href="#"
-                                        isActive={page === 1}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(1)
-                                        }}
-                                    >
-                                        1
-                                    </PaginationLink>
-                                </PaginationItem>
-
-                                {/* Ellipsis before current */}
-                                {page > 3 && (
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                )}
-
-                                {/* Middle pages (current ±1) */}
-                                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                                    .filter(
-                                        (p) =>
-                                            p !== 1 &&
-                                            p !== totalPages &&
-                                            Math.abs(p - page) <= 1
-                                    )
-                                    .map((p) => (
-                                        <PaginationItem key={p}>
-                                            <PaginationLink
-                                                size="default"
-
-                                                href="#"
-                                                isActive={page === p}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    handlePageChange(p)
-                                                }}
-                                            >
-                                                {p}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    ))}
-
-                                {/* Ellipsis after current */}
-                                {page < totalPages - 2 && (
-                                    <PaginationItem>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                )}
-
-                                {/* Last page */}
-                                {totalPages > 1 && (
-                                    <PaginationItem>
-                                        <PaginationLink
-                                            size="default"
-
-                                            href="#"
-                                            isActive={page === totalPages}
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                handlePageChange(totalPages)
-                                            }}
-                                        >
-                                            {totalPages}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                )}
-
-                                {/* Next */}
-                                <PaginationItem>
-                                    <PaginationNext
-                                        size="default"
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(page + 1)
-                                        }}
-                                    />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    )}
-
+                    <div className="flex border-t p-2">
+                        <PaginationCustom currentPage={currentPage} lastPage={totalPages}
+                            baseUrl={`/thread/${thread_id}?page=`} />
+                    </div>
 
                 </>
             ) : (

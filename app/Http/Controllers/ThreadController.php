@@ -71,9 +71,10 @@ class ThreadController extends Controller
         $user = auth()->user();
         $thread->load('user');
         $thread->load('forum');
-        $thread->load('posts.user'); // load posts and their users
+        $posts = $thread->posts()->with('user')->paginate(10);
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,
+            'posts' => $posts,
             'user' => $user
         ]);
     }

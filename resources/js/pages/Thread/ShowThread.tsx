@@ -11,7 +11,6 @@ interface Thread {
     user: User;
     forum: Forum;
     created_at: string;
-    posts: Post[];
 }
 
 interface User {
@@ -30,9 +29,26 @@ interface Post {
     created_at: string;
 }
 
+interface PostPaginate {
+    data: Post[];
+    links: {
+        url: string;
+        label: string;
+        active: boolean;
+    }[]
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
+
+
+
+
 interface Props {
     thread: Thread;
     user: User;
+    posts: PostPaginate;
 }
 
 const formatDate = (dateString: string) => {
@@ -41,7 +57,7 @@ const formatDate = (dateString: string) => {
 };
 
 
-export default function ShowThread({ thread, user }: Props) {
+export default function ShowThread({ thread, posts, user }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -49,6 +65,8 @@ export default function ShowThread({ thread, user }: Props) {
             href: '/forum',
         },
     ];
+
+    console.log(posts)
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -66,7 +84,7 @@ export default function ShowThread({ thread, user }: Props) {
                         </Link>
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <PostList posts={thread.posts} currentUser={user} />
+                        <PostList posts={posts} currentUser={user} thread_id={thread.id} />
                     </div>
                     <Reply user_id={user.id} thread_id={thread.id} />
                 </div>

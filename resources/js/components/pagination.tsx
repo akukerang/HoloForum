@@ -58,23 +58,29 @@ export default function PaginationCustom({
 
 
                 {/* Page links */}
-                {pages.map((page, idx) =>
-                    page === "..." ? (
-                        <PaginationItem key={idx}>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                    ) : (
-                        <PaginationItem key={idx}>
-                            <PaginationLink
-                                size="default"
-                                isActive={page === currentPage}
-                                href={`${baseUrl}${page}`}
-                            >
-                                {page}
-                            </PaginationLink>
-                        </PaginationItem>
-                    )
-                )}
+                {
+                    lastPage > 1 ? (
+                        pages.map((page, idx) =>
+                            page === "..." ? (
+                                <PaginationItem key={idx}>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
+                            ) : (
+                                <PaginationItem key={idx}>
+                                    <PaginationLink
+                                        size="default"
+                                        isActive={page === currentPage}
+                                        href={`${baseUrl}${page}`}
+                                    >
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            )
+                        )
+                    ) : null
+                }
+
+
 
                 {/* Next button */}
                 {currentPage < lastPage ? (
