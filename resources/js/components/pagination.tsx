@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function PaginationCustom({ links }: Props) {
-    console.log(links)
     return (
         <Pagination className="justify-start">
             <PaginationContent>

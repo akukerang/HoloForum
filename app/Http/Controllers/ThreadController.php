@@ -68,10 +68,27 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread, Request $request)
     {
+
         $user = auth()->user();
+
         $thread->load('user');
         $thread->load('forum');
-        $posts = $thread->posts()->with('user')->paginate(10)->onEachSide(1);
+
+        $query = $thread->posts()->with('user');
+        $sort = $request->query('sort', 'oldest');
+        switch($sort) {
+            case 'latest':
+                $query->orderBy('created_at','DESC');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at','ASC');
+                break;
+            default:
+                $query->orderBy('created_at','ASC');
+                break;
+        }
+
+        $posts = $query->paginate(10)->onEachSide(1);
 
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,

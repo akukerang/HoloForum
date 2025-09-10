@@ -22,7 +22,7 @@ export function ThreadList({ threads, forum_id, user }: Props) {
     const sort = params.get('sort') || 'recent'
 
     const threadCount = threads.total;
-    const currentSort = sort || 'recent';
+    const currentSort = sort;
 
     const onSort = (sortValue: string) => {
         router.get(`/forum/${forum_id}`, { sort: sortValue, page: 1 }, {
@@ -30,7 +30,6 @@ export function ThreadList({ threads, forum_id, user }: Props) {
             replace: true,
         })
     }
-    console.log(threads);
     return (
         <div className="flex flex-col bg-card gap-1">
             {threadCount > 0 ? (
