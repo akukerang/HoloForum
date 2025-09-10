@@ -59,19 +59,20 @@ class ThreadController extends Controller
             'user_id' => $data['user_id'],
             'content' => $data['content'],
         ]);
+         return redirect()->route('forum.forumShow', $thread->forum_id);
 
-        return redirect()->route('forum.forumShow', $data['forum_id']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Thread $thread)
+    public function show(Thread $thread, Request $request)
     {
         $user = auth()->user();
         $thread->load('user');
         $thread->load('forum');
-        $posts = $thread->posts()->with('user')->paginate(10);
+        $posts = $thread->posts()->with('user')->paginate(10)->onEachSide(1);
+
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,
             'posts' => $posts,

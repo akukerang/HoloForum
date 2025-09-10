@@ -29,6 +29,8 @@ export function ThreadItem({ thread, user }: Props) {
                 <Link href={showThread(thread.id)}>
                     <h1 className="text-md font-bold hover:text-muted-foreground ">{thread.title}</h1>
                     <p className="text-sm text-muted-foreground">By {thread.user.name}, {formatDate(thread.created_at)}</p>
+                    <p className="text-xs text-muted-foreground">{thread.posts_max_created_at ? `Last updated: ${formatDate(thread.posts_max_created_at)}` : "No replies"}</p>
+
                 </Link>
             </div>
             <div className="text-center">

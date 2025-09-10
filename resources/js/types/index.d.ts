@@ -57,6 +57,7 @@ export interface Thread {
     user: User;
     forum: Forum;
     posts_count: number | null;
+    posts_max_created_at?: string | null;
     created_at: string;
 }
 

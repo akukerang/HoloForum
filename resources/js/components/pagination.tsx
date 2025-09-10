@@ -9,84 +9,68 @@ import {
 } from "@/components/ui/pagination"
 
 interface Props {
-    currentPage: number
-    lastPage: number
-    baseUrl: string
+    links: {
+        url: string | null
+        label: string
+        active: boolean
+    }[]
 }
 
-export default function PaginationCustom({
-    currentPage,
-    lastPage,
-    baseUrl,
-}: Props) {
-    const delta = 1
-    const pages: (number | string)[] = []
-
-    pages.push(1)
-
-    if (currentPage - delta > 1) {
-        pages.push("...")
-    }
-
-    for (
-        let i = Math.max(2, currentPage - delta);
-        i <= Math.min(lastPage - 1, currentPage + delta);
-        i++
-    ) {
-        pages.push(i)
-    }
-
-    if (currentPage + delta < lastPage - 1) {
-        pages.push("...")
-    }
-
-    if (lastPage > 1) {
-        pages.push(lastPage)
-    }
-
+export default function PaginationCustom({ links }: Props) {
+    console.log(links)
     return (
         <Pagination className="justify-start">
             <PaginationContent>
-                {/* Prev button */}
-                {currentPage > 1 ? (
-                    <PaginationItem>
-                        <PaginationPrevious size="default" href={`${baseUrl}${currentPage - 1}`} />
-                    </PaginationItem>
-                ) : null}
-
-
-                {/* Page links */}
-                {
-                    lastPage > 1 ? (
-                        pages.map((page, idx) =>
-                            page === "..." ? (
-                                <PaginationItem key={idx}>
-                                    <PaginationEllipsis />
-                                </PaginationItem>
-                            ) : (
-                                <PaginationItem key={idx}>
-                                    <PaginationLink
-                                        size="default"
-                                        isActive={page === currentPage}
-                                        href={`${baseUrl}${page}`}
-                                    >
-                                        {page}
-                                    </PaginationLink>
-                                </PaginationItem>
-                            )
+                {links.map((link, idx) => {
+                    // Handle "Previous" button
+                    if (link.label === "&laquo; Previous") {
+                        return (
+                            <PaginationItem key={idx}>
+                                <PaginationPrevious
+                                    size="default"
+                                    href={link.url ?? undefined}
+                                    className={!link.url ? "pointer-events-none opacity-50" : ""}
+                                />
+                            </PaginationItem>
                         )
-                    ) : null
-                }
+                    }
 
+                    // Handle "Next" button
+                    if (link.label === "Next &raquo;") {
+                        return (
+                            <PaginationItem key={idx}>
+                                <PaginationNext
+                                    size="default"
+                                    href={link.url ?? undefined}
+                                    className={!link.url ? "pointer-events-none opacity-50" : ""}
+                                />
+                            </PaginationItem>
+                        )
+                    }
 
+                    // Handle ellipsis
+                    if (link.label === "..." || link.label === "&hellip;") {
+                        return (
+                            <PaginationItem key={idx}>
+                                <PaginationEllipsis />
+                            </PaginationItem>
+                        )
+                    }
 
-                {/* Next button */}
-                {currentPage < lastPage ? (
-                    <PaginationItem>
-                        <PaginationNext size="default" href={`${baseUrl}${currentPage + 1}`} />
-                    </PaginationItem>
-                ) : null}
+                    // Handle page numbers
+                    return (
+                        <PaginationItem key={idx}>
+                            <PaginationLink
+                                size="default"
+                                isActive={link.active}
+                                href={link.url ?? "#"}
+                            >
+                                {link.label}
+                            </PaginationLink>
+                        </PaginationItem>
+                    )
+                })}
             </PaginationContent>
-        </Pagination >
+        </Pagination>
     )
 }

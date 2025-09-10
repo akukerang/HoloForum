@@ -18,18 +18,15 @@ export function PostList({ posts, currentUser, thread_id }: Props) {
             {postCount > 0 ? (
                 <>
                     <div className="flex border-b p-2">
-                        <PaginationCustom currentPage={currentPage} lastPage={totalPages}
-                            baseUrl={`/thread/${thread_id}?page=`} />
+                        <PaginationCustom links={posts.links} />
                     </div>
-
 
                     {posts.data.map((post: Post) => (
                         <PostItem key={post.id} post={post} currentUser={currentUser} />
                     ))}
 
                     <div className="flex border-t p-2">
-                        <PaginationCustom currentPage={currentPage} lastPage={totalPages}
-                            baseUrl={`/thread/${thread_id}?page=`} />
+                        <PaginationCustom links={posts.links} />
                     </div>
 
                 </>
