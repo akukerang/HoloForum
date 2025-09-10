@@ -36,8 +36,6 @@ export default function Index() {
                             ))}
                         </>
                     ) : null
-
-
                     }
                 </div>
             </div>
