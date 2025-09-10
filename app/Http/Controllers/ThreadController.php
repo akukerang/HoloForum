@@ -84,8 +84,24 @@ class ThreadController extends Controller
      */
     public function edit(Thread $thread)
     {
-        //
+        return Inertia::render('Thread/EditThread', [
+            'thread' => $thread
+        ]);
     }
+
+    public function update(Request $request, Thread $thread){
+        $user = auth()->user();
+         // Ensure the authenticated user is the owner of the thread
+         if ($user->id !== $thread->user_id) {
+             abort(403, 'Unauthorized action.');
+         }
+                 $data = $request->validate([
+            'title'=>'required|string|max:64',
+        ]);
+        $thread->update($data);
+        return redirect()->route('forum.forumShow', $thread->forum_id);    
+    }
+
 
     public function adminEdit(Thread $thread){
         return Inertia::render('Admin/EditThread', [
@@ -96,7 +112,7 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Thread $thread)
+    public function adminUpdate(Request $request, Thread $thread)
     {
         //
         $data = $request->validate([
@@ -111,10 +127,25 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Thread $thread)
+    public function adminDestroy(Thread $thread)
     {
         //
+        $thread->posts()->delete(); // Delete associated posts first
         $thread->delete();
         return redirect()->route('admin.index');
     }
+
+    public function destroy(Thread $thread){
+        $user = auth()->user();
+         // Ensure the authenticated user is the owner of the thread
+         if ($user->id !== $thread->user_id) {
+             abort(403, 'Unauthorized action.');
+         }
+    
+         // Delete the thread
+         $thread->posts()->delete(); // Delete associated posts first
+         $thread->delete();
+         
+         return redirect()->route('forum.forumShow', $thread->forum_id);
+        }
 }

@@ -8,6 +8,8 @@ use Inertia\Inertia;
 
 class ForumController extends Controller
 {
+    // ! Everything except index and show is admin only
+
     /**
      * Display a listing of the resource.
      */
@@ -51,7 +53,7 @@ class ForumController extends Controller
      */
     public function show(Forum $forum)
     {
-
+        $user = auth()->user();
         $threads = $forum->threads()
             ->withCount('posts')
             ->with('user')
@@ -60,7 +62,8 @@ class ForumController extends Controller
         
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum,
-            'threads'=> $threads
+            'threads'=> $threads,
+            'user' => $user
         ]);
     }
 

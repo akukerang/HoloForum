@@ -1,18 +1,7 @@
 import { deleteMethod } from "@/routes/post";
 import { useForm } from "@inertiajs/react";
 import { TrashIcon } from "lucide-react";
-
-interface Post {
-    id: number;
-    content: string;
-    user: User;
-    created_at: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-}
+import { Post, User } from "@/types";
 
 interface Props {
     post: Post;
@@ -46,7 +35,7 @@ export function PostItem({ post, currentUser }: Props) {
                     {
                         currentUser.id === post.user.id && (
                             <button className="flex items-center" onClick={() => handleDelete(post.id)} disabled={processing}>
-                                <TrashIcon className="text-red-500 hover:cursor-pointer" />
+                                <TrashIcon className="text-destructive hover:cursor-pointer" />
                             </button>
                         )
                     }

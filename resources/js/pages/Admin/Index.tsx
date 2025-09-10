@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
-import { createForum, editForum, editThread } from '@/routes/admin';
-import { remove } from '@/routes/forum';
+import { createForum, createThread, editForum, editThread, removeForum, removeThread } from '@/routes/admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from "@tanstack/react-table"
@@ -13,8 +12,6 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { adminCreate } from '@/actions/App/Http/Controllers/ThreadController';
-import { removeThread } from '@/routes/thread';
 import { Thread, Forum } from "@/types";
 
 
@@ -38,7 +35,7 @@ export default function Index({ forums, threads }: PageProps) {
 
     const handleForumDelete = (id: number, name: string) => {
         if (confirm(`Do you want to delete forum: ${id}. ${name}`)) {
-            destroy(remove.url({ forum: id }))
+            destroy(removeForum.url({ forum: id }))
         }
     }
 
@@ -174,7 +171,7 @@ export default function Index({ forums, threads }: PageProps) {
                     <Link href={createForum()}>
                         <Button variant="outline">Create Forum</Button>
                     </Link>
-                    <Link href={adminCreate()}>
+                    <Link href={createThread()}>
                         <Button variant="outline">Create Thread</Button>
                     </Link>
                 </div>

@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/admin';
-import { update } from '@/routes/forum';
+import { updateForum } from '@/routes/admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Forum } from "@/types";
@@ -31,7 +31,7 @@ export default function EditForum({ forum }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(update.url(forum.id));
+        put(updateForum.url(forum.id));
     }
 
     return (

@@ -8,14 +8,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import PaginationCustom from "./pagination";
-import { Thread, ThreadPaginate } from "@/types";
+import { Thread, ThreadPaginate, User } from "@/types";
 
 interface Props {
     threads: ThreadPaginate;
     forum_id: number;
+    user: User;
 }
 
-export function ThreadList({ threads, forum_id }: Props) {
+export function ThreadList({ threads, forum_id, user }: Props) {
 
     const threadCount = threads.total;
     const totalPages = threads.last_page;
@@ -71,7 +72,7 @@ export function ThreadList({ threads, forum_id }: Props) {
 
                     </div>
                     {threads.data.map((thread: Thread) => (
-                        <ThreadItem key={thread.id} thread={thread} />
+                        <ThreadItem key={thread.id} thread={thread} user={user} />
                     ))}
                 </>
             ) : (

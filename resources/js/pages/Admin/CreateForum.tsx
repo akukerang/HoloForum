@@ -4,8 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { index } from '@/routes/admin';
-import { store } from '@/routes/forum';
+import { index, storeForum } from '@/routes/admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -28,7 +27,7 @@ export default function CreateForum() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(store.url());
+        post(storeForum.url());
     }
 
     return (

@@ -1,7 +1,7 @@
 import { ThreadList } from '@/components/thread-list';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { User, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Forum, ThreadPaginate } from "@/types";
 
@@ -10,9 +10,10 @@ import { Forum, ThreadPaginate } from "@/types";
 interface Props {
     forum: Forum;
     threads: ThreadPaginate;
+    user: User;
 }
 
-export default function ShowForum({ forum, threads }: Props) {
+export default function ShowForum({ forum, threads, user }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -36,7 +37,7 @@ export default function ShowForum({ forum, threads }: Props) {
                         </Link>
                     </div>
                     <div className='flex flex-col my-4 bg-card gap-1 p-2 rounded-lg shadow-sm'>
-                        <ThreadList threads={threads} forum_id={forum.id} />
+                        <ThreadList threads={threads} forum_id={forum.id} user={user} />
                     </div>
 
                 </div>
