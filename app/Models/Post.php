@@ -23,4 +23,18 @@ class Post extends Model
         return $this->belongsTo(Thread::class);
     }
 
+    public function reactions() {
+        return $this->belongsToMany(User::class, 'reactions');
+    }
+
+    // Checks if post already liked by the user
+    public function isLikedBy(User $user) {
+        return $this->reactions()->where('user_id', $user->id)->exists();
+    }
+
+    // Likes / Unlike the post
+    public function toggleReaction(User $user) {
+        return $this->reactions()->toggle($user->id);
+    }
+
 }

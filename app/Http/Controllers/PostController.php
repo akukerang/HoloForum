@@ -70,4 +70,27 @@ class PostController extends Controller
         }
         $post->delete();
     }
+
+    public function toggleReaction(Post $post) {
+        $user = auth()->user();
+        $post->toggleReaction($user);
+        return response()->json([
+            'status'=>'success',
+            'liked' => $post->isLikedBy($user), 
+            'count' => $post->reactions()->count()
+        ]);
+    }
+
+    public function getReaction(Post $post) {
+        $user = auth()->user();
+        return response()->json([
+            'status'=>'success',
+            'liked' => $user ? $post->isLikedBy($user) : false, // if not logged in, return false
+            'count' => $post->reactions()->count()
+        ]);
+    }
+
+
+
+
 }
