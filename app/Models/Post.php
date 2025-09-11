@@ -13,6 +13,8 @@ class Post extends Model
         'content',
     ];
 
+    protected $appends = ['liked'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -27,14 +29,18 @@ class Post extends Model
         return $this->belongsToMany(User::class, 'reactions');
     }
 
-    // Checks if post already liked by the user
-    public function isLikedBy(User $user) {
-        return $this->reactions()->where('user_id', $user->id)->exists();
-    }
-
     // Likes / Unlike the post
     public function toggleReaction(User $user) {
         return $this->reactions()->toggle($user->id);
+    }
+    
+    // Checks if post already liked by the user
+    public function getLikedAttribute() {
+        $user = auth()->user();
+        if (!$user) {
+            return false;
+        }
+        return $this->reactions()->where('user_id', $user->id)->exists();
     }
 
 }

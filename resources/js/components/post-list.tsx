@@ -32,7 +32,6 @@ export function PostList({ posts, currentUser, thread_id }: Props) {
         })
     }
 
-
     return (
         <div className="flex flex-col gap-4 bg-card rounded-lg shadow-md">
             {postCount > 0 ? (
@@ -60,7 +59,7 @@ export function PostList({ posts, currentUser, thread_id }: Props) {
                     </div>
 
                     {posts.data.map((post: Post) => (
-                        <PostItem key={post.id} post={post} currentUser={currentUser} />
+                        <PostItem key={post.id} postData={post} currentUser={currentUser} />
                     ))}
                 </>
             ) : (

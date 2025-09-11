@@ -74,7 +74,7 @@ class ThreadController extends Controller
         $thread->load('user');
         $thread->load('forum');
 
-        $query = $thread->posts()->with('user');
+        $query = $thread->posts()->with('user')->withCount('reactions');
         $sort = $request->query('sort', 'oldest');
         switch($sort) {
             case 'latest':

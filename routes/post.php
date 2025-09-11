@@ -9,4 +9,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/post/{post}/reactions', [PostController::class, 'toggleReaction'])->name('post.toggleReaction');
 });
 
-Route::get('/post/{post}/reactions', [PostController::class, 'getReaction'])->name('post.getReaction');

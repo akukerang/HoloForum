@@ -79,6 +79,8 @@ export interface Post {
     content: string;
     user: User;
     thread: Thread;
+    reactions_count?: number;
+    liked?: boolean;
     created_at: string;
 }
 
