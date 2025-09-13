@@ -1,10 +1,11 @@
 import { PostList } from "@/components/post-list";
-import Reply from "@/components/reply";
 import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { PostPaginate, Thread, User } from "@/types";
+import { create } from "@/routes/post";
+import { useEffect } from "react";
 
 
 
@@ -12,6 +13,9 @@ interface Props {
     thread: Thread;
     user: User;
     posts: PostPaginate;
+    flash: {
+        message?: string
+    };
 }
 
 const formatDate = (dateString: string) => {
@@ -20,7 +24,19 @@ const formatDate = (dateString: string) => {
 };
 
 
-export default function ShowThread({ thread, posts, user }: Props) {
+export default function ShowThread({ thread, posts, user, flash }: Props) {
+    console.log(flash?.message);
+
+    useEffect(() => {
+        if (flash?.message === "Post created successfully.") {
+            const element = document.getElementById('post-list-bottom');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [flash?.message]);
+
+
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -40,14 +56,14 @@ export default function ShowThread({ thread, posts, user }: Props) {
                         <p className="text-sm text-muted-foreground">{formatDate(thread.created_at)} in {thread.forum.title}</p>
                     </div>
                     <div className="flex items-center h-full">
-                        <Link href="#reply-box">
+                        <Link href={create(thread.id)}>
                             <Button variant="default">Reply</Button>
                         </Link>
                     </div>
                     <div className='flex flex-col gap-1'>
                         <PostList posts={posts} currentUser={user} thread_id={thread.id} />
+                        <span id="post-list-bottom" />
                     </div>
-                    <Reply user_id={user.id} thread_id={thread.id} />
                 </div>
             </div>
         </AppLayout>
