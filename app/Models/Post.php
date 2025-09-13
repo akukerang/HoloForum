@@ -11,6 +11,7 @@ class Post extends Model
         'user_id',
         'thread_id',
         'content',
+        'parent_id'
     ];
 
     protected $appends = ['liked'];
@@ -41,6 +42,16 @@ class Post extends Model
             return false;
         }
         return $this->reactions()->where('user_id', $user->id)->exists();
+    }
+
+    // Reply Parent
+    public function parent(){
+        return $this->belongsTo(Post::class, 'parent_id');
+    }
+
+    // Reply Children
+    public function children(){
+        return $this->hasMany(Post::class, 'parent_id');
     }
 
 }

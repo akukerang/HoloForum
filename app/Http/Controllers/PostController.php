@@ -20,6 +20,16 @@ class PostController extends Controller
         Post::create($data);
     }
 
+    public function storeReply(Request $request) {
+        $data = $request->validate([
+            'content'=>'required|string',
+            'thread_id'=>'required|numeric|exists:threads,id',
+            'user_id'=>'required|numeric|exists:users,id',
+            'parent_id'=>'required|numeric|exists:posts,id'
+        ]);
+        Post::create($data);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
