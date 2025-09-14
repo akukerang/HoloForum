@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function create(Thread $thread) {
+    public function create(Thread $thread)
+    {
         $user = auth()->user();
         return inertia('Post/CreatePost', [
             'thread' => $thread,
@@ -16,7 +17,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function createReply(Thread $thread, Post $post) {
+    public function createReply(Thread $thread, Post $post)
+    {
         $user = auth()->user();
         return inertia('Post/CreateReply', [
             'thread' => $thread,
@@ -25,6 +27,36 @@ class PostController extends Controller
         ]);
     }
 
+    public function show(Thread $thread, Post $post, Request $request)
+    {
+        $perPage = 10;
+        $sort = $request->query('sort', 'oldest');
+        $query = $thread->posts();
+        switch ($sort) {
+            case 'latest':
+                $query->orderBy('created_at', 'DESC');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'ASC');
+                break;
+            default:
+                $query->orderBy('created_at', 'ASC');
+                break;
+        }
+        $post_index = $query->pluck('id')->search($post->id);
+        if ($post_index === false) {
+            abort(404);
+        }
+        $page = (int) ceil(($post_index + 1) / $perPage);
+        return redirect()->route(
+            'thread.showThread',
+            [
+                'thread' => $thread->id,
+                'page' => $page,
+                'sort' => $sort,
+            ]
+        )->with('message', $post->id);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -32,9 +64,9 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'content'=>'required|string',
-            'thread_id'=>'required|numeric|exists:threads,id',
-            'user_id'=>'required|numeric|exists:users,id',
+            'content' => 'required|string',
+            'thread_id' => 'required|numeric|exists:threads,id',
+            'user_id' => 'required|numeric|exists:users,id',
         ]);
         Post::create($data);
 
@@ -50,12 +82,13 @@ class PostController extends Controller
 
     }
 
-    public function storeReply(Request $request) {
+    public function storeReply(Request $request)
+    {
         $data = $request->validate([
-            'content'=>'required|string',
-            'thread_id'=>'required|numeric|exists:threads,id',
-            'user_id'=>'required|numeric|exists:users,id',
-            'parent_id'=>'required|numeric|exists:posts,id'
+            'content' => 'required|string',
+            'thread_id' => 'required|numeric|exists:threads,id',
+            'user_id' => 'required|numeric|exists:users,id',
+            'parent_id' => 'required|numeric|exists:posts,id'
         ]);
         Post::create($data);
 
@@ -82,11 +115,10 @@ class PostController extends Controller
         $post->delete();
     }
 
-    public function toggleReaction(Post $post) {
+    public function toggleReaction(Post $post)
+    {
         $user = auth()->user();
         $post->toggleReaction($user);
-        return redirect()->back(); 
+        return redirect()->back();
     }
-
-
 }

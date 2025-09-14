@@ -31,10 +31,13 @@ export default function ShowThread({ thread, posts, user, flash }: Props) {
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
+        } else if (flash?.message) {
+            const element = document.getElementById(`post-${flash.message}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     }, [flash?.message]);
-
-
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
