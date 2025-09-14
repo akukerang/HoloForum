@@ -29,7 +29,8 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function adminCreate(){
+    public function adminCreate()
+    {
         return Inertia::render('Admin/CreateThread');
     }
     /**
@@ -38,20 +39,21 @@ class ThreadController extends Controller
     public function adminStore(Request $request) // Admin Store
     {
         $data = $request->validate([
-            'title'=>'required|string|max:64',
-            'forum_id'=>'required|numeric|exists:forums,id',
-            'user_id'=>'required|numeric|exists:users,id',
+            'title' => 'required|string|max:64',
+            'forum_id' => 'required|numeric|exists:forums,id',
+            'user_id' => 'required|numeric|exists:users,id',
         ]);
         Thread::create($data);
         return redirect()->route('admin.index');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $data = $request->validate([
-            'title'=>'required|string|max:64',
-            'forum_id'=>'required|numeric|exists:forums,id',
-            'user_id'=>'required|numeric|exists:users,id',
-            'content'=>'required|string',
+            'title' => 'required|string|max:64',
+            'forum_id' => 'required|numeric|exists:forums,id',
+            'user_id' => 'required|numeric|exists:users,id',
+            'content' => 'required|string',
         ]);
 
         $thread = Thread::create($data);
@@ -59,8 +61,7 @@ class ThreadController extends Controller
             'user_id' => $data['user_id'],
             'content' => $data['content'],
         ]);
-         return redirect()->route('forum.forumShow', $thread->forum_id);
-
+        return redirect()->route('forum.forumShow', $thread->forum_id);
     }
 
     /**
@@ -76,19 +77,22 @@ class ThreadController extends Controller
 
         $query = $thread->posts()->with(['user', 'parent'])->withCount('reactions');
         $sort = $request->query('sort', 'oldest');
-        switch($sort) {
+        switch ($sort) {
             case 'latest':
-                $query->orderBy('created_at','DESC');
+                $query->orderBy('created_at', 'DESC');
                 break;
             case 'oldest':
-                $query->orderBy('created_at','ASC');
+                $query->orderBy('created_at', 'ASC');
+                break;
+            case 'reactions':
+                $query->orderBy('reactions_count', 'DESC');
                 break;
             default:
-                $query->orderBy('created_at','ASC');
+                $query->orderBy('created_at', 'ASC');
                 break;
         }
 
-        $posts = $query->paginate(10)->onEachSide(1);
+        $posts = $query->paginate(10)->onEachSide(1)->withQueryString();
 
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,
@@ -107,25 +111,27 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function update(Request $request, Thread $thread){
+    public function update(Request $request, Thread $thread)
+    {
         $user = auth()->user();
-         // Ensure the authenticated user is the owner of the thread
-         if ($user->id !== $thread->user_id) {
-             abort(403, 'Unauthorized action.');
-         }
-                 $data = $request->validate([
-            'title'=>'required|string|max:64',
+        // Ensure the authenticated user is the owner of the thread
+        if ($user->id !== $thread->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+        $data = $request->validate([
+            'title' => 'required|string|max:64',
         ]);
         $thread->update($data);
-        return redirect()->route('forum.forumShow', $thread->forum_id);    
+        return redirect()->route('forum.forumShow', $thread->forum_id);
     }
 
 
-    public function adminEdit(Thread $thread){
+    public function adminEdit(Thread $thread)
+    {
         return Inertia::render('Admin/EditThread', [
             'thread' => $thread
         ]);
-    }   
+    }
 
     /**
      * Update the specified resource in storage.
@@ -134,12 +140,12 @@ class ThreadController extends Controller
     {
         //
         $data = $request->validate([
-            'title'=>'required|string|max:64',
-            'forum_id'=>'required|numeric|exists:forums,id',
-            'user_id'=>'required|numeric|exists:users,id',
+            'title' => 'required|string|max:64',
+            'forum_id' => 'required|numeric|exists:forums,id',
+            'user_id' => 'required|numeric|exists:users,id',
         ]);
         $thread->update($data);
-        return redirect()->route('admin.index');    
+        return redirect()->route('admin.index');
     }
 
     /**
@@ -153,17 +159,18 @@ class ThreadController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function destroy(Thread $thread){
+    public function destroy(Thread $thread)
+    {
         $user = auth()->user();
-         // Ensure the authenticated user is the owner of the thread
-         if ($user->id !== $thread->user_id) {
-             abort(403, 'Unauthorized action.');
-         }
-    
-         // Delete the thread
-         $thread->posts()->delete(); // Delete associated posts first
-         $thread->delete();
-         
-         return redirect()->route('forum.forumShow', $thread->forum_id);
+        // Ensure the authenticated user is the owner of the thread
+        if ($user->id !== $thread->user_id) {
+            abort(403, 'Unauthorized action.');
         }
+
+        // Delete the thread
+        $thread->posts()->delete(); // Delete associated posts first
+        $thread->delete();
+
+        return redirect()->route('forum.forumShow', $thread->forum_id);
+    }
 }

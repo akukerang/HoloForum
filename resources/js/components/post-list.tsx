@@ -21,7 +21,6 @@ export function PostList({ posts, currentUser, thread_id }: Props) {
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
     const sort = params.get('sort') || 'oldest'
-
     const postCount = posts.total;
     const currentSort = sort;
 

@@ -39,6 +39,9 @@ class PostController extends Controller
             case 'oldest':
                 $query->orderBy('created_at', 'ASC');
                 break;
+            case 'reactions':
+                $query->orderBy('reactions_count', 'DESC');
+                break;
             default:
                 $query->orderBy('created_at', 'ASC');
                 break;
