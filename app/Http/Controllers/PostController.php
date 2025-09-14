@@ -10,20 +10,16 @@ class PostController extends Controller
 {
     public function create(Thread $thread)
     {
-        $user = auth()->user();
         return inertia('Post/CreatePost', [
             'thread' => $thread,
-            'user' => $user
         ]);
     }
 
     public function createReply(Thread $thread, Post $post)
     {
-        $user = auth()->user();
         return inertia('Post/CreateReply', [
             'thread' => $thread,
             'parent_post' => $post,
-            'user' => $user
         ]);
     }
 

@@ -7,16 +7,18 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { storeThread } from '@/routes/thread';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { Forum, User } from "@/types";
+import { SharedData, type BreadcrumbItem } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { Forum } from "@/types";
 
 interface Props {
     forum: Forum;
-    user: User;
 }
 
-export default function CreateThread({ user, forum }: Props) {
+export default function CreateThread({ forum }: Props) {
+
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -26,7 +28,7 @@ export default function CreateThread({ user, forum }: Props) {
     ];
 
     const { data, setData, post, processing, errors } = useForm({
-        user_id: user.id,
+        user_id: auth.user.id,
         forum_id: forum.id,
         title: '',
         content: '',

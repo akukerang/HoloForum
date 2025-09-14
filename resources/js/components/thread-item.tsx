@@ -1,6 +1,6 @@
 import { editThread, removeThread, showThread } from "@/routes/thread";
-import { Link, useForm } from "@inertiajs/react";
-import { Thread, User } from "@/types";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import { SharedData, Thread } from "@/types";
 import { SquarePen, TrashIcon } from "lucide-react";
 
 const formatDate = (dateString: string) => {
@@ -10,11 +10,13 @@ const formatDate = (dateString: string) => {
 
 interface Props {
     thread: Thread;
-    user: User;
 }
 
 
-export function ThreadItem({ thread, user }: Props) {
+export function ThreadItem({ thread }: Props) {
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
+
     const { processing, delete: destroy } = useForm();
 
     const handleDelete = (id: number) => {
@@ -38,7 +40,7 @@ export function ThreadItem({ thread, user }: Props) {
                 <p className="text-sm text-muted-foreground">replies</p>
             </div>
             <div className="w-8 flex gap-2 text-center align-middle justify-center">
-                {user.id === thread.user.id ? (
+                {auth.user && auth.user.id === thread.user.id ? (
                     <>
                         <button className="flex items-center" onClick={() => handleDelete(thread.id)} disabled={processing}>
                             <TrashIcon className="text-destructive hover:cursor-pointer" />
@@ -47,6 +49,7 @@ export function ThreadItem({ thread, user }: Props) {
                             <SquarePen className="text-muted-foreground hover:cursor-pointer" />
                         </Link>
                     </>
+
                 ) : null}
             </div>
         </li>

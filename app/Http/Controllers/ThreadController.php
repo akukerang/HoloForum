@@ -10,21 +10,11 @@ use Inertia\Inertia;
 class ThreadController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create(Forum $forum)
     {
-        $user = auth()->user();
         return Inertia::render('Thread/CreateThread', [
-            'user' => $user,
             'forum' => $forum
         ]);
     }
@@ -70,8 +60,6 @@ class ThreadController extends Controller
     public function show(Thread $thread, Request $request)
     {
 
-        $user = auth()->user();
-
         $thread->load('user');
         $thread->load('forum');
 
@@ -97,7 +85,6 @@ class ThreadController extends Controller
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,
             'posts' => $posts,
-            'user' => $user
         ]);
     }
 

@@ -16,7 +16,7 @@ class ForumController extends Controller
     public function index()
     {
         $categories = Forum::with(['children' => function ($query) {
-            $query->withCount('threads'); 
+            $query->withCount('threads');
         }])->withCount('threads')->whereNull('parent_forum_id')->get();
 
         return Inertia::render('Forum/Index', [
@@ -38,11 +38,11 @@ class ForumController extends Controller
     public function store(Request $request)
     {
         //
-       $data =  $request->validate([
-            'title'=>'required|string|max:64',
-            'slug'=>'required|string|alpha_dash',
-            'description'=>'string|nullable',
-            'parent_forum_id'=>'numeric|nullable',
+        $data =  $request->validate([
+            'title' => 'required|string|max:64',
+            'slug' => 'required|string|alpha_dash',
+            'description' => 'string|nullable',
+            'parent_forum_id' => 'numeric|nullable',
         ]);
         Forum::create($data);
         return redirect()->route('admin.index');
@@ -53,15 +53,14 @@ class ForumController extends Controller
      */
     public function show(Forum $forum, Request $request)
     {
-        $user = auth()->user();
         $sort = $request->query('sort', 'latest');
 
         $query = $forum->threads()
-        ->withCount('posts') # post count
-        ->withMax('posts', 'created_at') # latest post date 
-        ->with('user'); # user data
+            ->withCount('posts') # post count
+            ->withMax('posts', 'created_at') # latest post date 
+            ->with('user'); # user data
 
-        switch($sort) {
+        switch ($sort) {
             case 'recent':
                 $query
                     ->orderByRaw('
@@ -74,24 +73,24 @@ class ForumController extends Controller
                     ->orderByDesc('created_at');
                 break;
             case 'latest':
-                $query->orderBy('created_at','DESC');
+                $query->orderBy('created_at', 'DESC');
                 break;
             case 'title':
                 $query->orderByRaw('LOWER(title) asc'); # ignore case
                 break;
             case 'replies':
-               $query
-                ->orderByRaw('
+                $query
+                    ->orderByRaw('
                     CASE 
                         WHEN posts_count = 0 THEN 1 
                         ELSE 0 
                     END ASC
                 ') // threads with posts first (0 → has posts, 1 → no posts)
-                ->orderByDesc('posts_count')   // then sort by most posts
-                ->orderByDesc('created_at');   // finally, newest threads if tied
+                    ->orderByDesc('posts_count')   // then sort by most posts
+                    ->orderByDesc('created_at');   // finally, newest threads if tied
                 break;
             case 'oldest':
-                $query->orderBy('created_at','ASC');
+                $query->orderBy('created_at', 'ASC');
                 break;
             default:
                 $query
@@ -103,15 +102,14 @@ class ForumController extends Controller
                     ') // threads with posts = 0, no posts = 1
                     ->orderByDesc('posts_max_created_at')
                     ->orderByDesc('created_at');
-    break;
+                break;
         }
 
         $threads = $query->paginate(10)->withQueryString()->onEachSide(1);
-                
+
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum,
-            'threads'=> $threads,
-            'user' => $user,
+            'threads' => $threads,
         ]);
     }
 
@@ -125,7 +123,7 @@ class ForumController extends Controller
             'forum' => $forum
         ]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -133,10 +131,10 @@ class ForumController extends Controller
     {
         //
         $request->validate([
-            'title'=>'required|string|max:64',
-            'slug'=>'required|string|alpha_dash',
-            'description'=>'string|nullable',
-            'parent_forum_id'=>'numeric|nullable',
+            'title' => 'required|string|max:64',
+            'slug' => 'required|string|alpha_dash',
+            'description' => 'string|nullable',
+            'parent_forum_id' => 'numeric|nullable',
         ]);
         $forum->update([
             'title' => $request->input('title'),
@@ -145,7 +143,6 @@ class ForumController extends Controller
             'parent_forum_id' => $request->input('parent_forum_id'),
         ]);
         return redirect()->route(route: 'admin.index');
- 
     }
 
     /**

@@ -1,12 +1,11 @@
 import { createReply, deleteMethod, toggleReaction } from "@/routes/post";
-import { Link, router, useForm } from "@inertiajs/react";
+import { Link, router, useForm, usePage } from "@inertiajs/react";
 import { Reply, ThumbsUp, TrashIcon } from "lucide-react";
-import { Post, User } from "@/types";
+import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
 
 interface Props {
     postData: Post;
-    currentUser: User;
 }
 
 const formatDate = (dateString: string) => {
@@ -14,9 +13,11 @@ const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }).format(date);
 };
 
-export function PostItem({ postData, currentUser }: Props) {
+export function PostItem({ postData }: Props) {
 
     const { post, processing, delete: destroy } = useForm();
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
 
 
     const handleDelete = (id: number) => {
@@ -48,7 +49,7 @@ export function PostItem({ postData, currentUser }: Props) {
                     <div className="flex flex-row justify-between pb-2">
                         <p className="text-sm text-muted-foreground ">Posted by {postData.user.name} at {formatDate(postData.created_at)}</p>
                         <div className="flex flex-row gap-x-2 align-center justify-center">
-                            {currentUser.id === postData.user.id && (
+                            {auth.user && auth.user.id === postData.user.id && (
                                 <button className="flex items-center" onClick={() => handleDelete(postData.id)} disabled={processing}>
                                     <TrashIcon className="text-destructive hover:cursor-pointer w-5 h-5 " />
                                 </button>
@@ -56,6 +57,7 @@ export function PostItem({ postData, currentUser }: Props) {
                             <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
                                 <Reply className="w-5 h-5 text-muted-foreground hover:cursor-pointer" />
                             </Link>
+
                         </div>
                     </div>
                     {/* Quote Reply */}

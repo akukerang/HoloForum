@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, Link } from "@inertiajs/react";
-import { PostPaginate, Thread, User } from "@/types";
+import { PostPaginate, Thread } from "@/types";
 import { create } from "@/routes/post";
 import { useEffect } from "react";
 
@@ -11,7 +11,6 @@ import { useEffect } from "react";
 
 interface Props {
     thread: Thread;
-    user: User;
     posts: PostPaginate;
     flash: {
         message?: string
@@ -24,7 +23,7 @@ const formatDate = (dateString: string) => {
 };
 
 
-export default function ShowThread({ thread, posts, user, flash }: Props) {
+export default function ShowThread({ thread, posts, flash }: Props) {
     useEffect(() => {
         if (flash?.message === "Post created successfully.") {
             const element = document.getElementById('post-list-bottom');
@@ -39,6 +38,7 @@ export default function ShowThread({ thread, posts, user, flash }: Props) {
         }
     }, [flash?.message]);
 
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `${thread.title} - ${thread.forum.title}`,
@@ -49,7 +49,7 @@ export default function ShowThread({ thread, posts, user, flash }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${thread.title} - ${thread.forum.title}`} />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 bg-secondary items-center">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
                 <div className='w-full flex flex-col gap-2'>
                     <div className='bg-card p-6 flex flex-col gap-y-2 rounded-xl shadow-sm'>
                         <h1 className="text-2xl font-bold">{thread.title}</h1>
@@ -62,7 +62,7 @@ export default function ShowThread({ thread, posts, user, flash }: Props) {
                         </Link>
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <PostList posts={posts} currentUser={user} thread_id={thread.id} />
+                        <PostList posts={posts} thread_id={thread.id} />
                         <span id="post-list-bottom" />
                     </div>
                 </div>

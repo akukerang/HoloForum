@@ -7,16 +7,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import PaginationCustom from "./pagination";
-import { Thread, ThreadPaginate, User } from "@/types";
+import { Thread, ThreadPaginate } from "@/types";
 import { router, usePage } from "@inertiajs/react";
 
 interface Props {
     threads: ThreadPaginate;
     forum_id: number;
-    user: User;
 }
 
-export function ThreadList({ threads, forum_id, user }: Props) {
+export function ThreadList({ threads, forum_id }: Props) {
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
     const sort = params.get('sort') || 'recent'
@@ -60,7 +59,7 @@ export function ThreadList({ threads, forum_id, user }: Props) {
 
                     </div>
                     {threads.data.map((thread: Thread) => (
-                        <ThreadItem key={thread.id} thread={thread} user={user} />
+                        <ThreadItem key={thread.id} thread={thread} />
                     ))}
                 </>
             ) : (

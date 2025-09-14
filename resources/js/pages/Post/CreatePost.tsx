@@ -3,17 +3,19 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { Thread, User } from "@/types";
+import { SharedData, type BreadcrumbItem } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { Thread } from "@/types";
 import { store } from '@/routes/post';
 
 interface Props {
     thread: Thread
-    user: User;
 }
 
-export default function CreatePost({ thread, user }: Props) {
+export default function CreatePost({ thread }: Props) {
+
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -23,7 +25,7 @@ export default function CreatePost({ thread, user }: Props) {
     ];
 
     const { data, setData, post, processing, errors } = useForm({
-        user_id: user.id,
+        user_id: auth.user.id,
         thread_id: thread.id,
         content: '',
     })

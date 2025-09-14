@@ -1,7 +1,7 @@
 import { usePage, router } from "@inertiajs/react";
 import PaginationCustom from "./pagination";
 import { PostItem } from "./post-item";
-import { Post, PostPaginate, User } from "@/types";
+import { Post, PostPaginate } from "@/types";
 import {
     Select,
     SelectContent,
@@ -12,11 +12,10 @@ import {
 
 interface Props {
     posts: PostPaginate;
-    currentUser: User;
     thread_id: number;
 }
 
-export function PostList({ posts, currentUser, thread_id }: Props) {
+export function PostList({ posts, thread_id }: Props) {
 
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
@@ -58,7 +57,7 @@ export function PostList({ posts, currentUser, thread_id }: Props) {
                     </div>
 
                     {posts.data.map((post: Post) => (
-                        <PostItem key={post.id} postData={post} currentUser={currentUser} />
+                        <PostItem key={post.id} postData={post} />
                     ))}
                 </>
             ) : (
