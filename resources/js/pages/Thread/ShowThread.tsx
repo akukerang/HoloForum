@@ -25,8 +25,6 @@ const formatDate = (dateString: string) => {
 
 
 export default function ShowThread({ thread, posts, user, flash }: Props) {
-    console.log(flash?.message);
-
     useEffect(() => {
         if (flash?.message === "Post created successfully.") {
             const element = document.getElementById('post-list-bottom');

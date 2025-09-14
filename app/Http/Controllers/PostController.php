@@ -16,14 +16,14 @@ class PostController extends Controller
         ]);
     }
 
-    // public function createReply(Thread $thread, Post $post) {
-    //     $user = auth()->user();
-    //     return inertia('Post/CreateReply', [
-    //         'thread' => $thread,
-    //         'post' => $post,
-    //         'user' => $user
-    //     ]);
-    // }
+    public function createReply(Thread $thread, Post $post) {
+        $user = auth()->user();
+        return inertia('Post/CreateReply', [
+            'thread' => $thread,
+            'parent_post' => $post,
+            'user' => $user
+        ]);
+    }
 
 
     /**
@@ -58,6 +58,17 @@ class PostController extends Controller
             'parent_id'=>'required|numeric|exists:posts,id'
         ]);
         Post::create($data);
+
+        // Redirects to Last Page
+        $totalPosts = Post::where('thread_id', $data['thread_id'])->count();
+        $perPage = 10;
+        $lastPage = ceil($totalPosts / $perPage);
+
+        return redirect()->route('thread.showThread', [
+            'thread' => $data['thread_id'],
+            'page' => $lastPage,
+        ])->with('message', 'Post created successfully.'); // Flash message to go to latest post
+
     }
 
     /**

@@ -1,19 +1,28 @@
-// import { Post } from "@/types";
-// 
-// interface Props {
-// postData: Post;
-// }
+import { Post } from "@/types";
+import { Link } from "@inertiajs/react";
 
-export default function QuoteReply() {
+interface Props {
+    postData: Post;
+}
+
+
+const truncate = (str: string, n: number) => {
+    return (str.length > n) ? str.slice(0, n - 1) + '...' : str;
+}
+
+
+export default function QuoteReply({ postData }: Props) {
     return (
         <div className="w-1/2 flex flex-col items-stretch border-2 bg-accent mb-2" >
             <div>
                 {/* User and link to post */}
-                <p className="text-sm font-bold px-2 py-1 ">User said: </p>
+                <Link href="#">
+                    <p className="text-sm font-bold px-2 py-1 ">{postData.user.name} said: </p>
+                </Link>
             </div>
             <div>
                 {/* Content */}
-                <p className="text-sm px-2 pb-2">This is a quoted post</p>
+                <p className="text-sm px-2 pb-2">{truncate(postData.content, 120)}</p>
             </div>
 
         </div>

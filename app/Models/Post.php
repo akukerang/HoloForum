@@ -46,12 +46,11 @@ class Post extends Model
 
     // Reply Parent
     public function parent(){
-        return $this->belongsTo(Post::class, 'parent_id');
+        return $this->belongsTo(Post::class, 'parent_id')->with('user');
     }
 
     // Reply Children
     public function children(){
         return $this->hasMany(Post::class, 'parent_id');
     }
-
 }

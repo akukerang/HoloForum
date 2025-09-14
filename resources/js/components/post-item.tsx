@@ -1,5 +1,5 @@
-import { deleteMethod, toggleReaction } from "@/routes/post";
-import { router, useForm } from "@inertiajs/react";
+import { createReply, deleteMethod, toggleReaction } from "@/routes/post";
+import { Link, router, useForm } from "@inertiajs/react";
 import { Reply, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, User } from "@/types";
 import QuoteReply from "./quote-reply";
@@ -53,11 +53,16 @@ export function PostItem({ postData, currentUser }: Props) {
                                     <TrashIcon className="text-destructive hover:cursor-pointer w-5 h-5 " />
                                 </button>
                             )}
-                            <Reply className="w-5 h-5 text-muted-foreground hover:cursor-pointer" />
+                            <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
+                                <Reply className="w-5 h-5 text-muted-foreground hover:cursor-pointer" />
+                            </Link>
                         </div>
                     </div>
                     {/* Quote Reply */}
-                    <QuoteReply />
+                    {postData.parent ? (
+                        <QuoteReply postData={postData.parent} />
+                    ) : null}
+
                     {/* Content */}
                     <p className="text-sm pb-2">{postData.content}</p>
                 </div>
@@ -73,7 +78,7 @@ export function PostItem({ postData, currentUser }: Props) {
 
                 </div>
             </div>
-        </li>
+        </li >
 
     );
 }

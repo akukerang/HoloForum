@@ -78,9 +78,10 @@ export interface Post {
     id: number;
     content: string;
     user: User;
-    thread: Thread;
-    parent_post_id?: number | null;
-    parent_post?: Post | null;
+    thread_id: number;
+    thread?: Thread;
+    parent_id?: number | null;
+    parent?: Post | null;
     reactions_count?: number;
     liked?: boolean;
     created_at: string;
