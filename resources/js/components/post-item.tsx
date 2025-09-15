@@ -36,7 +36,7 @@ export function PostItem({ postData }: Props) {
     }
 
     return (
-        <li className="w-full flex items-stretch border-2" id={`post-${postData.id.toString()}`}>
+        <li className="w-full flex items-stretch border-1 bg-card" id={`post-${postData.id.toString()}`}>
             <div className="flex flex-col py-4 text-center justify-center items-center gap-y-2 w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
                 <img src="https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg" alt={postData.user.name} className="h-16" />

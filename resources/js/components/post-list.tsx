@@ -31,10 +31,10 @@ export function PostList({ posts, thread_id }: Props) {
     }
 
     return (
-        <div className="flex flex-col gap-4 bg-card rounded-lg shadow-md">
+        <div className="flex flex-col gap-3">
             {postCount > 0 ? (
                 <>
-                    <div className="flex border-b p-2 justify-between">
+                    <div className="flex border-1 p-2 justify-between bg-card">
                         {posts.last_page > 1 ? (
                             <PaginationCustom links={posts.links} />)
                             : <div></div>
@@ -55,10 +55,10 @@ export function PostList({ posts, thread_id }: Props) {
                             </Select>
                         </div>
                     </div>
-
                     {posts.data.map((post: Post) => (
                         <PostItem key={post.id} postData={post} />
                     ))}
+
                 </>
             ) : (
                 "No threads"

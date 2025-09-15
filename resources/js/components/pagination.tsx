@@ -22,7 +22,7 @@ export default function PaginationCustom({ links }: Props) {
             <PaginationContent>
                 {links.map((link, idx) => {
                     // Handle "Previous" button
-                    if (link.label === "&laquo; Previous") {
+                    if (link.label === "&laquo; Previous" && link.url) {
                         return (
                             <PaginationItem key={idx}>
                                 <PaginationPrevious
@@ -35,7 +35,7 @@ export default function PaginationCustom({ links }: Props) {
                     }
 
                     // Handle "Next" button
-                    if (link.label === "Next &raquo;") {
+                    if (link.label === "Next &raquo;" && link.url) {
                         return (
                             <PaginationItem key={idx}>
                                 <PaginationNext
@@ -57,17 +57,21 @@ export default function PaginationCustom({ links }: Props) {
                     }
 
                     // Handle page numbers
-                    return (
-                        <PaginationItem key={idx}>
-                            <PaginationLink
-                                size="default"
-                                isActive={link.active}
-                                href={link.url ?? "#"}
-                            >
-                                {link.label}
-                            </PaginationLink>
-                        </PaginationItem>
-                    )
+                    if (link.url) {
+                        return (
+                            <PaginationItem key={idx}>
+                                <PaginationLink
+                                    size="default"
+                                    // isActive={link.active}
+                                    className={link.active ? "pointer-events-non bg-blue-300 hover:bg-blue-300" : ""}
+                                    href={link.url ?? "#"}
+                                >
+                                    {link.label}
+                                </PaginationLink>
+                            </PaginationItem>
+                        )
+                    }
+
                 })}
             </PaginationContent>
         </Pagination>
