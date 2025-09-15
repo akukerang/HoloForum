@@ -4,7 +4,7 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { PostPaginate, Thread } from "@/types";
-import { create } from "@/routes/post";
+import { createPost } from "@/routes/post";
 import { useEffect } from "react";
 
 
@@ -57,7 +57,7 @@ export default function ShowThread({ thread, posts, flash }: Props) {
                         <p className="text-sm text-muted-foreground">{formatDate(thread.created_at)} in {thread.forum.title}</p>
                     </div>
                     <div className="flex items-center h-full">
-                        <Link href={create(thread.id)}>
+                        <Link href={createPost(thread.id).url}>
                             <Button variant="default">Reply</Button>
                         </Link>
                     </div>
