@@ -75,7 +75,7 @@ class PostController extends Controller
             'thread_id' => 'required|numeric|exists:threads,id',
             'user_id' => 'required|numeric|exists:users,id',
         ]);
-        Post::create($data);
+        $post = Post::create($data);
 
         // Redirects to Last Page
         $totalPosts = Post::where('thread_id', $data['thread_id'])->count();
@@ -85,8 +85,7 @@ class PostController extends Controller
         return redirect()->route('thread.showThread', [
             'thread' => $data['thread_id'],
             'page' => $lastPage,
-        ])->with('message', 'Post created successfully.'); // Flash message to go to latest post
-        // TODO: This can probably be changed to $post->id
+        ])->with('message', $post->id); // Flash message to go to latest post
     }
 
     public function storeReply(Request $request)
@@ -97,7 +96,7 @@ class PostController extends Controller
             'user_id' => 'required|numeric|exists:users,id',
             'parent_id' => 'required|numeric|exists:posts,id'
         ]);
-        Post::create($data);
+        $post = Post::create($data);
 
         // Redirects to Last Page
         $totalPosts = Post::where('thread_id', $data['thread_id'])->count();
@@ -107,7 +106,7 @@ class PostController extends Controller
         return redirect()->route('thread.showThread', [
             'thread' => $data['thread_id'],
             'page' => $lastPage,
-        ])->with('message', 'Post created successfully.'); // Flash message to go to latest post
+        ])->with('message', $post->id); // Flash message to go to latest post
 
     }
 

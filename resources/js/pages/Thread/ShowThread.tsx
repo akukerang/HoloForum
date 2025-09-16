@@ -7,8 +7,6 @@ import { PostPaginate, Thread } from "@/types";
 import { createPost } from "@/routes/post";
 import { useEffect } from "react";
 
-
-
 interface Props {
     thread: Thread;
     posts: PostPaginate;
@@ -25,12 +23,7 @@ const formatDate = (dateString: string) => {
 
 export default function ShowThread({ thread, posts, flash }: Props) {
     useEffect(() => {
-        if (flash?.message === "Post created successfully.") {
-            const element = document.getElementById('post-list-bottom');
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        } else if (flash?.message) {
+        if (flash?.message) {
             const element = document.getElementById(`post-${flash.message}`);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
@@ -63,7 +56,6 @@ export default function ShowThread({ thread, posts, flash }: Props) {
                     </div>
                     <div className='flex flex-col gap-1'>
                         <PostList posts={posts} thread_id={thread.id} />
-                        <span id="post-list-bottom" />
                     </div>
                 </div>
             </div>
