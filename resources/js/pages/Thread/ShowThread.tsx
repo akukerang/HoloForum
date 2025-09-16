@@ -43,11 +43,11 @@ export default function ShowThread({ thread, posts, flash }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${thread.title} - ${thread.forum.title}`} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
-                <div className='w-full flex flex-col gap-2'>
-                    <div className='bg-card p-6 flex flex-col gap-y-2 rounded-xl shadow-sm'>
-                        <h1 className="text-2xl font-bold">{thread.title}</h1>
+                <div className='w-full flex flex-col gap-3'>
+                    <div className='bg-base p-6 flex flex-col gap-y-2 rounded-xl shadow-sm'>
+                        <h1 className="text-2xl font-bold text-blue">{thread.title}</h1>
                         <p className="text-sm ">By {thread.user.name}</p>
-                        <p className="text-sm text-muted-foreground">{formatDate(thread.created_at)} in {thread.forum.title}</p>
+                        <p className="text-sm text-subtext1">{formatDate(thread.created_at)} in {thread.forum.title}</p>
                     </div>
                     <div className="flex items-center h-full">
                         <Link href={createPost(thread.id).url}>

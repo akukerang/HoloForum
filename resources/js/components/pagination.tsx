@@ -26,7 +26,7 @@ export default function PaginationCustom({ links }: Props) {
                         return (
                             <PaginationItem key={idx}>
                                 <PaginationPrevious
-                                    size="default"
+                                    size="sm"
                                     href={link.url ?? undefined}
                                     className={!link.url ? "pointer-events-none opacity-50" : ""}
                                 />
@@ -39,7 +39,7 @@ export default function PaginationCustom({ links }: Props) {
                         return (
                             <PaginationItem key={idx}>
                                 <PaginationNext
-                                    size="default"
+                                    size="sm"
                                     href={link.url ?? undefined}
                                     className={!link.url ? "pointer-events-none opacity-50" : ""}
                                 />
@@ -61,9 +61,8 @@ export default function PaginationCustom({ links }: Props) {
                         return (
                             <PaginationItem key={idx}>
                                 <PaginationLink
-                                    size="default"
-                                    // isActive={link.active}
-                                    className={link.active ? "pointer-events-non bg-blue-300 hover:bg-blue-300" : ""}
+                                    size="sm"
+                                    isActive={link.active}
                                     href={link.url ?? "#"}
                                 >
                                     {link.label}

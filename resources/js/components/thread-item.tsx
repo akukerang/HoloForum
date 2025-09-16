@@ -26,27 +26,27 @@ export function ThreadItem({ thread }: Props) {
     }
 
     return (
-        <li className="bg-background py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
+        <li className="bg-base py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
             <div className="flex-1">
                 <Link href={showThread(thread.id)}>
-                    <h1 className="text-md font-bold hover:text-muted-foreground ">{thread.title}</h1>
-                    <p className="text-sm text-muted-foreground">By {thread.user.name}, {formatDate(thread.created_at)}</p>
-                    <p className="text-xs text-muted-foreground">{thread.posts_max_created_at ? `Last updated: ${formatDate(thread.posts_max_created_at)}` : "No replies"}</p>
+                    <h1 className="text-md font-bold text-yellow hover:text-yellow-500 ">{thread.title}</h1>
+                    <p className="text-sm text-text">By {thread.user.name}, {formatDate(thread.created_at)}</p>
+                    <p className="text-xs text-subtext0">{thread.posts_max_created_at ? `Last updated: ${formatDate(thread.posts_max_created_at)}` : "No replies"}</p>
 
                 </Link>
             </div>
             <div className="text-center">
                 <h1 className="text-lg font-bold">{thread.posts_count}</h1>
-                <p className="text-sm text-muted-foreground">replies</p>
+                <p className="text-sm text-subtext1">replies</p>
             </div>
-            <div className="w-8 flex gap-2 text-center align-middle justify-center">
+            <div className="w-8 flex gap-3 text-center align-middle justify-center">
                 {auth.user && auth.user.id === thread.user.id ? (
                     <>
                         <button className="flex items-center" onClick={() => handleDelete(thread.id)} disabled={processing}>
-                            <TrashIcon className="text-destructive hover:cursor-pointer" />
+                            <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
                         </button>
                         <Link className="flex items-center" href={editThread(thread.id)}>
-                            <SquarePen className="text-muted-foreground hover:cursor-pointer" />
+                            <SquarePen className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
                         </Link>
                     </>
 

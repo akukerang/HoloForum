@@ -1,6 +1,6 @@
 import { createReply, deleteMethod, edit, toggleReaction } from "@/routes/post";
 import { Link, router, useForm, usePage } from "@inertiajs/react";
-import { Pencil, Reply, ThumbsUp, TrashIcon } from "lucide-react";
+import { Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
 
@@ -36,32 +36,34 @@ export function PostItem({ postData }: Props) {
     }
 
     return (
-        <li className="w-full flex items-stretch border-1 bg-card" id={`post-${postData.id.toString()}`}>
+        <li className="w-full flex items-stretch border-1 bg-base" id={`post-${postData.id.toString()}`}>
             <div className="flex flex-col py-4 text-center justify-center items-center gap-y-2 w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
                 <img src="https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg" alt={postData.user.name} className="h-16" />
                 <h1 className="font-bold">{postData.user.name}</h1>
             </div>
 
-            <div className="flex flex-col w-7/8 border-l-2 px-4 py-4 justify-between">
+            <div className="flex flex-col w-7/8 border-l-1 px-4 py-4 justify-between">
                 <div>
                     {/* User, Date, Trash, Reply */}
-                    <div className="flex flex-row justify-between pb-2">
-                        <p className="text-sm text-muted-foreground ">Posted by {postData.user.name} at {formatDate(postData.created_at)}</p>
+                    <div className="flex flex-row justify-between pb-1">
+                        <p className="text-sm text-subtext0 ">Posted by {postData.user.name} at {formatDate(postData.created_at)}</p>
                         <div className="flex flex-row gap-x-3 align-center justify-center">
                             {auth.user && auth.user.id === postData.user.id && (
                                 <>
                                     <Link href={edit({ thread: postData.thread_id, post: postData.id })}>
-                                        <Pencil className="text-muted-foreground hover:cursor-pointer w-5 h-5" />
+                                        <SquarePen className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
+
                                     </Link>
                                     <button onClick={() => handleDelete(postData.id)} disabled={processing}>
-                                        <TrashIcon className="text-destructive hover:cursor-pointer w-5 h-5 " />
+                                        <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
+
                                     </button>
 
                                 </>
                             )}
                             <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
-                                <Reply className="w-5 h-5 text-muted-foreground hover:cursor-pointer" />
+                                <Reply className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
                             </Link>
 
                         </div>
@@ -72,15 +74,15 @@ export function PostItem({ postData }: Props) {
                     ) : null}
 
                     {/* Content */}
-                    <p className="text-sm pb-2 rsw-ce" dangerouslySetInnerHTML={{ __html: postData.content }} />
+                    <p className="text-sm pb-3 rsw-ce" dangerouslySetInnerHTML={{ __html: postData.content }} />
                 </div>
 
                 {/* Reactions */}
                 <div className="flex flex-row items-center gap-x-1 text-sm">
                     {postData.liked ? (
-                        <ThumbsUp className="w-4 h-4 text-blue-500 hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
+                        <ThumbsUp className="w-4 h-4 text-green hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
                     ) : (
-                        <ThumbsUp className="w-4 h-4 text-muted-foreground hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
+                        <ThumbsUp className="w-4 h-4 text-subtext0 hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
                     )}
                     {postData.reactions_count && postData.reactions_count > 0 ? postData.reactions_count : null}
 

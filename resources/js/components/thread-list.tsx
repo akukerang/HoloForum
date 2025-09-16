@@ -30,11 +30,10 @@ export function ThreadList({ threads, forum_id }: Props) {
         })
     }
     return (
-        <div className="flex flex-col bg-card gap-1">
+        <div className="flex flex-col bg-base gap-1 p-2 rounded-lg shadow-sm">
             {threadCount > 0 ? (
                 <>
                     <div className="flex border-b p-2 justify-between">
-
                         {threads.last_page > 1 ? (
                             <PaginationCustom links={threads.links} />)
                             : <div></div>}

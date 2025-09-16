@@ -31,10 +31,10 @@ export function PostList({ posts, thread_id }: Props) {
     }
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
             {postCount > 0 ? (
                 <>
-                    <div className="flex border-1 p-2 justify-between bg-card">
+                    <div className="flex border-1 p-2 justify-between bg-base">
                         {posts.last_page > 1 ? (
                             <PaginationCustom links={posts.links} />)
                             : <div></div>
