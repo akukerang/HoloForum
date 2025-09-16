@@ -3,44 +3,45 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { SharedData, type BreadcrumbItem } from '@/types';
+import { Post, SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Thread } from "@/types";
-import { store } from '@/routes/post';
+import { update } from '@/routes/post';
 
 interface Props {
-    thread: Thread
+    thread: Thread;
+    postData: Post;
 }
 
-export default function CreatePost({ thread }: Props) {
+export default function EditPost({ thread, postData }: Props) {
 
     const page = usePage<SharedData>();
     const { auth } = page.props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: `Reply to ${thread.title}`,
-            href: `/reply/${thread.id}`,
+            title: `Edit Post`,
+            href: `/reply/${thread.id}/${postData.id}/edit`,
         },
     ];
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, put, processing, errors } = useForm({
         user_id: auth.user.id,
         thread_id: thread.id,
-        content: '',
+        content: postData.content,
     })
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(store().url)
+        put(update(postData.id).url)
     }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Reply to ${thread.title}`} />
+            <Head title="Edit Post" />
             <div className='m-4'>
                 <div className='w-8/12 m-4'>
-                    <h1 className='text-2xl'>Reply to {thread.title}</h1>
+                    <h1 className='text-2xl'>Edit Post</h1>
                     <form className='space-y-4' onSubmit={handleSubmit}>
                         <div className='space-y-1'>
                             <Label htmlFor="post content">Content</Label>
@@ -48,7 +49,7 @@ export default function CreatePost({ thread }: Props) {
                                 onChange={(e) => setData('content', e.target.value)} />
                             {errors['content'] && <InputError message={errors['content']} />}
                         </div>
-                        <Button type='submit' disabled={processing}>Reply to Thread</Button>
+                        <Button type='submit' disabled={processing}>Update Post</Button>
                     </form>
                 </div>
             </div>

@@ -20,7 +20,7 @@ export default function CreatePost({ thread, parent_post }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `Reply to Post`,
-            href: `/thread/${thread.id}/${parent_post.id}reply`,
+            href: `/reply/${thread.id}/${parent_post.id}`,
         },
     ];
 

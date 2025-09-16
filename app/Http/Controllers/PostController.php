@@ -23,6 +23,14 @@ class PostController extends Controller
         ]);
     }
 
+    public function edit(Thread $thread, Post $post)
+    {
+        return inertia('Post/EditPost', [
+            'thread' => $thread,
+            'postData' => $post,
+        ]);
+    }
+
     public function show(Thread $thread, Post $post, Request $request)
     {
         $perPage = 10;
@@ -78,7 +86,7 @@ class PostController extends Controller
             'thread' => $data['thread_id'],
             'page' => $lastPage,
         ])->with('message', 'Post created successfully.'); // Flash message to go to latest post
-
+        // TODO: This can probably be changed to $post->id
     }
 
     public function storeReply(Request $request)
@@ -101,6 +109,29 @@ class PostController extends Controller
             'page' => $lastPage,
         ])->with('message', 'Post created successfully.'); // Flash message to go to latest post
 
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $data = $request->validate([
+            'content' => 'required|string',
+        ]);
+        if (auth()->id() !== $post->user_id) { // check if user editing, is the user's post
+            abort(403, 'Unauthorized action.');
+        }
+        $post->update($data);
+
+        // Goes to the page post is on
+        $thread = $post->thread->posts()->orderBy('created_at', 'ASC')->get();
+        $perPage = 10;
+        $post_index = $thread->pluck('id')->search($post->id);
+        $page = (int) ceil(($post_index + 1) / $perPage);
+
+
+        return redirect()->route('thread.showThread', [
+            'thread' => $post->thread_id,
+            'page' => $page
+        ])->with('message', $post->id);
     }
 
     /**

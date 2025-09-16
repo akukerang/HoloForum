@@ -1,6 +1,6 @@
-import { createReply, deleteMethod, toggleReaction } from "@/routes/post";
+import { createReply, deleteMethod, edit, toggleReaction } from "@/routes/post";
 import { Link, router, useForm, usePage } from "@inertiajs/react";
-import { Reply, ThumbsUp, TrashIcon } from "lucide-react";
+import { Pencil, Reply, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
 
@@ -48,11 +48,17 @@ export function PostItem({ postData }: Props) {
                     {/* User, Date, Trash, Reply */}
                     <div className="flex flex-row justify-between pb-2">
                         <p className="text-sm text-muted-foreground ">Posted by {postData.user.name} at {formatDate(postData.created_at)}</p>
-                        <div className="flex flex-row gap-x-2 align-center justify-center">
+                        <div className="flex flex-row gap-x-3 align-center justify-center">
                             {auth.user && auth.user.id === postData.user.id && (
-                                <button className="flex items-center" onClick={() => handleDelete(postData.id)} disabled={processing}>
-                                    <TrashIcon className="text-destructive hover:cursor-pointer w-5 h-5 " />
-                                </button>
+                                <>
+                                    <Link href={edit({ thread: postData.thread_id, post: postData.id })}>
+                                        <Pencil className="text-muted-foreground hover:cursor-pointer w-5 h-5" />
+                                    </Link>
+                                    <button onClick={() => handleDelete(postData.id)} disabled={processing}>
+                                        <TrashIcon className="text-destructive hover:cursor-pointer w-5 h-5 " />
+                                    </button>
+
+                                </>
                             )}
                             <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
                                 <Reply className="w-5 h-5 text-muted-foreground hover:cursor-pointer" />
