@@ -16,12 +16,12 @@ interface Category {
 
 export function Category({ category }: { category: Category }) {
     return (
-        <Accordion type="single" collapsible className="w-full bg-card shadow-sm rounded-lg">
+        <Accordion type="single" collapsible className="w-full shadow-sm">
             <AccordionItem value={`category-${category.id}`}>
-                <AccordionTrigger className="p-4 border-b">
-                    <div className="text-lg ">{category.title}</div>
+                <AccordionTrigger className="p-4 border-b rounded-none bg-crust hover:bg-crust/80">
+                    <div className="text-lg">{category.title}</div>
                 </AccordionTrigger>
-                <AccordionContent className="gap-1 flex flex-col p-0">
+                <AccordionContent className="gap-1 flex flex-col p-0 bg-base">
                     {category.children.map((forum) => (
                         <ForumItem key={forum.id} forum={forum} />
                     ))}
