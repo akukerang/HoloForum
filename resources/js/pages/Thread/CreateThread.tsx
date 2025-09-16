@@ -4,12 +4,12 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { storeThread } from '@/routes/thread';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Forum } from "@/types";
+import EditorCustom from '@/components/editor-custom';
 
 interface Props {
     forum: Forum;
@@ -52,8 +52,7 @@ export default function CreateThread({ forum }: Props) {
                                 onChange={(e) => setData('title', e.target.value)} />
                             {errors['title'] && <InputError message={errors['title']} />}
                             <Label htmlFor="post content">First Post</Label>
-                            <Textarea placeholder="Write the first post?" value={data.content}
-                                onChange={(e) => setData('content', e.target.value)} />
+                            <EditorCustom value={data.content} onChange={(e) => setData('content', e.target.value)} />
                             {errors['content'] && <InputError message={errors['content']} />}
                         </div>
 

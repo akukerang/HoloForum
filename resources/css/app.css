@@ -139,3 +139,57 @@
         @apply bg-background text-foreground;
     }
 }
+
+
+
+/* Rich Text Editor */
+
+.rsw-ce h1 {
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.rsw-ce h2 {
+    display: block;
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+/* Lists */
+.rsw-ce ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.rsw-ce ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+}
+
+.rsw-ce pre {
+    font-family: "Fira Code", "Consolas", monospace;
+    font-size: 0.95em;
+    background: var(--color-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+
+}
+
+.rsw-ce a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.rsw-ce a:hover {
+    color: #1d4ed8;
+    cursor: pointer;
+}

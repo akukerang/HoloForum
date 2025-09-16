@@ -72,7 +72,7 @@ export function PostItem({ postData }: Props) {
                     ) : null}
 
                     {/* Content */}
-                    <p className="text-sm pb-2">{postData.content}</p>
+                    <p className="text-sm pb-2 rsw-ce" dangerouslySetInnerHTML={{ __html: postData.content }} />
                 </div>
 
                 {/* Reactions */}

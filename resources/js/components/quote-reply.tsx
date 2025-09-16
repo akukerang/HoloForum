@@ -6,11 +6,7 @@ interface Props {
     postData: Post;
 }
 
-
-const truncate = (str: string, n: number) => {
-    return (str.length > n) ? str.slice(0, n - 1) + '...' : str;
-}
-
+//TODO: Truncate and add expand button if too long
 
 export default function QuoteReply({ postData }: Props) {
     const { url } = usePage();
@@ -33,10 +29,11 @@ export default function QuoteReply({ postData }: Props) {
             </div>
             <div>
                 {/* Content */}
-                <p className="text-sm px-2 pb-2">{truncate(postData.content, 120)}</p>
+                <p className="text-sm px-2 pb-2" dangerouslySetInnerHTML={{ __html: postData.content }}></p>
             </div>
 
         </div>
+
     )
 
 }

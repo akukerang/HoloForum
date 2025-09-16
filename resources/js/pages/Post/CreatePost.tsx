@@ -1,12 +1,14 @@
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Thread } from "@/types";
 import { store } from '@/routes/post';
+import EditorCustom from '@/components/editor-custom';
+
+
 
 interface Props {
     thread: Thread
@@ -44,8 +46,7 @@ export default function CreatePost({ thread }: Props) {
                     <form className='space-y-4' onSubmit={handleSubmit}>
                         <div className='space-y-1'>
                             <Label htmlFor="post content">Content</Label>
-                            <Textarea placeholder="Your reply here..." value={data.content}
-                                onChange={(e) => setData('content', e.target.value)} />
+                            <EditorCustom value={data.content} onChange={(e) => setData('content', e.target.value)} />
                             {errors['content'] && <InputError message={errors['content']} />}
                         </div>
                         <Button type='submit' disabled={processing}>Reply to Thread</Button>
