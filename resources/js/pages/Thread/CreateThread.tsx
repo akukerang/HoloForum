@@ -1,15 +1,12 @@
-
-
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { storeThread } from '@/routes/thread';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Forum } from "@/types";
-import EditorCustom from '@/components/editor-custom';
+import FormLayout from '@/layouts/form/form-layout';
+import Editor from '@/components/editor';
+import Submit from '@/components/submit';
+import Input from '@/components/input';
 
 interface Props {
     forum: Forum;
@@ -42,25 +39,24 @@ export default function CreateThread({ forum }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create a New Thread" />
-            <div className='m-4'>
-                <div className='w-8/12 m-4'>
-                    <h1 className='text-2xl'>New Thread</h1>
-                    <form className='space-y-4' onSubmit={handleSubmit}>
-                        <div className='space-y-1'>
-                            <Label htmlFor="thread title">Thread Title</Label>
-                            <Input placeholder="Example" value={data.title}
-                                onChange={(e) => setData('title', e.target.value)} />
-                            {errors['title'] && <InputError message={errors['title']} />}
-                            <Label htmlFor="post content">First Post</Label>
-                            <EditorCustom value={data.content} onChange={(e) => setData('content', e.target.value)} />
-                            {errors['content'] && <InputError message={errors['content']} />}
-                        </div>
-
-
-                        <Button type='submit' disabled={processing}>Create Thread</Button>
-                    </form>
-                </div>
-            </div>
+            <FormLayout title={"Create a New Thread"} onSubmit={handleSubmit}>
+                <Input
+                    table="thread"
+                    name="title"
+                    value={data.title}
+                    placeholder="Title"
+                    onChange={(e) => setData('title', e.target.value)}
+                    errors={errors}
+                />
+                <Editor
+                    table="post"
+                    name="content"
+                    errors={errors}
+                    value={data.content}
+                    onChange={(e) => setData('content', e.target.value)}
+                />
+                <Submit processing={processing} text='Create Thread' />
+            </FormLayout>
         </AppLayout>
     );
 }

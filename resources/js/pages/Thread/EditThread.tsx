@@ -1,12 +1,10 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import Input from '@/components/input';
+import Submit from '@/components/submit';
 import AppLayout from '@/layouts/app-layout';
-import { forumShow } from '@/routes/forum';
+import FormLayout from '@/layouts/form/form-layout';
 import { updateThread } from '@/routes/thread';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 interface Props {
     thread: {
@@ -40,23 +38,18 @@ export default function EditThread({ thread }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Thread" />
-            <div className='m-4'>
-                <Link href={forumShow(thread.forum_id)}>
-                    <Button>Back </Button>
-                </Link>
-                <div className='w-8/12 m-4'>
-                    <h1 className='text-2xl'>Edit Thread</h1>
-                    <form className='space-y-4' onSubmit={handleSubmit}>
-                        <div className='space-y-1'>
-                            <Label htmlFor="thread title">Title</Label>
-                            <Input placeholder="Example" value={data.title}
-                                onChange={(e) => setData('title', e.target.value)} />
-                            {errors['title'] && <InputError message={errors['title']} />}
-                        </div>
-                        <Button type='submit' disabled={processing}>Edit Thread</Button>
-                    </form>
-                </div>
-            </div>
+
+            <FormLayout title={"Edit Thread"} onSubmit={handleSubmit}>
+                <Input
+                    table="thread"
+                    name="title"
+                    value={data.title}
+                    placeholder="Title"
+                    onChange={(e) => setData('title', e.target.value)}
+                    errors={errors}
+                />
+                <Submit processing={processing} text='Update' />
+            </FormLayout>
         </AppLayout>
     );
 }

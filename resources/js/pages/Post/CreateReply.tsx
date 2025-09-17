@@ -1,12 +1,11 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Thread, Post } from "@/types";
 import { storeReply } from '@/routes/post';
-import EditorCustom from '@/components/editor-custom';
+import FormLayout from '@/layouts/form/form-layout';
+import Submit from '@/components/submit';
+import Editor from '@/components/editor';
 
 interface Props {
     thread: Thread;
@@ -39,19 +38,16 @@ export default function CreatePost({ thread, parent_post }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={"Reply to Post"} />
-            <div className='m-4'>
-                <div className='w-8/12 m-4'>
-                    <h1 className='text-2xl'>Reply to Post</h1>
-                    <form className='space-y-4' onSubmit={handleSubmit}>
-                        <div className='space-y-1'>
-                            <Label htmlFor="post content">Content</Label>
-                            <EditorCustom value={data.content} onChange={(e) => setData('content', e.target.value)} />
-                            {errors['content'] && <InputError message={errors['content']} />}
-                        </div>
-                        <Button type='submit' disabled={processing}>Reply</Button>
-                    </form>
-                </div>
-            </div>
+            <FormLayout title={"Reply to Post"} onSubmit={handleSubmit}>
+                <Editor
+                    table="post"
+                    name="content"
+                    errors={errors}
+                    value={data.content}
+                    onChange={(e) => setData('content', e.target.value)}
+                />
+                <Submit processing={processing} text='Reply' />
+            </FormLayout>
         </AppLayout>
     );
 }
