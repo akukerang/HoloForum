@@ -71,9 +71,16 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'content' => 'required|string',
+            'content' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The ' . $attribute . ' field is required.');
+                    }
+                },
+            ],
             'thread_id' => 'required|numeric|exists:threads,id',
-            'user_id' => 'required|numeric|exists:users,id',
+            'user_id'   => 'required|numeric|exists:users,id',
         ]);
         $post = Post::create($data);
 
@@ -91,11 +98,21 @@ class PostController extends Controller
     public function storeReply(Request $request)
     {
         $data = $request->validate([
-            'content' => 'required|string',
+            'content' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The ' . $attribute . ' field is required.');
+                    }
+                },
+            ],
             'thread_id' => 'required|numeric|exists:threads,id',
-            'user_id' => 'required|numeric|exists:users,id',
+            'user_id'   => 'required|numeric|exists:users,id',
             'parent_id' => 'required|numeric|exists:posts,id'
         ]);
+
+
+
         $post = Post::create($data);
 
         // Redirects to Last Page

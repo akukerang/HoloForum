@@ -43,7 +43,14 @@ class ThreadController extends Controller
             'title' => 'required|string|max:64',
             'forum_id' => 'required|numeric|exists:forums,id',
             'user_id' => 'required|numeric|exists:users,id',
-            'content' => 'required|string',
+            'content' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (trim(strip_tags($value)) === '') {
+                        $fail('The ' . $attribute . ' field is required.');
+                    }
+                },
+            ],
         ]);
 
         $thread = Thread::create($data);
