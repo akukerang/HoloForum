@@ -16,8 +16,7 @@ return new class extends Migration
             $table->longText('content');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Created by
             $table->foreignId('thread_id')->constrained('threads')->cascadeOnDelete(); // Parent thread
-            
-            // TODO: Reactions
+            $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete(); // Parent Post for Replies
             $table->timestamps();
         });
     }

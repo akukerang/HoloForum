@@ -10,7 +10,6 @@ interface Props {
     thread: {
         id: number;
         title: string;
-        slug: string;
         description: string;
         user_id: number;
         forum_id: number;

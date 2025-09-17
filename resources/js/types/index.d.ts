@@ -44,7 +44,6 @@ export interface User {
 export interface Forum {
     id: number;
     title: string;
-    slug: string;
     description: string;
     parent_forum_id: number | null;
     threads_count: number;

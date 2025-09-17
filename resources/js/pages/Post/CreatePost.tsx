@@ -34,7 +34,6 @@ export default function CreatePost({ thread }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(store().url)
-        // console.log(data.content);
     }
 
     return (

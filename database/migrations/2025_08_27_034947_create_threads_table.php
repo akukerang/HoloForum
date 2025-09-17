@@ -16,10 +16,8 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Created by
             $table->foreignId('forum_id')->constrained('forums')->cascadeOnDelete(); // Parent Forum
-            $table->string('title'); 
+            $table->string('title');
             $table->boolean('locked')->default(false);
-
-            // TODO: Tags
             $table->timestamps();
         });
     }

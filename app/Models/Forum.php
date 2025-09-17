@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Forum extends Model
 {
     //
-    protected $fillable = ['title', 'slug', 'description', 'parent_forum_id'];
+    protected $fillable = ['title', 'description', 'parent_forum_id'];
 
 
     public function children()
@@ -20,11 +20,13 @@ class Forum extends Model
         return $this->belongsTo(Forum::class, 'parent_forum_id');
     }
 
-    public function threads() {
+    public function threads()
+    {
         return $this->hasMany(Thread::class);
     }
 
-    public function posts() { // Number of posts belonging to forum, from all threads
+    public function posts()
+    { // Number of posts belonging to forum, from all threads
         return $this->hasManyThrough(Post::class, Thread::class);
     }
 

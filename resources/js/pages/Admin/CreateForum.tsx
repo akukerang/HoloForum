@@ -19,7 +19,6 @@ export default function CreateForum() {
 
     const { data, setData, post, processing, errors } = useForm({
         title: '',
-        slug: '',
         description: '',
         parent_forum_id: '',
     })
@@ -39,14 +38,6 @@ export default function CreateForum() {
                     value={data.title}
                     placeholder="Title"
                     onChange={e => setData('title', e.target.value)}
-                    errors={errors}
-                />
-                <Input
-                    table="forum"
-                    name="slug"
-                    value={data.slug}
-                    placeholder="example-forum"
-                    onChange={(e) => setData('slug', e.target.value)}
                     errors={errors}
                 />
                 <Textarea

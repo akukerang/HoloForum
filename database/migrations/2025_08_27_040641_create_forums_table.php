@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('forums', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('slug')->unique(); // url slug
             $table->text('description')->nullable();
             $table->foreignId('parent_forum_id') // parent forum
-                  ->nullable()
-                  ->constrained('forums')
-                  ->nullOnDelete(); 
+                ->nullable()
+                ->constrained('forums')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -55,10 +55,6 @@ export default function Index({ forums, threads }: PageProps) {
             header: 'Title',
         },
         {
-            accessorKey: 'slug',
-            header: 'Slug',
-        },
-        {
             accessorKey: 'description',
             header: 'Description',
             cell: ({ row }) => {

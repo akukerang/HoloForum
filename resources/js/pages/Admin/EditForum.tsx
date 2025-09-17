@@ -22,7 +22,6 @@ export default function EditForum({ forum }: Props) {
 
     const { data, setData, put, processing, errors } = useForm({
         title: forum.title,
-        slug: forum.slug,
         description: forum.description,
         parent_forum_id: forum.parent_forum_id,
     })
@@ -42,14 +41,6 @@ export default function EditForum({ forum }: Props) {
                     value={data.title}
                     placeholder="Title"
                     onChange={e => setData('title', e.target.value)}
-                    errors={errors}
-                />
-                <Input
-                    table="forum"
-                    name="slug"
-                    value={data.slug}
-                    placeholder="example-forum"
-                    onChange={(e) => setData('slug', e.target.value)}
                     errors={errors}
                 />
                 <Textarea

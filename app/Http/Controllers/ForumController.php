@@ -40,7 +40,6 @@ class ForumController extends Controller
         //
         $data =  $request->validate([
             'title' => 'required|string|max:64',
-            'slug' => 'required|string|alpha_dash',
             'description' => 'string|nullable',
             'parent_forum_id' => 'numeric|nullable',
         ]);
@@ -132,13 +131,11 @@ class ForumController extends Controller
         //
         $request->validate([
             'title' => 'required|string|max:64',
-            'slug' => 'required|string|alpha_dash',
             'description' => 'string|nullable',
             'parent_forum_id' => 'numeric|nullable',
         ]);
         $forum->update([
             'title' => $request->input('title'),
-            'slug' => $request->input('slug'),
             'description' => $request->input('description'),
             'parent_forum_id' => $request->input('parent_forum_id'),
         ]);
