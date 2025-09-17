@@ -3,15 +3,13 @@ import { Link, router, useForm, usePage } from "@inertiajs/react";
 import { Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
+import { formatDateTime } from "@/lib/utils";
+
 
 interface Props {
     postData: Post;
 }
 
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }).format(date);
-};
 
 export function PostItem({ postData }: Props) {
 
@@ -47,7 +45,10 @@ export function PostItem({ postData }: Props) {
                 <div>
                     {/* User, Date, Trash, Reply */}
                     <div className="flex flex-row justify-between pb-1">
-                        <p className="text-sm text-subtext0 ">Posted by {postData.user.name} at {formatDate(postData.created_at)}</p>
+                        <p className="text-xs text-subtext0 ">
+                            Posted by {postData.user.name} at {formatDateTime(postData.created_at)}
+                            {postData.created_at !== postData.updated_at ? <span className="italic"> (edited)</span> : null}
+                        </p>
                         <div className="flex flex-row gap-x-3 align-center justify-center">
                             {auth.user && auth.user.id === postData.user.id && (
                                 <>

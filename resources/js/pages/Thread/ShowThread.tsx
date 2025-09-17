@@ -6,6 +6,7 @@ import { Head, Link } from "@inertiajs/react";
 import { PostPaginate, Thread } from "@/types";
 import { createPost } from "@/routes/post";
 import { useEffect } from "react";
+import { formatDate } from "@/lib/utils";
 
 interface Props {
     thread: Thread;
@@ -14,11 +15,6 @@ interface Props {
         message?: string
     };
 }
-
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
-};
 
 
 export default function ShowThread({ thread, posts, flash }: Props) {

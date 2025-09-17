@@ -2,11 +2,7 @@ import { editThread, removeThread, showThread } from "@/routes/thread";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { SharedData, Thread } from "@/types";
 import { SquarePen, TrashIcon } from "lucide-react";
-
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
-};
+import { formatDate, formatDateTime } from "@/lib/utils";
 
 interface Props {
     thread: Thread;
@@ -31,7 +27,7 @@ export function ThreadItem({ thread }: Props) {
                 <Link href={showThread(thread.id)}>
                     <h1 className="text-md font-bold text-yellow hover:text-yellow-500 ">{thread.title}</h1>
                     <p className="text-sm text-text">By {thread.user.name}, {formatDate(thread.created_at)}</p>
-                    <p className="text-xs text-subtext0">{thread.posts_max_created_at ? `Last updated: ${formatDate(thread.posts_max_created_at)}` : "No replies"}</p>
+                    <p className="text-xs text-subtext0">{thread.posts_max_created_at ? `Last updated: ${formatDateTime(thread.posts_max_created_at)}` : "No replies"}</p>
 
                 </Link>
             </div>
