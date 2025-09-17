@@ -175,7 +175,7 @@ export default function Index({ forums, threads }: PageProps) {
                         <Button variant="outline">Create Thread</Button>
                     </Link>
                 </div>
-                <Accordion type="single" collapsible className="w-full bg-card">
+                <Accordion type="single" collapsible className="w-full bg-base">
                     <AccordionItem value='forum-list'>
                         <AccordionTrigger className="p-4">
                             <div className="text-lg ">Forums</div>
@@ -185,7 +185,7 @@ export default function Index({ forums, threads }: PageProps) {
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
-                <Accordion type="single" collapsible className="w-full bg-card">
+                <Accordion type="single" collapsible className="w-full bg-base">
                     <AccordionItem value='forum-list'>
                         <AccordionTrigger className="p-4">
                             <div className="text-lg ">Threads</div>

@@ -119,6 +119,34 @@
 
 /* Rich Text Editor */
 
+.rsw-editor {
+    background-color: var(--crust) !important;
+    border: 2px solid var(--mantle) !important;
+    min-height: 350px !important;
+}
+
+.rsw-editor .rsw-toolbar {
+    background-color: var(--base);
+    color: var(--text)
+}
+
+.rsw-editor .rsw-toolbar .rsw-btn {
+    color: var(--text);
+}
+
+.rsw-editor .rsw-toolbar .rsw-btn[data-active="true"] {
+    color: var(--text);
+    background-color: var(--surface0);
+}
+
+.rsw-editor .rsw-toolbar .rsw-separator {
+    border-right: 1px solid var(--mantle) !important;
+}
+
+.rsw-ce {
+    color: var(--text);
+}
+
 .rsw-ce h1 {
     display: block;
     font-size: 1.5rem;
