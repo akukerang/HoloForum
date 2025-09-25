@@ -1,6 +1,6 @@
 import { usePage, router } from "@inertiajs/react";
 import PaginationCustom from "./pagination";
-import { PostItem } from "./post-item";
+import { PostItem } from "./post-item"
 import { Post, PostPaginate } from "@/types";
 import {
     Select,
@@ -9,6 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import Empty from "./empty";
 
 interface Props {
     posts: PostPaginate;
@@ -61,7 +62,8 @@ export function PostList({ posts, thread_id }: Props) {
 
                 </>
             ) : (
-                "No threads"
+                <Empty message="No posts available" />
+
             )}
         </div>
     )

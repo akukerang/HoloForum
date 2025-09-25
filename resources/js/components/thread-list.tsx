@@ -9,6 +9,7 @@ import {
 import PaginationCustom from "./pagination";
 import { Thread, ThreadPaginate } from "@/types";
 import { router, usePage } from "@inertiajs/react";
+import Empty from "./empty";
 
 interface Props {
     threads: ThreadPaginate;
@@ -62,7 +63,7 @@ export function ThreadList({ threads, forum_id }: Props) {
                     ))}
                 </>
             ) : (
-                "No threads"
+                <Empty message="No threads available" />
             )}
         </div>
     )
