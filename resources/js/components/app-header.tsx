@@ -47,7 +47,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const getInitials = useInitials();
     return (
         <>
-            <div className="border-b border-crust bg-base">
+            <div className="border-b border-crust bg-baseColor">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
@@ -57,7 +57,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="flex h-full w-64 flex-col items-stretch justify-between bg-base">
+                            <SheetContent side="left" className="flex h-full w-64 flex-col items-stretch justify-between bg-baseColor">
                                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
                                     <AppLogoIcon className="h-6 w-6 fill-current" />
@@ -161,7 +161,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Button variant="ghost" className="size-10 rounded-full p-1">
                                         <Avatar className="size-8 overflow-hidden rounded-full">
                                             <AvatarImage src={`${window.location.origin}/storage/${auth.user.avatar}`} alt={auth.user.name} />
-                                            <AvatarFallback className="rounded-lg bg-blue text-base dark:text-text dark:bg-crust">
+                                            <AvatarFallback className="rounded-lg bg-blue text-baseColor dark:text-text dark:bg-crust">
 
                                                 {getInitials(auth.user.name)}
                                             </AvatarFallback>

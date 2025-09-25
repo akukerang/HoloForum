@@ -34,22 +34,20 @@ export function PostItem({ postData }: Props) {
     }
 
     return (
-        <li className="w-full flex items-stretch border-1 bg-base" id={`post-${postData.id.toString()}`}>
-            <div className="flex flex-col py-4 text-center justify-center items-center gap-y-2 w-1/8">
+        <li className="w-full flex items-stretch border-1 bg-baseColor" id={`post-${postData.id.toString()}`}>
+            <div className="hidden md:flex md:flex-col py-4 mt-4 text-center justify-top items-center gap-y-2 w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
                 {postData.user.avatar ? (
                     <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
                 ) : (
-                    <div className="h-20 w-20 bg-blue text-base dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
+                    <div className="h-16 w-16 bg-blue text-baseColor dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
                         {getInitials(postData.user.name)}
                     </div>
                 )}
-
-
-                <h1 className="font-bold">{postData.user.name}</h1>
+                <h1 className="font-bold text-sm px-2">{postData.user.name}</h1>
             </div>
 
-            <div className="flex flex-col w-7/8 border-l-1 px-4 py-4 justify-between">
+            <div className="flex flex-col w-full md:w-7/8 border-l-1 px-4 py-4 justify-between">
                 <div>
                     {/* User, Date, Trash, Reply */}
                     <div className="flex flex-row justify-between pb-1">
@@ -83,7 +81,7 @@ export function PostItem({ postData }: Props) {
                     ) : null}
 
                     {/* Content */}
-                    <p className="text-sm pb-3 rsw-ce" dangerouslySetInnerHTML={{ __html: postData.content }} />
+                    <p className="text-sm mb-1.5 rsw-ce" dangerouslySetInnerHTML={{ __html: postData.content }} />
                 </div>
 
                 {/* Reactions */}

@@ -15,7 +15,6 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
-    --color-base: var(--base);
     --color-text: var(--text);
     --color-pink: var(--pink);
     --color-mauve: var(--mauve);
@@ -38,7 +37,7 @@
     --color-surface2: var(--surface2);
     --color-surface1: var(--surface1);
     --color-surface0: var(--surface0);
-    --color-base: var(--base);
+    --color-baseColor: var(--base);
     --color-mantle: var(--mantle);
     --color-crust: var(--crust);
 
@@ -145,6 +144,14 @@
 
 .rsw-ce {
     color: var(--text);
+    white-space: normal;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
+.rsw-ce h1:first-child,
+.rsw-ce h2:first-child {
+    margin-top: 0;
 }
 
 .rsw-ce h1 {

@@ -22,7 +22,7 @@ export function ThreadItem({ thread }: Props) {
     }
 
     return (
-        <li className="bg-base py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
+        <li className="bg-baseColor py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
             <div className="flex-1">
                 <Link href={showThread(thread.id)}>
                     <h1 className="text-md font-bold text-yellow hover:text-yellow-500 ">{thread.title}</h1>

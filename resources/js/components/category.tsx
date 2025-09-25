@@ -21,7 +21,7 @@ export function Category({ category }: { category: Category }) {
                 <AccordionTrigger className="p-4 border-b rounded-none bg-crust hover:bg-crust/80">
                     <div className="text-lg">{category.title}</div>
                 </AccordionTrigger>
-                <AccordionContent className="gap-1 flex flex-col p-0 bg-base">
+                <AccordionContent className="gap-1 flex flex-col p-0 bg-baseColor">
                     {category.children.map((forum) => (
                         <ForumItem key={forum.id} forum={forum} />
                     ))}

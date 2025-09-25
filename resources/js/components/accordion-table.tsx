@@ -20,7 +20,7 @@ export function AccordionTable<TData, TValue>({ title, columns, data }: Props<TD
             <AccordionTrigger className="p-4">
                 <div className="text-lg ">{title}</div>
             </AccordionTrigger>
-            <AccordionContent className="gap-1 flex flex-col bg-base">
+            <AccordionContent className="gap-1 flex flex-col bg-baseColor">
                 <DataTable<TData, TValue> columns={columns} data={data} />
             </AccordionContent>
         </AccordionItem>
