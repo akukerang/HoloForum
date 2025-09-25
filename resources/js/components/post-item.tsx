@@ -4,7 +4,7 @@ import { Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
 import { formatDateTime } from "@/lib/utils";
-
+import { useInitials } from "@/hooks/use-initials";
 
 interface Props {
     postData: Post;
@@ -12,10 +12,10 @@ interface Props {
 
 
 export function PostItem({ postData }: Props) {
-
     const { post, processing, delete: destroy } = useForm();
     const page = usePage<SharedData>();
     const { auth } = page.props;
+    const getInitials = useInitials();
 
 
     const handleDelete = (id: number) => {
@@ -37,7 +37,15 @@ export function PostItem({ postData }: Props) {
         <li className="w-full flex items-stretch border-1 bg-base" id={`post-${postData.id.toString()}`}>
             <div className="flex flex-col py-4 text-center justify-center items-center gap-y-2 w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
-                <img src="https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg" alt={postData.user.name} className="h-16" />
+                {postData.user.avatar ? (
+                    <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
+                ) : (
+                    <div className="h-20 w-20 bg-blue text-base dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
+                        {getInitials(postData.user.name)}
+                    </div>
+                )}
+
+
                 <h1 className="font-bold">{postData.user.name}</h1>
             </div>
 

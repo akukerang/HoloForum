@@ -74,6 +74,20 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     <InputError className="mt-2" message={errors.email} />
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="avatar">Profile Picture</Label>
+
+                                    <Input type='file'
+                                        id="avatar"
+                                        className="mt-1 block w-full"
+                                        name="avatar"
+                                        accept='image/*'
+                                    />
+
+                                    <InputError className="mt-2" message={errors.avatar} />
+                                </div>
+
+
                                 {mustVerifyEmail && auth.user.email_verified_at === null && (
                                     <div>
                                         <p className="-mt-4 text-sm text-muted-foreground">
@@ -105,7 +119,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         leave="transition ease-in-out"
                                         leaveTo="opacity-0"
                                     >
-                                        <p className="text-sm text-neutral-600">Saved</p>
+                                        <p className="text-sm text-green">Saved</p>
                                     </Transition>
                                 </div>
                             </>
