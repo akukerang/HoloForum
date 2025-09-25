@@ -44,7 +44,8 @@ export function PostItem({ postData }: Props) {
                         {getInitials(postData.user.name)}
                     </div>
                 )}
-                <h1 className="font-bold text-sm px-2">{postData.user.name}</h1>
+                <h1 className={`font-bold text-sm px-2 ${postData.user.role === 'admin' ? 'text-red' : ''}`}>{postData.user.name}</h1>
+                <p className="text-xs text-subtext0">{postData.user.status}</p>
             </div>
 
             <div className="flex flex-col w-full md:w-7/8 border-l-1 px-4 py-4 justify-between">

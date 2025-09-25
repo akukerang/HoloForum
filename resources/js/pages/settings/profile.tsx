@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
+import { Textarea } from '@/components/ui/textarea';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,7 +31,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
+                    <HeadingSmall title="Profile information" description="Update your profile information and appearance." />
 
                     <Form
                         {...ProfileController.update.form()}
@@ -51,7 +52,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder="Full name"
+                                        placeholder="Username"
                                     />
 
                                     <InputError className="mt-2" message={errors.name} />
@@ -85,6 +86,32 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     />
 
                                     <InputError className="mt-2" message={errors.avatar} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="bio">Bio</Label>
+                                    <Textarea
+                                        id="bio"
+                                        className="mt-1 block w-full"
+                                        defaultValue={auth.user.bio}
+                                        name="bio"
+                                        placeholder="Tell us about yourself"
+                                    />
+
+                                    <InputError className="mt-2" message={errors.bio} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="status">Status</Label>
+                                    <Textarea
+                                        id="status"
+                                        className="mt-1 block w-full"
+                                        defaultValue={auth.user.status}
+                                        name="status"
+                                        placeholder="What's on your mind?"
+                                    />
+
+                                    <InputError className="mt-2" message={errors.status} />
                                 </div>
 
 

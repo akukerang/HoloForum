@@ -66,7 +66,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
                                             {mainNavItems.map((item) => (
-                                                (!item.requireAdmin || (item.requireAdmin && auth.user && auth.user.is_admin)) ? (
+                                                (!item.requireAdmin || (item.requireAdmin && auth.user && auth.user.role === 'admin')) ? (
                                                     <Link key={item.title} href={item.href} className="flex items-center space-x-2 font-medium">
                                                         {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                         <span>{item.title}</span>
@@ -104,7 +104,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
                                 {mainNavItems.map((item, index) => (
-                                    (!item.requireAdmin || (item.requireAdmin && auth.user && auth.user.is_admin)) ? (
+                                    (!item.requireAdmin || (item.requireAdmin && auth.user && auth.user.role === 'admin')) ? (
                                         <NavigationMenuItem key={index} className="relative flex h-full items-center">
                                             <Link
                                                 href={item.href}
