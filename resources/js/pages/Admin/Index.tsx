@@ -1,19 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
 import { createForum, createThread, editForum, editThread, removeForum, removeThread } from '@/routes/admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, SquarePen, Trash } from 'lucide-react';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
 import { Thread, Forum } from "@/types";
-
+import { AccordionTable } from '@/components/accordion-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,7 +19,6 @@ interface PageProps {
     forums: Forum[];
     threads: Thread[];
 }
-
 
 export default function Index({ forums, threads }: PageProps) {
 
@@ -47,8 +39,18 @@ export default function Index({ forums, threads }: PageProps) {
 
     const forumColumns: ColumnDef<Forum>[] = [
         {
-            accessorKey: 'id',
-            header: 'ID',
+            accessorKey: "id",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        ID
+                        <ArrowUpDown className=" h-4 w-4" />
+                    </Button>
+                )
+            },
         },
         {
             accessorKey: 'title',
@@ -75,7 +77,7 @@ export default function Index({ forums, threads }: PageProps) {
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Parent ID
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                        <ArrowUpDown className="h-4 w-4" />
                     </Button>
                 )
             },
@@ -102,8 +104,18 @@ export default function Index({ forums, threads }: PageProps) {
 
     const threadColumn: ColumnDef<Thread>[] = [
         {
-            accessorKey: 'id',
-            header: 'ID',
+            accessorKey: "id",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        ID
+                        <ArrowUpDown className="h-4 w-4" />
+                    </Button>
+                )
+            },
         },
         {
             accessorKey: 'title',
@@ -118,7 +130,7 @@ export default function Index({ forums, threads }: PageProps) {
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Forum ID
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                        <ArrowUpDown className="h-4 w-4" />
                     </Button>
                 )
             },
@@ -132,7 +144,7 @@ export default function Index({ forums, threads }: PageProps) {
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         User ID
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                        <ArrowUpDown className="h-4 w-4" />
                     </Button>
                 )
             },
@@ -171,26 +183,8 @@ export default function Index({ forums, threads }: PageProps) {
                         <Button variant="outline">Create Thread</Button>
                     </Link>
                 </div>
-                <Accordion type="single" collapsible className="w-full bg-base">
-                    <AccordionItem value='forum-list'>
-                        <AccordionTrigger className="p-4">
-                            <div className="text-lg ">Forums</div>
-                        </AccordionTrigger>
-                        <AccordionContent className="gap-1 flex flex-col">
-                            <DataTable columns={forumColumns} data={forums} />
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible className="w-full bg-base">
-                    <AccordionItem value='forum-list'>
-                        <AccordionTrigger className="p-4">
-                            <div className="text-lg ">Threads</div>
-                        </AccordionTrigger>
-                        <AccordionContent className="gap-1 flex flex-col">
-                            <DataTable columns={threadColumn} data={threads} />
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
+                <AccordionTable title="Forums" columns={forumColumns} data={forums} />
+                <AccordionTable title="Threads" columns={threadColumn} data={threads} />
             </div>
         </AppLayout>
     );

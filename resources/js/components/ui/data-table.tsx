@@ -1,12 +1,14 @@
+
 import {
     ColumnDef,
+    SortingState,
     flexRender,
     getCoreRowModel,
-    useReactTable,
+    getFilteredRowModel,
+    getPaginationRowModel,
     getSortedRowModel,
-    SortingState
+    useReactTable,
 } from "@tanstack/react-table"
-
 import {
     Table,
     TableBody,
@@ -16,6 +18,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import React from "react"
+import { DataTablePagination } from "./data-table-pagination"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -30,9 +33,11 @@ export function DataTable<TData, TValue>({
     const table = useReactTable({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
         },
@@ -40,6 +45,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="overflow-hidden rounded-md border">
+            <DataTablePagination table={table} />
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -82,6 +88,7 @@ export function DataTable<TData, TValue>({
                     )}
                 </TableBody>
             </Table>
+
         </div>
     )
 }
