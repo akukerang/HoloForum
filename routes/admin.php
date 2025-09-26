@@ -4,6 +4,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
+use App\Http\Middleware\Admin;
 use App\Models\Forum;
 use App\Models\Thread;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', Admin::class])->group(function () {
 
     # Index Page
     Route::get('admin', function () {
