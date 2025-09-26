@@ -50,8 +50,8 @@ export function ThreadList({ threads, forum_id }: Props) {
                                 <SelectContent>
                                     <SelectItem value="recent">Most Recent</SelectItem>
                                     <SelectItem value="replies">Replies</SelectItem>
-                                    <SelectItem value="latest">Latest</SelectItem>
                                     <SelectItem value="title">Title</SelectItem>
+                                    <SelectItem value="latest">Newest</SelectItem>
                                     <SelectItem value="oldest">Oldest</SelectItem>
                                 </SelectContent>
                             </Select>

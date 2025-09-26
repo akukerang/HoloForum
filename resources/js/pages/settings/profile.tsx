@@ -43,7 +43,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="name">Username</Label>
 
                                     <Input
                                         id="name"
@@ -51,7 +51,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         defaultValue={auth.user.name}
                                         name="name"
                                         required
-                                        autoComplete="name"
+                                        autoComplete="username"
                                         placeholder="Username"
                                     />
 

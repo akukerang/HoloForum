@@ -52,7 +52,7 @@ class ForumController extends Controller
      */
     public function show(Forum $forum, Request $request)
     {
-        $sort = $request->query('sort', 'latest');
+        $sort = $request->query('sort', 'recent');
 
         $query = $forum->threads()
             ->withCount('posts') # post count

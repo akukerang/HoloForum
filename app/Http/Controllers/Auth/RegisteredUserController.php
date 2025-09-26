@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|alpha_num:ascii|max:255',
+            'name' => 'required|string|alpha_num:ascii|max:32|unique:' . User::class,
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -83,7 +83,7 @@ class RegisteredUserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'alpha_num:ascii', 'max:255'],
+            'name' => ['required', 'string', 'alpha_num:ascii', 'max:32', Rule::unique(User::class)->ignore($user->id)],
             'email' => [
                 'required',
                 'string',
