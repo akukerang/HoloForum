@@ -20,7 +20,7 @@ export default function CreateThread({ forum }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Create a New Thread',
-            href: `/forum/${forum.id}/thread/create`,
+            href: `/forum/${forum.slug}/thread/create`,
         },
     ];
 

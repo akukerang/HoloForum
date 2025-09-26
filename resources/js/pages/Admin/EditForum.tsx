@@ -16,7 +16,7 @@ export default function EditForum({ forum }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Admin - Edit Forum',
-            href: `/admin/forum/${forum.id}/edit`,
+            href: `/admin/forum/${forum.slug}/edit`,
         },
     ];
 
@@ -28,7 +28,7 @@ export default function EditForum({ forum }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(updateForum.url(forum.id));
+        put(updateForum.url(forum.slug));
     }
 
     return (

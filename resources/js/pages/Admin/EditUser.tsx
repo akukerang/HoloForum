@@ -25,7 +25,7 @@ export default function EditUser({ user }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Admin - Edit User',
-            href: `/admin/user/${user.id}/edit`,
+            href: `/admin/user/${user.name}/edit`,
         },
     ];
 
@@ -37,7 +37,7 @@ export default function EditUser({ user }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(updateUser.url(user.id));
+        put(updateUser.url(user.name));
     }
 
     return (

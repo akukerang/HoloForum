@@ -25,9 +25,9 @@ export default function Index({ forums, threads, users }: PageProps) {
     const { processing, delete: destroy } = useForm();
 
 
-    const handleForumDelete = (id: number, name: string) => {
-        if (confirm(`Do you want to delete forum: ${id}. ${name}`)) {
-            destroy(removeForum.url({ forum: id }), {
+    const handleForumDelete = (slug: string, name: string) => {
+        if (confirm(`Do you want to delete forum: ${name}`)) {
+            destroy(removeForum.url({ forum: slug }), {
                 preserveScroll: true,
                 preserveState: true,
             })
@@ -43,9 +43,9 @@ export default function Index({ forums, threads, users }: PageProps) {
         }
     }
 
-    const handleUserDelete = (id: number, name: string) => {
-        if (confirm(`Do you want to delete user: ${id}. ${name}`)) {
-            destroy(removeUser.url({ user: id }), {
+    const handleUserDelete = (name: string) => {
+        if (confirm(`Do you want to delete user: ${name}`)) {
+            destroy(removeUser.url({ user: name }), {
                 preserveScroll: true,
                 preserveState: true,
             })
@@ -83,6 +83,10 @@ export default function Index({ forums, threads, users }: PageProps) {
             }
         },
         {
+            accessorKey: "slug",
+            header: 'Slug'
+        },
+        {
             accessorKey: "parent_forum_id",
             header: ({ column }) => {
                 return (
@@ -102,12 +106,12 @@ export default function Index({ forums, threads, users }: PageProps) {
             cell: ({ row }) => {
                 return (
                     <div className='flex gap-2'>
-                        <Link href={editForum(row.getValue('id'))}>
+                        <Link href={editForum(row.getValue('slug'))}>
                             <Button variant="outline"><SquarePen /></Button>
                         </Link>
                         <Button variant="destructive"
                             disabled={processing}
-                            onClick={() => handleForumDelete(row.getValue('id'), row.getValue('title'))}>
+                            onClick={() => handleForumDelete(row.getValue('slug'), row.getValue('title'))}>
                             <Trash />
                         </Button>
                     </div>
@@ -216,12 +220,12 @@ export default function Index({ forums, threads, users }: PageProps) {
             cell: ({ row }) => {
                 return (
                     <div className='flex gap-2'>
-                        <Link href={editUser(row.getValue('id'))}>
+                        <Link href={editUser(row.getValue('name'))}>
                             <Button variant="outline"><SquarePen /></Button>
                         </Link>
                         <Button variant="destructive"
                             disabled={processing}
-                            onClick={() => handleUserDelete(row.getValue('id'), row.getValue('name'))}
+                            onClick={() => handleUserDelete(row.getValue('name'))}
                         >
                             <Trash />
                         </Button>

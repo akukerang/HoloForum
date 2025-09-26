@@ -58,7 +58,7 @@ class ThreadController extends Controller
             'user_id' => $data['user_id'],
             'content' => $data['content'],
         ]);
-        return redirect()->route('forum.forumShow', $thread->forum_id);
+        return redirect()->route('forum.forumShow', $thread->forum);
     }
 
     /**
@@ -116,7 +116,7 @@ class ThreadController extends Controller
             'title' => 'required|string|max:64',
         ]);
         $thread->update($data);
-        return redirect()->route('forum.forumShow', $thread->forum_id);
+        return redirect()->route('forum.forumShow', $thread->forum);
     }
 
 
@@ -172,7 +172,7 @@ class ThreadController extends Controller
         $thread->posts()->delete(); // Delete associated posts first
         $thread->delete();
 
-        return redirect()->route('forum.forumShow', $thread->forum_id);
+        return redirect()->route('forum.forumShow', $thread->forum);
     }
 
     // Lock Thread

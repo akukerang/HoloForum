@@ -32,7 +32,7 @@ export default function ShowThread({ thread, posts, flash }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `${thread.title} - ${thread.forum.title}`,
-            href: `/thread/${thread.forum.id}`,
+            href: `/thread/${thread.id}`,
         },
     ];
 

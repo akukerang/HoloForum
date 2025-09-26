@@ -65,9 +65,9 @@ export function PostItem({ postData, locked }: Props) {
         })
     }
 
-    function handleBanUser(id: number) {
+    function handleBanUser(name: string) {
         if (confirm("As a moderator/admin, do you want to ban this user?")) {
-            put(toggleBanUser.url({ id }), {
+            put(toggleBanUser.url({ name }), {
                 preserveScroll: true,
                 onSuccess: () => {
                     router.reload({ only: ["posts"] });
@@ -126,7 +126,7 @@ export function PostItem({ postData, locked }: Props) {
                             }
                             {
                                 (auth.user.role === 'admin' || auth.user.role === 'moderator') && (postData.user.role !== 'admin' && postData.user.role !== 'moderator') ? (
-                                    <button onClick={() => handleBanUser(postData.user.id)} disabled={processing}>
+                                    <button onClick={() => handleBanUser(postData.user.name)} disabled={processing}>
                                         <Ban className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
                                     </button>
                                 ) : null

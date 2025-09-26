@@ -52,6 +52,7 @@ export interface Forum {
     parent_forum_id: number | null;
     threads_count: number;
     created_at: string;
+    slug: string;
 }
 
 export interface Thread {

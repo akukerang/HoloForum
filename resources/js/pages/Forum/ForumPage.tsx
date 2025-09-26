@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import { Forum, ThreadPaginate, type BreadcrumbItem } from "@/types";
+import { createThread } from '@/routes/thread';
 
 
 
@@ -16,7 +17,7 @@ export default function ShowForum({ forum, threads }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: forum.title,
-            href: `/forum/${forum.id}`,
+            href: `/forum/${forum.slug}`,
         },
     ];
 
@@ -30,12 +31,12 @@ export default function ShowForum({ forum, threads }: Props) {
                         <p className="text-sm">{forum.description}</p>
                     </div>
                     <div className="flex items-center h-full">
-                        <Link href={`/forum/${forum.id}/thread/create`}>
+                        <Link href={createThread({ forum: forum.slug }).url}>
                             <Button variant="default">New Thread</Button>
                         </Link>
                     </div>
                     <div>
-                        <ThreadList threads={threads} forum_id={forum.id} />
+                        <ThreadList threads={threads} slug={forum.slug} />
                     </div>
 
                 </div>
