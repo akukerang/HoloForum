@@ -161,6 +161,12 @@ class PostController extends Controller
         $post->delete();
     }
 
+    public function modDestroyPost(Post $post)
+    {
+        $post->delete();
+        return redirect()->back();
+    }
+
     public function toggleReaction(Post $post)
     {
         $user = auth()->user();

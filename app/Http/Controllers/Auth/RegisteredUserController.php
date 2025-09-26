@@ -99,4 +99,22 @@ class RegisteredUserController extends Controller
         $user->update($data);
         return redirect()->route('admin.index');
     }
+
+    public function modToggleBan(User $user): RedirectResponse
+    {
+        //! Can't ban admins or mods
+        if ($user->role === 'admin' || $user->role === 'moderator') {
+            return redirect()->back();
+        }
+
+        // Toggles Ban
+        if ($user->role === 'banned') {
+            $user->role = 'user';
+        } else {
+            $user->role = 'banned';
+        }
+
+        $user->save();
+        return redirect()->back();
+    }
 }

@@ -1,13 +1,13 @@
-import { editThread, removeThread, showThread } from "@/routes/thread";
+import { deleteThread, editThread, showThread } from "@/routes/thread";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { SharedData, Thread } from "@/types";
 import { SquarePen, TrashIcon } from "lucide-react";
 import { formatDate, formatDateTime } from "@/lib/utils";
+import { removeThread } from "@/routes/moderator";
 
 interface Props {
     thread: Thread;
 }
-
 
 export function ThreadItem({ thread }: Props) {
     const page = usePage<SharedData>();
@@ -17,6 +17,12 @@ export function ThreadItem({ thread }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm("Are you sure you want to delete this thread?")) {
+            destroy(deleteThread.url({ id }))
+        }
+    }
+
+    const handleModDelete = (id: number) => {
+        if (confirm("As a moderator/admin, do you want to delete this thread?")) {
             destroy(removeThread.url({ id }))
         }
     }
@@ -46,7 +52,14 @@ export function ThreadItem({ thread }: Props) {
                         </Link>
                     </>
 
-                ) : null}
+                ) :
+                    auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                        <button onClick={() => handleModDelete(thread.id)} disabled={processing}>
+                            <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
+                        </button>
+                    ) : null
+
+                }
             </div>
         </li>
     );

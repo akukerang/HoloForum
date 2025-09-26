@@ -13,7 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('post', [PostController::class, 'store'])->name('post.store');
     Route::put('post/{post}', [PostController::class, 'update'])->name('post.update');
-    Route::delete('post/{post}', [PostController::class, 'destroy'])->name('post.delete');
+    Route::delete('post/{post}', [PostController::class, 'destroy'])->name('post.deletePost');
     Route::post('post/{post}/reactions', [PostController::class, 'toggleReaction'])->name('post.toggleReaction');
     Route::post('post/{post}/reply', [PostController::class, 'storeReply'])->name('post.storeReply');
 });

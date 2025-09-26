@@ -1,10 +1,11 @@
-import { createReply, deleteMethod, edit, toggleReaction } from "@/routes/post";
+import { createReply, deletePost, edit, toggleReaction } from "@/routes/post";
 import { Link, router, useForm, usePage } from "@inertiajs/react";
 import { Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
 import { formatDateTime } from "@/lib/utils";
 import { useInitials } from "@/hooks/use-initials";
+import { removePost } from "@/routes/moderator";
 
 interface Props {
     postData: Post;
@@ -17,10 +18,16 @@ export function PostItem({ postData }: Props) {
     const { auth } = page.props;
     const getInitials = useInitials();
 
+    const handleModDelete = (id: number) => {
+        if (confirm("As a moderator/admin, do you want to delete this post?")) {
+            destroy(removePost.url({ id }))
+        }
+    }
 
     const handleDelete = (id: number) => {
         if (confirm("Do you want to delete this post?")) {
-            destroy(deleteMethod.url({ id }))
+            destroy(deletePost.url({ id }), {
+            })
         }
     }
 
@@ -44,7 +51,9 @@ export function PostItem({ postData }: Props) {
                         {getInitials(postData.user.name)}
                     </div>
                 )}
-                <h1 className={`font-bold text-sm px-2 ${postData.user.role === 'admin' ? 'text-red' : ''}`}>{postData.user.name}</h1>
+                <h1 className={`font-bold text-sm px-2 ${postData.user.role === 'admin' ? 'text-red' :
+                    postData.user.role === 'moderator' ? 'text-green' : 'text-text'
+                    }`}>{postData.user.name}</h1>
                 <p className="text-xs text-subtext0">{postData.user.status}</p>
             </div>
 
@@ -57,7 +66,8 @@ export function PostItem({ postData }: Props) {
                             {postData.created_at !== postData.updated_at ? <span className="italic"> (edited)</span> : null}
                         </p>
                         <div className="flex flex-row gap-x-3 align-center justify-center">
-                            {auth.user && auth.user.id === postData.user.id && (
+
+                            {auth.user && auth.user.id === postData.user.id ? (
                                 <>
                                     <Link href={edit({ thread: postData.thread_id, post: postData.id })}>
                                         <SquarePen className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
@@ -69,7 +79,14 @@ export function PostItem({ postData }: Props) {
                                     </button>
 
                                 </>
-                            )}
+                            ) :
+                                auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                                    <button onClick={() => handleModDelete(postData.id)} disabled={processing}>
+                                        <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
+                                    </button>
+                                ) : null
+
+                            }
                             <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
                                 <Reply className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
                             </Link>

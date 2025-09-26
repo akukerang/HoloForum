@@ -153,6 +153,13 @@ class ThreadController extends Controller
         return redirect()->route('admin.index');
     }
 
+    public function modDestroyThread(Thread $thread)
+    {
+        $thread->posts()->delete();
+        $thread->delete();
+        return redirect()->back();
+    }
+
     public function destroy(Thread $thread)
     {
         $user = auth()->user();
@@ -166,5 +173,18 @@ class ThreadController extends Controller
         $thread->delete();
 
         return redirect()->route('forum.forumShow', $thread->forum_id);
+    }
+
+    // Lock Thread
+    public function modToggleLock(Thread $thread)
+    {
+        $thread->is_locked = !$thread->is_locked;
+        if ($thread->is_locked) {
+            $thread->is_locked = false;
+        } else {
+            $thread->is_locked = true;
+        }
+        $thread->save();
+        return redirect()->back();
     }
 }
