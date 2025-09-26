@@ -1,11 +1,10 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { createForum, createThread, editForum, editThread, removeForum, removeThread } from '@/routes/admin';
-import { type BreadcrumbItem } from '@/types';
+import { createForum, createThread, editForum, editThread, removeForum, removeThread, removeUser } from '@/routes/admin';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, SquarePen, Trash } from 'lucide-react';
-import { Thread, Forum } from "@/types";
+import { Thread, Forum, User, BreadcrumbItem } from "@/types";
 import { AccordionTable } from '@/components/accordion-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -18,9 +17,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface PageProps {
     forums: Forum[];
     threads: Thread[];
+    users: User[];
 }
 
-export default function Index({ forums, threads }: PageProps) {
+export default function Index({ forums, threads, users }: PageProps) {
 
     const { processing, delete: destroy } = useForm();
 
@@ -37,6 +37,11 @@ export default function Index({ forums, threads }: PageProps) {
         }
     }
 
+    const handleUserDelete = (id: number, name: string) => {
+        if (confirm(`Do you want to delete user: ${id}. ${name}`)) {
+            destroy(removeUser.url({ user: id }))
+        }
+    }
     const forumColumns: ColumnDef<Forum>[] = [
         {
             accessorKey: "id",
@@ -169,6 +174,54 @@ export default function Index({ forums, threads }: PageProps) {
             }
         },
     ]
+    const userColumn: ColumnDef<User>[] = [
+        {
+            accessorKey: "id",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        ID
+                        <ArrowUpDown className="h-4 w-4" />
+                    </Button>
+                )
+            },
+        },
+        {
+            accessorKey: 'name',
+            header: 'name',
+        },
+        {
+            accessorKey: 'email',
+            header: 'email',
+        },
+        {
+            accessorKey: 'role',
+            header: 'role',
+        },
+        {
+            accessorKey: 'actions',
+            header: 'Actions',
+            cell: ({ row }) => {
+                return (
+                    <div className='flex gap-2'>
+                        {/* <Link href={editThread(row.getValue('id'))}> */}
+                        <Button variant="outline"><SquarePen /></Button>
+                        {/* </Link> */}
+                        <Button variant="destructive"
+                            disabled={processing}
+                            onClick={() => handleUserDelete(row.getValue('id'), row.getValue('name'))}
+                        >
+                            <Trash />
+                        </Button>
+                    </div>
+                )
+            }
+        },
+    ]
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -185,6 +238,7 @@ export default function Index({ forums, threads }: PageProps) {
                 </div>
                 <AccordionTable title="Forums" columns={forumColumns} data={forums} />
                 <AccordionTable title="Threads" columns={threadColumn} data={threads} />
+                <AccordionTable title="Users" columns={userColumn} data={users} />
             </div>
         </AppLayout>
     );

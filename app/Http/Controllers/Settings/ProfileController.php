@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -71,6 +72,9 @@ class ProfileController extends Controller
             $user->avatar = null;
             $user->save();
         }
+
+        $user->threads()->update(['user_id' => User::DELETED_USER_ID]);
+        $user->posts()->update(['user_id' => User::DELETED_USER_ID]);
 
         Auth::logout();
 

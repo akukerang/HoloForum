@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 class RegisteredUserController extends Controller
 {
@@ -47,5 +49,25 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect()->intended(route('home', absolute: false));
+    }
+
+    # Admin Functions
+
+    public function destroy(User $user): RedirectResponse
+    {
+
+        // Deletes avatar if exists
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+            $user->avatar = null;
+            $user->save();
+        }
+
+        $user->threads()->update(['user_id' => User::DELETED_USER_ID]);
+        $user->posts()->update(['user_id' => User::DELETED_USER_ID]);
+
+        $user->delete();
+
+        return redirect()->route('admin.index');
     }
 }
