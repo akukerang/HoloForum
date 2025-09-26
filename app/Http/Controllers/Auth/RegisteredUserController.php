@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Storage;
@@ -68,6 +69,34 @@ class RegisteredUserController extends Controller
 
         $user->delete();
 
+        return redirect()->route('admin.index');
+    }
+
+
+    public function edit(User $user): Response
+    {
+        return Inertia::render('Admin/EditUser', [
+            'user' => $user
+        ]);
+    }
+
+    public function update(Request $request, User $user): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'alpha_num:ascii', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                Rule::unique(User::class)->ignore($user->id),
+            ],
+            'role' => 'required|in:user,admin,moderator,banned',
+        ]);
+        $user->role = $data['role']; // Not sure about having role in the fillable array, so doing this for now
+        $user->save();
+        $user->update($data);
         return redirect()->route('admin.index');
     }
 }

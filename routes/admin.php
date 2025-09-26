@@ -42,9 +42,9 @@ Route::middleware(['auth', 'verified', Admin::class])->group(function () {
     Route::delete('admin/thread/{thread}', [ThreadController::class, 'adminDestroy'])->name('admin.removeThread');
 
     // # User Page
-    // Route::get('admin/user/{user}/edit', '')->name('admin.editUser');
+    Route::get('admin/user/{user}/edit', [RegisteredUserController::class, 'edit'])->name('admin.editUser');
 
     // # User Actions
     Route::delete('admin/user/{user}', [RegisteredUserController::class, 'destroy'])->name('admin.removeUser');
-    // Route::put('admin/user/{user}', '')->name('admin.updateUser');
+    Route::put('admin/user/{user}', [RegisteredUserController::class, 'update'])->name('admin.updateUser');
 });

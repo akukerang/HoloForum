@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { createForum, createThread, editForum, editThread, removeForum, removeThread, removeUser } from '@/routes/admin';
+import { createForum, createThread, editForum, editThread, editUser, removeForum, removeThread, removeUser } from '@/routes/admin';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, SquarePen, Trash } from 'lucide-react';
@@ -207,9 +207,9 @@ export default function Index({ forums, threads, users }: PageProps) {
             cell: ({ row }) => {
                 return (
                     <div className='flex gap-2'>
-                        {/* <Link href={editThread(row.getValue('id'))}> */}
-                        <Button variant="outline"><SquarePen /></Button>
-                        {/* </Link> */}
+                        <Link href={editUser(row.getValue('id'))}>
+                            <Button variant="outline"><SquarePen /></Button>
+                        </Link>
                         <Button variant="destructive"
                             disabled={processing}
                             onClick={() => handleUserDelete(row.getValue('id'), row.getValue('name'))}
