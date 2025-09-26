@@ -13,8 +13,8 @@ interface Props {
 function LatestPost({ post }: { post: Post }) {
     const getInitials = useInitials();
     return (
-        <div className="flex px-4 items-center border-l-2 w-2/10 overflow-hidden">
-            <div className="w-1/3">
+        <>
+            <div className="max-w-1/3">
                 {post.user.avatar ? (
                     <img src={`${window.location.origin}/storage/${post.user.avatar}`} alt={post.user.name} className="h-10 w-10" />
                 ) : (
@@ -24,12 +24,13 @@ function LatestPost({ post }: { post: Post }) {
                 )}
             </div>
 
-            <div className="ml-2 w-2/3 flex flex-col">
+            <div className="ml-2 max-w-2/3 flex flex-col">
                 <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap">{post.user.name}</p>
                 <p className="text-xs text-subtext0">{formatDateTime(post.created_at)}</p>
             </div>
 
-        </div>
+        </>
+
     );
 }
 
@@ -78,7 +79,7 @@ export function ThreadItem({ thread }: Props) {
 
     return (
         <li className="bg-baseColor pl-4 w-full flex border-b-2" id={thread.id.toString()}>
-            <div className="flex-1 w-4/10 p-4 border-r-2 overflow-hidden">
+            <div className="flex-1 w-5/10 p-4 overflow-hidden">
                 <Link href={showThread(thread.id)}>
                     <h1 className="flex text-md font-bold text-yellow hover:text-yellow-500 items-center">
                         {thread.locked ? <Lock className="h-[1em] w-[1em] inline-block mr-1" /> : null}
@@ -87,16 +88,16 @@ export function ThreadItem({ thread }: Props) {
                     <p className="text-sm text-text">By {thread.user.name}, {formatDate(thread.created_at)}</p>
                 </Link>
             </div>
-            <div className="text-center w-1/10 p-4 overflow-hidden">
+            <div className="hidden md:block text-center border-l-2 w-1/10 p-4 overflow-hidden">
                 <h1 className="text-base font-bold">{thread.posts_count}</h1>
                 <p className="text-sm text-subtext1">replies</p>
             </div>
-            {thread.latest_post ? <LatestPost post={thread.latest_post} /> :
-                <div className="flex px-4 items-center border-l-2 w-2/10">
-                    <p className="text-sm text-subtext0 italic">No posts yet</p>
-                </div>
-            }
 
+            <div className="hidden lg:flex px-5 items-center justify-items-start border-l-2 w-1/4 overflow-hidden">
+                {thread.latest_post ? <LatestPost post={thread.latest_post} /> :
+                    <p className="text-sm text-subtext0 italic">No posts yet</p>
+                }
+            </div>
             <div className="flex w-1/10 gap-3 text-center align-middle justify-center pr-8">
                 {auth.user && auth.user.id === thread.user.id ? (
                     <>

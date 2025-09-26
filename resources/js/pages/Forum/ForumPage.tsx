@@ -24,8 +24,8 @@ export default function ShowForum({ forum, threads }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={forum.title} />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
-                <div className='w-3/4 flex flex-col gap-4'>
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl lg:p-4 items-center">
+                <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col gap-4'>
                     <div className='bg-baseColor p-6 flex flex-col gap-y-2 rounded-xl shadow-md'>
                         <h1 className="text-2xl font-bold text-blue">{forum.title}</h1>
                         <p className="text-sm">{forum.description}</p>
