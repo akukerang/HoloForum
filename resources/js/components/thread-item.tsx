@@ -40,13 +40,12 @@ export function ThreadItem({ thread }: Props) {
     }
 
     return (
-        <li className="bg-baseColor py-4 px-8 w-full flex gap-x-8 items-center border-b" id={thread.id.toString()}>
+        <li className="bg-baseColor py-4 px-8 w-full flex gap-x-10 items-center border-b" id={thread.id.toString()}>
             <div className="flex-1">
                 <Link href={showThread(thread.id)}>
                     <h1 className="flex text-md font-bold text-yellow hover:text-yellow-500 items-center">
                         {thread.locked ? <Lock className="h-[1em] w-[1em] inline-block mr-1" /> : null}
                         {thread.title}
-
                     </h1>
                     <p className="text-sm text-text">By {thread.user.name}, {formatDate(thread.created_at)}</p>
                     <p className="text-xs text-subtext0">{thread.posts_max_created_at ? `Last updated: ${formatDateTime(thread.posts_max_created_at)}` : "No replies"}</p>

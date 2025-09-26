@@ -1,33 +1,57 @@
 import { createReply, deletePost, edit, toggleReaction } from "@/routes/post";
 import { Link, router, useForm, usePage } from "@inertiajs/react";
-import { Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
+import { Ban, Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
-import { formatDateTime } from "@/lib/utils";
+import { capitalize, formatDateTime } from "@/lib/utils";
 import { useInitials } from "@/hooks/use-initials";
-import { removePost } from "@/routes/moderator";
+import { removePost, toggleBanUser } from "@/routes/moderator";
 
 interface Props {
     postData: Post;
     locked: boolean;
 }
 
+function rolesSwitch(param: string) {
+    switch (param) {
+        case 'admin':
+            return 'text-red';
+        case 'moderator':
+            return 'text-green';
+        case 'banned':
+            return 'text-gray-500 line-through';
+        case 'user':
+            return 'text-yellow';
+        default:
+            return 'text-text';
+    }
+}
+
 
 export function PostItem({ postData, locked }: Props) {
-    const { post, processing, delete: destroy } = useForm();
+    const { post, processing, delete: destroy, put } = useForm();
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
 
     const handleModDelete = (id: number) => {
         if (confirm("As a moderator/admin, do you want to delete this post?")) {
-            destroy(removePost.url({ id }))
+            destroy(removePost.url({ id }), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    router.reload({ only: ["posts"] });
+                }
+            })
         }
     }
 
     const handleDelete = (id: number) => {
         if (confirm("Do you want to delete this post?")) {
             destroy(deletePost.url({ id }), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    router.reload({ only: ["posts"] });
+                }
             })
         }
     }
@@ -41,9 +65,20 @@ export function PostItem({ postData, locked }: Props) {
         })
     }
 
+    function handleBanUser(id: number) {
+        if (confirm("As a moderator/admin, do you want to ban this user?")) {
+            put(toggleBanUser.url({ id }), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    router.reload({ only: ["posts"] });
+                }
+            })
+        }
+    }
+
     return (
         <li className="w-full flex items-stretch border-1 bg-baseColor" id={`post-${postData.id.toString()}`}>
-            <div className="hidden md:flex md:flex-col py-4 mt-4 text-center justify-top items-center gap-y-2 w-1/8">
+            <div className="hidden md:flex md:flex-col py-4 mt-4 text-center justify-top items-center w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
                 {postData.user.avatar ? (
                     <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
@@ -52,9 +87,10 @@ export function PostItem({ postData, locked }: Props) {
                         {getInitials(postData.user.name)}
                     </div>
                 )}
-                <h1 className={`font-bold text-sm px-2 ${postData.user.role === 'admin' ? 'text-red' :
-                    postData.user.role === 'moderator' ? 'text-green' : 'text-text'
-                    }`}>{postData.user.name}</h1>
+                <h1 className="mt-2 font-bold text-sm px-2">{postData.user.name}
+                    {auth.user && auth.user.id === postData.user.id ? <span className="text-xs italic"> (You)</span> : null}
+                </h1>
+                <h1 className={`font-bold text-sm px-2 ${rolesSwitch(postData.user.role)}`}>{capitalize(postData.user.role)}</h1>
                 <p className="text-xs text-subtext0">{postData.user.status}</p>
             </div>
 
@@ -81,12 +117,19 @@ export function PostItem({ postData, locked }: Props) {
 
                                 </>
                             ) :
-                                auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                                (auth.user.role === 'admin' || auth.user.role === 'moderator') ? (
                                     <button onClick={() => handleModDelete(postData.id)} disabled={processing}>
                                         <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
                                     </button>
                                 ) : null
 
+                            }
+                            {
+                                (auth.user.role === 'admin' || auth.user.role === 'moderator') && (postData.user.role !== 'admin' && postData.user.role !== 'moderator') ? (
+                                    <button onClick={() => handleBanUser(postData.user.id)} disabled={processing}>
+                                        <Ban className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
+                                    </button>
+                                ) : null
                             }
                             {!locked ? (
                                 <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
