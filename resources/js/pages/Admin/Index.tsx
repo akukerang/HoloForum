@@ -27,19 +27,28 @@ export default function Index({ forums, threads, users }: PageProps) {
 
     const handleForumDelete = (id: number, name: string) => {
         if (confirm(`Do you want to delete forum: ${id}. ${name}`)) {
-            destroy(removeForum.url({ forum: id }))
+            destroy(removeForum.url({ forum: id }), {
+                preserveScroll: true,
+                preserveState: true,
+            })
         }
     }
 
     const handleThreadDelete = (id: number, title: string) => {
         if (confirm(`Do you want to delete thread: ${id}. ${title}`)) {
-            destroy(removeThread.url({ thread: id }))
+            destroy(removeThread.url({ thread: id }), {
+                preserveScroll: true,
+                preserveState: true,
+            })
         }
     }
 
     const handleUserDelete = (id: number, name: string) => {
         if (confirm(`Do you want to delete user: ${id}. ${name}`)) {
-            destroy(removeUser.url({ user: id }))
+            destroy(removeUser.url({ user: id }), {
+                preserveScroll: true,
+                preserveState: true,
+            })
         }
     }
     const forumColumns: ColumnDef<Forum>[] = [

@@ -17,24 +17,36 @@ export function ThreadItem({ thread }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm("Are you sure you want to delete this thread?")) {
-            destroy(deleteThread.url({ id }))
+            destroy(deleteThread.url({ id }), {
+                preserveScroll: true,
+                preserveState: true,
+            })
         }
     }
 
     const handleModDelete = (id: number) => {
         if (confirm("As a moderator/admin, do you want to delete this thread?")) {
-            destroy(removeThread.url({ id }))
+            destroy(removeThread.url({ id }), {
+                preserveScroll: true,
+                preserveState: true,
+            })
         }
     }
 
     const handleLock = (id: number) => {
         if (thread.locked) {
             if (confirm("As a moderator/admin, do you want to unlock this thread?")) {
-                put(toggleLockThread.url({ id }))
+                put(toggleLockThread.url({ id }), {
+                    preserveScroll: true,
+                    preserveState: true,
+                })
             }
         } else {
             if (confirm("As a moderator/admin, do you want to lock this thread?")) {
-                put(toggleLockThread.url({ id }))
+                put(toggleLockThread.url({ id }), {
+                    preserveScroll: true,
+                    preserveState: true,
+                })
             }
         }
     }
