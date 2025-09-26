@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\ThreadController;
+use App\Http\Middleware\NotBanned;
 use Illuminate\Support\Facades\Route;
 
 Route::get('thread/{thread}', [ThreadController::class, 'show'])->name('thread.showThread');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', NotBanned::class])->group(function () {
     Route::get('forum/{forum}/thread/create', [ThreadController::class, 'create'])->name('thread.createThread');
     Route::get('thread/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.editThread');
     Route::post('thread', [ThreadController::class, 'store'])->name('thread.storeThread');

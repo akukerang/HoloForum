@@ -9,10 +9,11 @@ import { removePost } from "@/routes/moderator";
 
 interface Props {
     postData: Post;
+    locked: boolean;
 }
 
 
-export function PostItem({ postData }: Props) {
+export function PostItem({ postData, locked }: Props) {
     const { post, processing, delete: destroy } = useForm();
     const page = usePage<SharedData>();
     const { auth } = page.props;
@@ -87,9 +88,11 @@ export function PostItem({ postData }: Props) {
                                 ) : null
 
                             }
-                            <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
-                                <Reply className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
-                            </Link>
+                            {!locked ? (
+                                <Link href={createReply({ thread: postData.thread_id, post: postData.id }).url}>
+                                    <Reply className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
+                                </Link>) : null
+                            }
 
                         </div>
                     </div>

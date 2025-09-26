@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\NotBanned;
 
 Route::get('thread/{thread}/{post}/', [PostController::class, 'show'])->name('post.showPost');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', NotBanned::class])->group(function () {
 
     Route::get('reply/{thread}', [PostController::class, 'create'])->name('post.createPost');
     Route::get('reply/{thread}/{post}', [PostController::class, 'createReply'])->name('post.createReply');

@@ -82,6 +82,13 @@ class PostController extends Controller
             'thread_id' => 'required|numeric|exists:threads,id',
             'user_id'   => 'required|numeric|exists:users,id',
         ]);
+
+        // Check locked
+        $thread = Thread::findOrFail($data['thread_id']);
+        if ($thread->locked) {
+            abort(403, 'Thread is locked.');
+        }
+
         $post = Post::create($data);
 
         // Redirects to Last Page
@@ -111,6 +118,11 @@ class PostController extends Controller
             'parent_id' => 'required|numeric|exists:posts,id'
         ]);
 
+        // Check locked
+        $thread = Thread::findOrFail($data['thread_id']);
+        if ($thread->locked) {
+            abort(403, 'Thread is locked.');
+        }
 
 
         $post = Post::create($data);
@@ -129,16 +141,18 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+
         $data = $request->validate([
             'content' => 'required|string',
         ]);
-        if (auth()->id() !== $post->user_id) { // check if user editing, is the user's post
+        if (auth()->id() !== $post->user_id || $post->thread->locked) { // check if user editing, is the user's post
             abort(403, 'Unauthorized action.');
         }
+
         $post->update($data);
+        $thread = $post->thread->posts()->orderBy('created_at', 'ASC')->get();
 
         // Goes to the page post is on
-        $thread = $post->thread->posts()->orderBy('created_at', 'ASC')->get();
         $perPage = 10;
         $post_index = $thread->pluck('id')->search($post->id);
         $page = (int) ceil(($post_index + 1) / $perPage);
@@ -155,7 +169,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if (auth()->id() !== $post->user_id) { // check if user deleting, is the user's post
+        if (auth()->id() !== $post->user_id  || $post->thread->locked) { // check if user deleting, is the user's post
             abort(403, 'Unauthorized action.');
         }
         $post->delete();

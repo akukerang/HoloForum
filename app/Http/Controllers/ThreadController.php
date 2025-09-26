@@ -178,11 +178,10 @@ class ThreadController extends Controller
     // Lock Thread
     public function modToggleLock(Thread $thread)
     {
-        $thread->is_locked = !$thread->is_locked;
-        if ($thread->is_locked) {
-            $thread->is_locked = false;
+        if ($thread->locked) {
+            $thread->locked = false;
         } else {
-            $thread->is_locked = true;
+            $thread->locked = true;
         }
         $thread->save();
         return redirect()->back();

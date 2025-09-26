@@ -14,9 +14,10 @@ import Empty from "./empty";
 interface Props {
     posts: PostPaginate;
     thread_id: number;
+    locked: boolean;
 }
 
-export function PostList({ posts, thread_id }: Props) {
+export function PostList({ posts, thread_id, locked }: Props) {
 
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
@@ -57,7 +58,7 @@ export function PostList({ posts, thread_id }: Props) {
                         </div>
                     </div>
                     {posts.data.map((post: Post) => (
-                        <PostItem key={post.id} postData={post} />
+                        <PostItem key={post.id} postData={post} locked={locked} />
                     ))}
 
                 </>

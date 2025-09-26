@@ -7,6 +7,7 @@ import { PostPaginate, Thread } from "@/types";
 import { createPost } from "@/routes/post";
 import { useEffect } from "react";
 import { formatDate } from "@/lib/utils";
+import { Lock } from "lucide-react";
 
 interface Props {
     thread: Thread;
@@ -41,17 +42,24 @@ export default function ShowThread({ thread, posts, flash }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
                 <div className='w-full flex flex-col gap-3'>
                     <div className='bg-baseColor p-6 flex flex-col gap-y-2 rounded-xl shadow-md'>
-                        <h1 className="text-2xl font-bold text-blue">{thread.title}</h1>
+                        <h1 className="flex text-2xl font-bold text-blue items-center">
+                            {thread.locked ? <Lock className="h-[1em] w-[1em] inline-block mr-1.5 text-yellow" /> : null}
+                            {thread.title}
+                        </h1>
                         <p className="text-sm ">By {thread.user.name}</p>
                         <p className="text-sm text-subtext1">{formatDate(thread.created_at)} in {thread.forum.title}</p>
                     </div>
                     <div className="flex items-center h-full">
-                        <Link href={createPost(thread.id).url}>
-                            <Button variant="default">Reply</Button>
-                        </Link>
+                        {!thread.locked ? (
+                            <Link href={createPost(thread.id).url}>
+                                <Button variant="default">Reply</Button>
+                            </Link>
+                        ) : (
+                            <p className="text-sm text-red-500 italic">This thread is locked. You cannot reply.</p>
+                        )}
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <PostList posts={posts} thread_id={thread.id} />
+                        <PostList posts={posts} thread_id={thread.id} locked={thread.locked} />
                     </div>
                 </div>
             </div>

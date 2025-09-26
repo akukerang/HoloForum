@@ -59,6 +59,7 @@ export interface Thread {
     title: string;
     user: User;
     forum: Forum;
+    locked: boolean;
     posts_count: number | null;
     posts_max_created_at?: string | null;
     created_at: string;
