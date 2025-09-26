@@ -1,13 +1,38 @@
 import { deleteThread, editThread, showThread } from "@/routes/thread";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import { SharedData, Thread } from "@/types";
+import { SharedData, Thread, Post } from "@/types";
 import { SquarePen, TrashIcon, Lock, LockOpen } from "lucide-react";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { removeThread, toggleLockThread } from "@/routes/moderator";
+import { useInitials } from "@/hooks/use-initials";
 
 interface Props {
     thread: Thread;
 }
+
+function LatestPost({ post }: { post: Post }) {
+    const getInitials = useInitials();
+    return (
+        <div className="flex px-4 items-center border-l-2 w-2/10 overflow-hidden">
+            <div className="w-1/3">
+                {post.user.avatar ? (
+                    <img src={`${window.location.origin}/storage/${post.user.avatar}`} alt={post.user.name} className="h-10 w-10" />
+                ) : (
+                    <div className="h-10 w-10 bg-blue text-baseColor dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
+                        {getInitials(post.user.name)}
+                    </div>
+                )}
+            </div>
+
+            <div className="ml-2 w-2/3 flex flex-col">
+                <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap">{post.user.name}</p>
+                <p className="text-xs text-subtext0">{formatDateTime(post.created_at)}</p>
+            </div>
+
+        </div>
+    );
+}
+
 
 export function ThreadItem({ thread }: Props) {
     const page = usePage<SharedData>();
@@ -52,23 +77,27 @@ export function ThreadItem({ thread }: Props) {
     }
 
     return (
-        <li className="bg-baseColor py-4 px-8 w-full flex gap-x-10 items-center border-b" id={thread.id.toString()}>
-            <div className="flex-1">
+        <li className="bg-baseColor pl-4 w-full flex border-b-2" id={thread.id.toString()}>
+            <div className="flex-1 w-4/10 p-4 border-r-2 overflow-hidden">
                 <Link href={showThread(thread.id)}>
                     <h1 className="flex text-md font-bold text-yellow hover:text-yellow-500 items-center">
                         {thread.locked ? <Lock className="h-[1em] w-[1em] inline-block mr-1" /> : null}
                         {thread.title}
                     </h1>
                     <p className="text-sm text-text">By {thread.user.name}, {formatDate(thread.created_at)}</p>
-                    <p className="text-xs text-subtext0">{thread.posts_max_created_at ? `Last updated: ${formatDateTime(thread.posts_max_created_at)}` : "No replies"}</p>
-
                 </Link>
             </div>
-            <div className="text-center">
-                <h1 className="text-lg font-bold">{thread.posts_count}</h1>
+            <div className="text-center w-1/10 p-4 overflow-hidden">
+                <h1 className="text-base font-bold">{thread.posts_count}</h1>
                 <p className="text-sm text-subtext1">replies</p>
             </div>
-            <div className="w-8 flex gap-3 text-center align-middle justify-center">
+            {thread.latest_post ? <LatestPost post={thread.latest_post} /> :
+                <div className="flex px-4 items-center border-l-2 w-2/10">
+                    <p className="text-sm text-subtext0 italic">No posts yet</p>
+                </div>
+            }
+
+            <div className="flex w-1/10 gap-3 text-center align-middle justify-center pr-8">
                 {auth.user && auth.user.id === thread.user.id ? (
                     <>
                         <button className="flex items-center" onClick={() => handleDelete(thread.id)} disabled={processing}>

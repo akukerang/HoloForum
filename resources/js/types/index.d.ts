@@ -63,6 +63,7 @@ export interface Thread {
     locked: boolean;
     posts_count: number | null;
     posts_max_created_at?: string | null;
+    latest_post?: Post | null;
     created_at: string;
 }
 

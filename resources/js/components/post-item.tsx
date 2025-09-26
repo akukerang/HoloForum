@@ -87,9 +87,7 @@ export function PostItem({ postData, locked }: Props) {
                         {getInitials(postData.user.name)}
                     </div>
                 )}
-                <h1 className="mt-2 font-bold text-sm px-2">{postData.user.name}
-                    {auth.user && auth.user.id === postData.user.id ? <span className="text-xs italic"> (You)</span> : null}
-                </h1>
+                <h1 className="mt-2 font-bold text-sm px-2 overflow-hidden text-ellipsis whitespace-nowrap">{postData.user.name}</h1>
                 <h1 className={`font-bold text-sm px-2 ${rolesSwitch(postData.user.role)}`}>{capitalize(postData.user.role)}</h1>
                 <p className="text-xs text-subtext0">{postData.user.status}</p>
             </div>
