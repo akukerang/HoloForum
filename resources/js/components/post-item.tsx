@@ -139,7 +139,7 @@ export function PostItem({ postData, locked }: Props) {
                                             </DropdownMenuItem>
                                         </>
                                     ) :
-                                        (auth.user.role === 'admin' || auth.user.role === 'moderator') ? (
+                                        (auth.user && (auth.user.role === 'admin' || auth.user.role === 'moderator')) ? (
                                             <DropdownMenuItem>
                                                 <button className="flex items-center" onClick={() => handleModDelete(postData.id)} disabled={processing}>
                                                     <TrashIcon className="mr-2" /> Remove Post
@@ -149,7 +149,7 @@ export function PostItem({ postData, locked }: Props) {
 
                                     }
                                     {
-                                        (auth.user.role === 'admin' || auth.user.role === 'moderator') && (postData.user.role !== 'admin' && postData.user.role !== 'moderator') ? (
+                                        auth.user && (auth.user.role === 'admin' || auth.user.role === 'moderator') && (postData.user.role !== 'admin' && postData.user.role !== 'moderator') ? (
                                             <DropdownMenuItem>
                                                 <button className="flex items-center" onClick={() => handleBanUser(postData.user.name)} disabled={processing}>
                                                     <Ban className="mr-2" /> Ban User

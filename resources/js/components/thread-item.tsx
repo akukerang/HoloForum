@@ -131,16 +131,15 @@ export function ThreadItem({ thread }: Props) {
                                     </Link>
                                 </DropdownMenuItem>
                             </>
-                        ) :
-                            auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
-                                <DropdownMenuItem>
-                                    <button className="flex items-center" onClick={() => handleModDelete(thread.id)} disabled={processing}>
-                                        <TrashIcon className="mr-2" /> Remove Thread
-                                    </button>
-                                </DropdownMenuItem>
-                            ) : null
+                        ) : auth.user && (auth.user.role === 'admin' || auth.user.role === 'moderator') ? (
+                            <DropdownMenuItem>
+                                <button className="flex items-center" onClick={() => handleModDelete(thread.id)} disabled={processing}>
+                                    <TrashIcon className="mr-2" /> Remove Thread
+                                </button>
+                            </DropdownMenuItem>
+                        ) : null
                         }
-                        {auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                        {auth.user && (auth.user.role === 'admin' || auth.user.role === 'moderator') ? (
                             <DropdownMenuItem>
                                 <button className="flex items-center" onClick={() => handleLock(thread.id)} disabled={processing}>
                                     {thread.locked ?
