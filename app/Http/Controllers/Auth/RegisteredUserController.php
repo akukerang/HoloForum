@@ -83,7 +83,7 @@ class RegisteredUserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'alpha_num:ascii', 'max:32', Rule::unique(User::class)->ignore($user->id)],
+            'name' => ['required', 'string', 'alpha_num:ascii', 'max:24', Rule::unique(User::class)->ignore($user->id)],
             'email' => [
                 'required',
                 'string',
