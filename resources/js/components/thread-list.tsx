@@ -14,9 +14,10 @@ import Empty from "./empty";
 interface Props {
     threads: ThreadPaginate;
     slug: string;
+    baseRoute: string;
 }
 
-export function ThreadList({ threads, slug }: Props) {
+export function ThreadList({ threads, slug, baseRoute }: Props) {
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
     const sort = params.get('sort') || 'recent'
@@ -25,7 +26,7 @@ export function ThreadList({ threads, slug }: Props) {
     const currentSort = sort;
 
     const onSort = (sortValue: string) => {
-        router.get(`/forum/${slug}`, { sort: sortValue, page: 1 }, {
+        router.get(`/${baseRoute}/${slug}`, { sort: sortValue, page: 1 }, {
             preserveState: true,
             replace: true,
         })

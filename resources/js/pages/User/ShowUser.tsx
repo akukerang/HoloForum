@@ -1,4 +1,4 @@
-import { ThreadListNoSort } from "@/components/thread-list-no-sort";
+import { ThreadList } from "@/components/thread-list";
 import { useInitials } from "@/hooks/use-initials";
 import AppLayout from "@/layouts/app-layout";
 import { formatDateNoDiff } from "@/lib/utils";
@@ -60,7 +60,7 @@ export default function ShowUser({ user, threads }: Props) {
                     </div>
 
                     <h1 className="text-xl font-bold text-blue">Threads</h1>
-                    <ThreadListNoSort threads={threads} />
+                    <ThreadList threads={threads} slug={user.name} baseRoute='user' />
 
                 </div>
             </div>

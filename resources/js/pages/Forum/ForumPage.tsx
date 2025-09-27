@@ -36,7 +36,7 @@ export default function ShowForum({ forum, threads }: Props) {
                         </Link>
                     </div>
                     <div>
-                        <ThreadList threads={threads} slug={forum.slug} />
+                        <ThreadList threads={threads} slug={forum.slug} baseRoute='forum' />
                     </div>
 
                 </div>

@@ -118,17 +118,63 @@ class RegisteredUserController extends Controller
         return redirect()->back();
     }
 
-    public function show(User $user)
+    public function show(User $user, Request $request): Response
     {
 
-        $threads = $user->threads()
+        $sort = $request->query('sort', 'latest');
+
+        $query = $user->threads()
             ->withCount('posts') # post count
             ->with('latestPost.user')
             ->withMax('posts', 'created_at') # latest post date 
-            ->with('user') # user data        
-            ->paginate(perPage: 10)->onEachSide(1);
+            ->with('user'); # user data
 
+        switch ($sort) {
+            case 'recent':
+                $query
+                    ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                    ->orderByDesc('posts_max_created_at')
+                    ->orderByDesc('created_at');
+                break;
+            case 'latest':
+                $query->orderBy('created_at', 'DESC');
+                break;
+            case 'title':
+                $query->orderByRaw('LOWER(title) asc'); # ignore case
+                break;
+            case 'replies':
+                $query
+                    ->orderByRaw('
+                    CASE 
+                        WHEN posts_count = 0 THEN 1 
+                        ELSE 0 
+                    END ASC
+                ') // threads with posts first (0 → has posts, 1 → no posts)
+                    ->orderByDesc('posts_count')   // then sort by most posts
+                    ->orderByDesc('created_at');   // finally, newest threads if tied
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'ASC');
+                break;
+            default:
+                $query
+                    ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                    ->orderByDesc('posts_max_created_at')
+                    ->orderByDesc('created_at');
+                break;
+        }
 
+        $threads = $query->paginate(perPage: 10)->withQueryString()->onEachSide(1);
 
         return Inertia::render('User/ShowUser', [
             'user' => $user->loadCount('posts'),
