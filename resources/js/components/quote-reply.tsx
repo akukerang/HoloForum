@@ -14,7 +14,7 @@ export default function QuoteReply({ postData }: Props) {
     const currentSort = params.get('sort') || 'oldest';
 
     return (
-        <div className="w-1/2 flex flex-col items-stretch border-1 bg-surface0 mb-2" >
+        <div className="w-full sm:w-3/4 md:w-1/2 flex flex-col items-stretch border-1 bg-surface0 mb-2" >
             <div>
                 {/* User and link to post */}
                 <Link href={showPost({

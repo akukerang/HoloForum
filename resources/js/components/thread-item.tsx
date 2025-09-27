@@ -1,10 +1,17 @@
 import { deleteThread, editThread, showThread } from "@/routes/thread";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { SharedData, Thread, Post } from "@/types";
-import { SquarePen, TrashIcon, Lock, LockOpen } from "lucide-react";
+import { SquarePen, TrashIcon, Lock, LockOpen, EllipsisVertical, Flag } from "lucide-react";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { removeThread, toggleLockThread } from "@/routes/moderator";
 import { useInitials } from "@/hooks/use-initials";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface Props {
     thread: Thread;
@@ -98,34 +105,58 @@ export function ThreadItem({ thread }: Props) {
                     <p className="text-sm text-subtext0 italic">No posts yet</p>
                 }
             </div>
-            <div className="flex w-1/10 gap-3 text-center align-middle justify-center pr-8">
-                {auth.user && auth.user.id === thread.user.id ? (
-                    <>
-                        <button className="flex items-center" onClick={() => handleDelete(thread.id)} disabled={processing}>
-                            <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
-                        </button>
-                        <Link className="flex items-center" href={editThread(thread.id)}>
-                            <SquarePen className="w-5 h-5 text-subtext1 hover:text-subtext0 hover:cursor-pointer" />
-                        </Link>
-                    </>
-
-                ) :
-                    auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
-                        <button onClick={() => handleModDelete(thread.id)} disabled={processing}>
-                            <TrashIcon className="w-5 h-5 text-red hover:text-red-400 hover:cursor-pointer" />
-                        </button>
-
-                    ) : null
-                }
-                {auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
-                    <button onClick={() => handleLock(thread.id)} disabled={processing}>
-                        {thread.locked ?
-                            <LockOpen className="w-5 h-5 text-yellow hover:cursor-pointer" />
-                            :
-                            <Lock className="w-5 h-5 text-yellow hover:cursor-pointer" />
+            <div className="pt-5 pr-2">
+                <DropdownMenu>
+                    <DropdownMenuTrigger className="bg-transparent border-0 p-0">
+                        <EllipsisVertical className="w-5 h-5 hover:cursor-pointer text-subtext1 hover:text-subtext0" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        {/*Default Action, currently no function */}
+                        <DropdownMenuItem>
+                            <button className="flex items-center">
+                                <Flag className="mr-2" /> Report Thread
+                            </button>
+                        </DropdownMenuItem>
+                        {auth.user && auth.user.id === thread.user.id ? (
+                            <>
+                                <DropdownMenuItem>
+                                    <button className="flex items-center" onClick={() => handleDelete(thread.id)} disabled={processing}>
+                                        <TrashIcon className="mr-2" /> Delete Thread
+                                    </button>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link className="flex items-center" href={editThread(thread.id)}>
+                                        <SquarePen className="mr-2" /> Edit Thread
+                                    </Link>
+                                </DropdownMenuItem>
+                            </>
+                        ) :
+                            auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                                <DropdownMenuItem>
+                                    <button className="flex items-center" onClick={() => handleModDelete(thread.id)} disabled={processing}>
+                                        <TrashIcon className="mr-2" /> Remove Thread
+                                    </button>
+                                </DropdownMenuItem>
+                            ) : null
                         }
-                    </button>
-                ) : null}
+                        {auth.user.role === 'admin' || auth.user.role === 'moderator' ? (
+                            <DropdownMenuItem>
+                                <button className="flex items-center" onClick={() => handleLock(thread.id)} disabled={processing}>
+                                    {thread.locked ?
+                                        <>
+                                            <LockOpen className="mr-2" /> Unlock Thread
+                                        </>
+                                        :
+                                        <>
+                                            <Lock className="mr-2" /> Lock Thread
+                                        </>
+                                    }
+                                </button>
+                            </DropdownMenuItem>
+                        ) : null}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </li>
     );
