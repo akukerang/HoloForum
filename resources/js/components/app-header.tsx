@@ -19,7 +19,7 @@ import AppLogoIcon from './app-logo-icon';
 const mainNavItems: NavItem[] = [
 
     {
-        title: 'Forum',
+        title: 'Forums',
         href: '/',
         icon: MessagesSquare,
     },
@@ -95,7 +95,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href="#" prefetch className="flex items-center space-x-2">
+                    <Link href="/" prefetch className="flex items-center space-x-2">
                         <AppLogo />
                     </Link>
 

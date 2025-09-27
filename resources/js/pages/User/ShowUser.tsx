@@ -20,8 +20,8 @@ export default function ShowUser({ user, threads }: Props) {
     const getInitials = useInitials();
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Profile - ${user.name}`} />
-            <div className="flex h-full flex-1 flex-col gap-2 overflow-x-auto lg:p-4 items-center">
+            <Head title={`${user.name}`} />
+            <div className="flex h-full flex-1 flex-col gap-2 overflow-x-auto lg:px-4 pt-4 items-center">
                 <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col'>
                     <h1 className="text-2xl font-bold text-blue mb-1">Profile</h1>
                     <div className="rounded-xl overflow-hidden shadow-lg mb-4">

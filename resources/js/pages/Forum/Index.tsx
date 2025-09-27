@@ -6,7 +6,7 @@ import { Forum } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Forum',
+        title: 'Forums',
         href: '/',
     },
 ];
@@ -26,7 +26,7 @@ export default function Index() {
     const { categories } = usePage().props as unknown as Props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Forum" />
+            <Head title="Forums" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
                 <div className='w-3/4 flex flex-col gap-4'>
                     <h1 className='text-2xl text-blue font-bold'>Forums</h1>
