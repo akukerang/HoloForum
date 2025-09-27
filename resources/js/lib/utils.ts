@@ -49,3 +49,18 @@ export const capitalize = (s: string) => {
     if (typeof s !== 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+export const  rolesSwitch = (param: string) => {
+    switch (param) {
+        case 'admin':
+            return 'text-red';
+        case 'moderator':
+            return 'text-green';
+        case 'banned':
+            return 'text-gray-500 line-through';
+        case 'user':
+            return 'text-yellow';
+        default:
+            return 'text-text';
+    }
+}

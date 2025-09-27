@@ -3,7 +3,7 @@ import { Link, router, useForm, usePage } from "@inertiajs/react";
 import { Ban, EllipsisVertical, Flag, Reply, SquarePen, ThumbsUp, TrashIcon } from "lucide-react";
 import { Post, SharedData } from "@/types";
 import QuoteReply from "./quote-reply";
-import { capitalize, formatDateTime } from "@/lib/utils";
+import { capitalize, formatDateTime, rolesSwitch } from "@/lib/utils";
 import { useInitials } from "@/hooks/use-initials";
 import { removePost, toggleBanUser } from "@/routes/moderator";
 import { showUser } from "@/routes/user";
@@ -18,21 +18,6 @@ import {
 interface Props {
     postData: Post;
     locked: boolean;
-}
-
-function rolesSwitch(param: string) {
-    switch (param) {
-        case 'admin':
-            return 'text-red';
-        case 'moderator':
-            return 'text-green';
-        case 'banned':
-            return 'text-gray-500 line-through';
-        case 'user':
-            return 'text-yellow';
-        default:
-            return 'text-text';
-    }
 }
 
 

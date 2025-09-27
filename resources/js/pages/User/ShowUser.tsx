@@ -1,7 +1,7 @@
 import { ThreadList } from "@/components/thread-list";
 import { useInitials } from "@/hooks/use-initials";
 import AppLayout from "@/layouts/app-layout";
-import { formatDateNoDiff } from "@/lib/utils";
+import { capitalize, formatDateNoDiff, rolesSwitch } from "@/lib/utils";
 import { User, BreadcrumbItem, ThreadPaginate } from "@/types";
 import { Head } from "@inertiajs/react";
 
@@ -21,10 +21,10 @@ export default function ShowUser({ user, threads }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Profile - ${user.name}`} />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto lg:p-4 items-center">
-                <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col gap-4'>
-                    <h1 className="text-2xl font-bold text-blue">Profile</h1>
-                    <div className="rounded-xl overflow-hidden shadow-lg">
+            <div className="flex h-full flex-1 flex-col gap-2 overflow-x-auto lg:p-4 items-center">
+                <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col'>
+                    <h1 className="text-2xl font-bold text-blue mb-1">Profile</h1>
+                    <div className="rounded-xl overflow-hidden shadow-lg mb-4">
                         <div className='bg-baseColor p-6 flex flex-col gap-y-2'>
                             <h2 className="text-lg font-bold">{user.name}</h2>
                             <div className="flex">
@@ -38,15 +38,15 @@ export default function ShowUser({ user, threads }: Props) {
                                 <div className="ml-5">
                                     <dl className="space-y-2 text-sm">
                                         <div>
-                                            <dt className="text-green font-medium">Role</dt>
-                                            <dd className="text-subtext1">{user.role}</dd>
+                                            <dt className="text-green font-semibold">Role</dt>
+                                            <dd className={rolesSwitch(user.role)}>{capitalize(user.role)}</dd>
                                         </div>
                                         <div>
-                                            <dt className="text-green font-medium">Status</dt>
+                                            <dt className="text-green font-semibold">Status</dt>
                                             <dd className="text-subtext1">{user.status || 'No status yet'}</dd>
                                         </div>
                                         <div>
-                                            <dt className="text-green font-medium">Bio</dt>
+                                            <dt className="text-green font-semibold">Bio</dt>
                                             <dd className="text-subtext1">{user.bio || 'No bio yet'}</dd>
                                         </div>
                                     </dl>
@@ -59,9 +59,8 @@ export default function ShowUser({ user, threads }: Props) {
                         </div>
                     </div>
 
-                    <h1 className="text-xl font-bold text-blue">Threads</h1>
+                    <h1 className="text-xl font-bold text-blue mb-1">Threads</h1>
                     <ThreadList threads={threads} slug={user.name} baseRoute='user' />
-
                 </div>
             </div>
         </AppLayout>
