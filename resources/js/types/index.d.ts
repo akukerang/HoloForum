@@ -43,6 +43,8 @@ export interface User {
     role: string;   
     bio ?: string;
     status ?: string;
+    posts_count ?: number;
+
 }
 
 export interface Forum {

@@ -30,6 +30,7 @@ export function ThreadList({ threads, slug }: Props) {
             replace: true,
         })
     }
+
     return (
         <div className="flex flex-col gap-1">
             {threadCount > 0 ? (

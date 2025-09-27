@@ -6,6 +6,7 @@ import QuoteReply from "./quote-reply";
 import { capitalize, formatDateTime } from "@/lib/utils";
 import { useInitials } from "@/hooks/use-initials";
 import { removePost, toggleBanUser } from "@/routes/moderator";
+import { showUser } from "@/routes/user";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -87,14 +88,16 @@ export function PostItem({ postData, locked }: Props) {
         <li className="w-full flex items-stretch border-1 bg-baseColor" id={`post-${postData.id.toString()}`}>
             <div className="hidden md:flex md:flex-col py-4 mt-4 text-center justify-top items-center w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
-                {postData.user.avatar ? (
-                    <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
-                ) : (
-                    <div className="h-16 w-16 bg-blue text-baseColor dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
-                        {getInitials(postData.user.name)}
-                    </div>
-                )}
-                <h1 className="mt-2 font-bold text-sm px-2 overflow-hidden text-ellipsis whitespace-nowrap">{postData.user.name}</h1>
+                <Link href={showUser(postData.user.name)} className="items-center">
+                    {postData.user.avatar ? (
+                        <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
+                    ) : (
+                        <div className="h-20 w-20 bg-blue text-baseColor dark:bg-crust dark:text-text flex items-center justify-center text-xl font-medium">
+                            {getInitials(postData.user.name)}
+                        </div>
+                    )}
+                    <h1 className="mt-2 font-bold text-sm px-2 overflow-hidden text-ellipsis whitespace-nowrap">{postData.user.name}</h1>
+                </Link>
                 <h1 className={`font-bold text-sm px-2 ${rolesSwitch(postData.user.role)}`}>{capitalize(postData.user.role)}</h1>
                 <p className="text-xs text-subtext0">{postData.user.status}</p>
             </div>

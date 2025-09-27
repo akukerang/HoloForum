@@ -105,7 +105,7 @@ class ForumController extends Controller
                 break;
         }
 
-        $threads = $query->paginate(10)->withQueryString()->onEachSide(1);
+        $threads = $query->paginate(perPage: 10)->withQueryString()->onEachSide(1);
 
         return Inertia::render('Forum/ForumPage', [
             'forum' => $forum,

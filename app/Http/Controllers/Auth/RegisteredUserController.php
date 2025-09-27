@@ -117,4 +117,22 @@ class RegisteredUserController extends Controller
         $user->save();
         return redirect()->back();
     }
+
+    public function show(User $user)
+    {
+
+        $threads = $user->threads()
+            ->withCount('posts') # post count
+            ->with('latestPost.user')
+            ->withMax('posts', 'created_at') # latest post date 
+            ->with('user') # user data        
+            ->paginate(perPage: 10)->onEachSide(1);
+
+
+
+        return Inertia::render('User/ShowUser', [
+            'user' => $user->loadCount('posts'),
+            'threads' => $threads
+        ]);
+    }
 }
