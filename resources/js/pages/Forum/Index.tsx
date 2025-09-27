@@ -29,6 +29,7 @@ export default function Index() {
             <Head title="Forum" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
                 <div className='w-3/4 flex flex-col gap-4'>
+                    <h1 className='text-2xl text-blue font-bold'>Forums</h1>
                     {categories.length > 0 ? (
                         <>
                             {categories.map((category) => (

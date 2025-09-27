@@ -88,7 +88,7 @@ export function PostItem({ postData, locked }: Props) {
         <li className="w-full flex items-stretch border-1 bg-baseColor" id={`post-${postData.id.toString()}`}>
             <div className="hidden md:flex md:flex-col py-4 mt-4 text-center justify-top items-center w-1/8">
                 {/* Profile Info: Username, Avatar, Bio */}
-                <Link href={showUser(postData.user.name)} className="items-center">
+                <Link href={showUser(postData.user.name)} className="flex flex-col items-center text-center">
                     {postData.user.avatar ? (
                         <img src={`${window.location.origin}/storage/${postData.user.avatar}`} alt={postData.user.name} className="h-20 w-20" />
                     ) : (

@@ -53,7 +53,7 @@ export default function ShowUser({ user, threads }: Props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-text text-baseColor flex justify-between align-center">
+                        <div className="bg-text text-baseColor dark:bg-crust dark:text-text flex justify-between align-center">
                             <p className="text-sm p-4">Joined: {formatDateNoDiff(user.created_at)}</p>
                             <p className="text-sm p-4">Posts: {user.posts_count ? user.posts_count : 0}</p>
                         </div>
