@@ -201,12 +201,7 @@ class ThreadController extends Controller
 
     public function search(Request $request)
     {
-        $data = $request->validate([
-            'keywords' => 'nullable|string|min:3|max:64',
-            'user' => 'nullable|string',
-            'forum' => 'nullable|string|exists:forums,slug',
-            'results' => 'required|string|in:posts,threads',
-        ]);
+        $data = $request;
 
         // Stores the parameters for pagination, null ones default to empty
         $params = $request->only(['keywords', 'user', 'forum', 'results', 'sort']);
@@ -260,7 +255,7 @@ class ThreadController extends Controller
 
             // Sort posts
 
-            $query = $query->with(['user', 'parent'])->withCount('reactions');
+            $query = $query->with(['user:id,avatar,name,bio,status,role', 'parent'])->withCount('reactions')->with('thread:id,title');
             $sort = $request->query('sort', 'oldest');
             switch ($sort) {
                 case 'latest':
@@ -314,9 +309,9 @@ class ThreadController extends Controller
 
             $query = $query
                 ->withCount('posts') # post count
-                ->with('latestPost.user')
+                ->with('latestPost.user:id,avatar,name')
                 ->withMax('posts', 'created_at') # latest post date 
-                ->with('user'); # user data
+                ->with('user:id,name'); # user data
 
             switch ($sort) {
                 case 'recent':

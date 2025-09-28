@@ -1,5 +1,4 @@
 import { ForumCombobox } from "@/components/combobox";
-import InputError from "@/components/input-error";
 import Submit from "@/components/submit";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,7 +25,7 @@ export default function Search({ forums }: Props) {
         },
     ];
 
-    const { data, setData, get, processing, errors } = useForm({
+    const { data, setData, get, processing } = useForm({
         keywords: '',
         user: '',
         forum: '',
@@ -57,7 +56,7 @@ export default function Search({ forums }: Props) {
                                     value={data.keywords}
                                     onChange={e => setData("keywords", e.target.value)}
                                 />
-                                <InputError message={errors.keywords} className="mt-2" />
+
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="user">Posted by:</Label>
@@ -67,7 +66,6 @@ export default function Search({ forums }: Props) {
                                     value={data.user}
                                     onChange={e => setData("user", e.target.value)}
                                 />
-                                <InputError message={errors.user} className="mt-2" />
                             </div>
                             <div className="space-x-2">
                                 <Label htmlFor="forum">Filter by Forum:</Label>
@@ -76,7 +74,6 @@ export default function Search({ forums }: Props) {
                                     onChange={val => setData("forum", val)}
                                     forums={forums}
                                 />
-                                <InputError message={errors.forum} className="mt-2" />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="results">Show results as:</Label>
@@ -93,9 +90,8 @@ export default function Search({ forums }: Props) {
                                         <Label htmlFor="threads">Threads</Label>
                                     </div>
                                 </RadioGroup>
-                                <InputError message={errors.results} className="mt-2" />
-                                <Submit text='Search' processing={processing} />
                             </div>
+                            <Submit text='Search' processing={processing} />
                         </div>
                     </form>
                 </div>

@@ -1,3 +1,4 @@
+import { ResultPostList } from "@/components/result-post-list";
 import { ResultThreadList } from "@/components/result-thread-list";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, ThreadPaginate, PostPaginate } from "@/types";
@@ -13,7 +14,7 @@ function ResultList({ threads, posts }: Props) {
         return <ResultThreadList threads={threads} />
     }
     if (posts) {
-        return <div>Posts</div>
+        return <ResultPostList posts={posts} />
     }
     return <div>Nothing</div>
 }
