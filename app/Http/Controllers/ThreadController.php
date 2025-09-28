@@ -256,7 +256,7 @@ class ThreadController extends Controller
             // Sort posts
 
             $query = $query->with(['user:id,avatar,name,bio,status,role', 'parent', 'thread:id,title'])->withCount('reactions');
-            $sort = $request->query('sort', 'oldest');
+            $sort = $request->query('sort', 'latest');
             switch ($sort) {
                 case 'latest':
                     $query->orderBy('created_at', 'DESC');

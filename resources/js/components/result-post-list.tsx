@@ -20,7 +20,7 @@ export function ResultPostList({ posts }: Props) {
 
     const { url } = usePage()
     const params = new URLSearchParams(url.split('?')[1])
-    const sort = params.get('sort') || 'oldest'
+    const sort = params.get('sort') || 'latest'
     const keywords = params.get('keywords') || ''
     const user = params.get('user') || ''
     const forum = params.get('forum') || ''

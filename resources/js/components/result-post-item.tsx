@@ -4,6 +4,7 @@ import QuoteReply from "./quote-reply";
 import { capitalize, formatDateTime, rolesSwitch } from "@/lib/utils";
 import { useInitials } from "@/hooks/use-initials";
 import { showUser } from "@/routes/user";
+import { showPost } from "@/routes/post";
 
 interface Props {
     postData: Post;
@@ -37,7 +38,13 @@ export function ResultPostItem({ postData }: Props) {
                 <div>
                     {/* User, Date, Trash, Reply */}
                     {postData.thread ?
-                        <h1 className="font-bold text-blue text-lg">Re: {postData.thread.title || ""}</h1>
+                        <Link href={showPost({
+                            thread: postData.thread_id,
+                            post: postData.id,
+                        }
+                        )}>
+                            <h1 className="font-bold text-blue text-lg">Re: {postData.thread.title || ""}</h1>
+                        </Link>
                         : null
                     }
 
