@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Forum;
+use App\Models\Post;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -190,5 +191,86 @@ class ThreadController extends Controller
     public function searchPage()
     {
         return Inertia::render('Search/Search');
+    }
+
+    public function search(Request $request)
+    {
+        $data = $request->validate([
+            'keywords' => 'nullable|string|min:3|max:64',
+            'user' => 'nullable|string',
+            'forum' => 'nullable|string|exists:forums,id',
+            'results' => 'required|string|in:posts,threads',
+        ]);
+
+
+        // Check if forum is a forum or category (no parent_id)
+        $forum_ids = null;
+        if (!empty($data['forum'])) {
+            $temp = Forum::where('title', $data['forum'])->first();
+            if (empty($temp)) { // no matching forum (maybe unnecessary because of exists check)
+                $forum_ids = null;
+            } else if ($temp->parent_forum_id === null) { // category
+                $forum_ids = Forum::where('parent_forum_id', $temp->id)->pluck('id');
+            } else { //specific forum
+                $forum_ids = $temp->parent_forum_id;
+            }
+        }
+
+
+        if ($data['results'] === 'posts') { // return posts
+            $query = Post::query();
+
+            // Checks post content and thread title for keywords
+            $query->when($data['keywords'], function ($q, $keywords) {
+                $q->where(function ($q2) use ($keywords) {
+                    $q2->where('content', 'like', "%{$keywords}%")
+                        ->orWhereHas('thread', function ($q3) use ($keywords) {
+                            $q3->where('title', 'like', "%{$keywords}%");
+                        });
+                });
+            });
+
+            // Checks by parent user
+            $query->when($data['user'], function ($q, $name) {
+                $q->whereHas('user', function ($q) use ($name) {
+                    $q->where('name', $name);
+                });
+            });
+
+            // Checks by parent forum id gotten from thread
+            if ($forum_ids) {
+                $query->whereHas('thread', function ($q2) use ($forum_ids) {
+                    $q2->whereIn('forum_id', $forum_ids);
+                });
+            }
+
+            $results = $query->paginate(10)->onEachSide(1);
+            return dd(json_encode($results, JSON_PRETTY_PRINT));
+        } else if ($data['results'] === 'threads') {
+            $query = Thread::query();
+
+            // Check thread title for keywords
+            $query->when($data['keywords'], function ($q, $keywords) {
+                $q->where('title', 'like', "%{$keywords}%")
+                    ->orWhereHas('posts', function ($q2) use ($keywords) {
+                        $q2->where('content', 'like', "%{$keywords}%");
+                    });
+            });
+
+            // Check author by user
+            $query->when($data['user'], function ($q, $name) {
+                $q->whereHas('user', function ($q2) use ($name) {
+                    $q2->where('name', $name);
+                });
+            });
+
+            // Forum/category restriction
+            if ($forum_ids) {
+                $query->whereIn('forum_id', $forum_ids);
+            }
+
+            $results = $query->paginate(10)->onEachSide(1);
+            return dd(json_encode($results, JSON_PRETTY_PRINT));
+        }
     }
 }
