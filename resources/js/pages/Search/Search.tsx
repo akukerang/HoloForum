@@ -17,7 +17,7 @@ export default function Search() {
         },
     ];
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, get, processing, errors } = useForm({
         keywords: '',
         user: '',
         forum: '',
@@ -27,7 +27,7 @@ export default function Search() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(results().url);
+        get(results().url);
     }
 
     return (

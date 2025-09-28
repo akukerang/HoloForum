@@ -202,6 +202,13 @@ class ThreadController extends Controller
             'results' => 'required|string|in:posts,threads',
         ]);
 
+        // Stores the parameters for pagination, null ones default to empty
+        $params = $request->only(['keywords', 'user', 'forum', 'results', 'sort']);
+        foreach ($params as $k => $v) {
+            if ($v === null) {
+                $params[$k] = '';
+            }
+        }
 
         // Check if forum is a forum or category (no parent_id)
         $forum_ids = null;
@@ -244,8 +251,34 @@ class ThreadController extends Controller
                 });
             }
 
-            $results = $query->paginate(10)->onEachSide(1);
-            return dd(json_encode($results, JSON_PRETTY_PRINT));
+            // Sort posts
+
+            $query = $query->with(['user', 'parent'])->withCount('reactions');
+            $sort = $request->query('sort', 'oldest');
+            switch ($sort) {
+                case 'latest':
+                    $query->orderBy('created_at', 'DESC');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'ASC');
+                    break;
+                case 'reactions':
+                    $query->orderBy('reactions_count', 'DESC');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'ASC');
+                    break;
+            }
+
+            $results = $query->paginate(10)->onEachSide(1)->appends($params);
+
+
+            return Inertia::render(
+                'Search/Results',
+                [
+                    'posts' => $results,
+                ]
+            );
         } else if ($data['results'] === 'threads') {
             $query = Thread::query();
 
@@ -269,8 +302,69 @@ class ThreadController extends Controller
                 $query->whereIn('forum_id', $forum_ids);
             }
 
-            $results = $query->paginate(10)->onEachSide(1);
-            return dd(json_encode($results, JSON_PRETTY_PRINT));
+            // Sort Threads
+            $sort = $request->query('sort', 'recent');
+
+            $query = $query
+                ->withCount('posts') # post count
+                ->with('latestPost.user')
+                ->withMax('posts', 'created_at') # latest post date 
+                ->with('user'); # user data
+
+            switch ($sort) {
+                case 'recent':
+                    $query
+                        ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                        ->orderByDesc('posts_max_created_at')
+                        ->orderByDesc('created_at');
+                    break;
+                case 'latest':
+                    $query->orderBy('created_at', 'DESC');
+                    break;
+                case 'title':
+                    $query->orderByRaw('LOWER(title) asc'); # ignore case
+                    break;
+                case 'replies':
+                    $query
+                        ->orderByRaw('
+                    CASE 
+                        WHEN posts_count = 0 THEN 1 
+                        ELSE 0 
+                    END ASC
+                ') // threads with posts first (0 → has posts, 1 → no posts)
+                        ->orderByDesc('posts_count')   // then sort by most posts
+                        ->orderByDesc('created_at');   // finally, newest threads if tied
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'ASC');
+                    break;
+                default:
+                    $query
+                        ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                        ->orderByDesc('posts_max_created_at')
+                        ->orderByDesc('created_at');
+                    break;
+            }
+
+            $results = $query->paginate(perPage: 10)->onEachSide(1)->appends($params);
+
+
+            return Inertia::render(
+                'Search/Results',
+                [
+                    'threads' => $results,
+                ]
+            );
         }
     }
 }

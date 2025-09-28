@@ -1,3 +1,4 @@
+import { ResultThreadList } from "@/components/result-thread-list";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, ThreadPaginate, PostPaginate } from "@/types";
 import { Head } from "@inertiajs/react";
@@ -9,7 +10,7 @@ interface Props {
 
 function ResultList({ threads, posts }: Props) {
     if (threads) {
-        return <div>Threads</div>
+        return <ResultThreadList threads={threads} />
     }
     if (posts) {
         return <div>Posts</div>
