@@ -9,7 +9,16 @@ import { results } from "@/routes/thread";
 import { BreadcrumbItem } from "@/types";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function Search() {
+type ForumItems = {
+    slug: string
+    title: string
+}
+
+interface Props {
+    forums: ForumItems[]
+}
+
+export default function Search({ forums }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `Search`,
@@ -65,6 +74,7 @@ export default function Search() {
                                 <ForumCombobox
                                     value={data.forum}
                                     onChange={val => setData("forum", val)}
+                                    forums={forums}
                                 />
                                 <InputError message={errors.forum} className="mt-2" />
                             </div>

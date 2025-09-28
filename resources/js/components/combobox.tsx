@@ -17,22 +17,19 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-type Forum = {
-    value: string
-    label: string
+type ForumItems = {
+    slug: string
+    title: string
 }
-
-const forums: Forum[] = [
-    { value: "1", label: "Hololive JP Gen 0" },
-    { value: "2", label: "Hoshimachi Suisei" },
-]
 
 export function ForumCombobox({
     value,
     onChange,
+    forums
 }: {
     value: string
     onChange: (val: string) => void
+    forums: ForumItems[]
 }) {
     const [open, setOpen] = useState(false)
 
@@ -46,7 +43,7 @@ export function ForumCombobox({
                     className="w-[200px] justify-between bg-mantle hover:bg-crust"
                 >
                     {value
-                        ? forums.find((forum) => forum.value === value)?.label
+                        ? forums.find((forum) => forum.slug === value)?.title
                         : "Select forum..."}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -59,8 +56,8 @@ export function ForumCombobox({
                         <CommandGroup>
                             {forums.map((forum) => (
                                 <CommandItem
-                                    key={forum.value}
-                                    value={forum.value}
+                                    key={forum.slug}
+                                    value={forum.slug}
                                     onSelect={(currentValue) => {
                                         onChange(currentValue === value ? "" : currentValue)
                                         setOpen(false)
@@ -69,10 +66,10 @@ export function ForumCombobox({
                                     <CheckIcon
                                         className={cn(
                                             "mr-2 h-4 w-4",
-                                            value === forum.value ? "opacity-100" : "opacity-0"
+                                            value === forum.slug ? "opacity-100" : "opacity-0"
                                         )}
                                     />
-                                    {forum.label}
+                                    {forum.title}
                                 </CommandItem>
                             ))}
                         </CommandGroup>

@@ -190,7 +190,13 @@ class ThreadController extends Controller
 
     public function searchPage()
     {
-        return Inertia::render('Search/Search');
+        $forums = Forum::select('title', 'slug')->orderBy('id', 'asc')->get();
+        return Inertia::render(
+            'Search/Search',
+            [
+                'forums' => $forums
+            ]
+        );
     }
 
     public function search(Request $request)
@@ -198,7 +204,7 @@ class ThreadController extends Controller
         $data = $request->validate([
             'keywords' => 'nullable|string|min:3|max:64',
             'user' => 'nullable|string',
-            'forum' => 'nullable|string|exists:forums,id',
+            'forum' => 'nullable|string|exists:forums,slug',
             'results' => 'required|string|in:posts,threads',
         ]);
 
@@ -213,15 +219,16 @@ class ThreadController extends Controller
         // Check if forum is a forum or category (no parent_id)
         $forum_ids = null;
         if (!empty($data['forum'])) {
-            $temp = Forum::where('title', $data['forum'])->first();
+            $temp = Forum::where('slug', $data['forum'])->first();
             if (empty($temp)) { // no matching forum (maybe unnecessary because of exists check)
                 $forum_ids = null;
             } else if ($temp->parent_forum_id === null) { // category
                 $forum_ids = Forum::where('parent_forum_id', $temp->id)->pluck('id');
             } else { //specific forum
-                $forum_ids = $temp->parent_forum_id;
+                $forum_ids = [$temp->id]; // expects array
             }
         }
+
 
 
         if ($data['results'] === 'posts') { // return posts
