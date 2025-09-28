@@ -71,7 +71,7 @@ class ThreadController extends Controller
         $thread->load('user');
         $thread->load('forum');
 
-        $query = $thread->posts()->with(['user', 'parent'])->withCount('reactions');
+        $query = $thread->posts()->with(['user:id,avatar,name,bio,status,role', 'parent'])->withCount('reactions');
         $sort = $request->query('sort', 'oldest');
         switch ($sort) {
             case 'latest':
@@ -255,7 +255,7 @@ class ThreadController extends Controller
 
             // Sort posts
 
-            $query = $query->with(['user:id,avatar,name,bio,status,role', 'parent'])->withCount('reactions')->with('thread:id,title');
+            $query = $query->with(['user:id,avatar,name,bio,status,role', 'parent', 'thread:id,title'])->withCount('reactions');
             $sort = $request->query('sort', 'oldest');
             switch ($sort) {
                 case 'latest':

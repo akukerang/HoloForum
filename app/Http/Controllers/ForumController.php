@@ -56,9 +56,9 @@ class ForumController extends Controller
 
         $query = $forum->threads()
             ->withCount('posts') # post count
-            ->with('latestPost.user')
+            ->with('latestPost.user:id,name,avatar')
             ->withMax('posts', 'created_at') # latest post date 
-            ->with('user'); # user data
+            ->with('user:id,name'); # user data
 
         switch ($sort) {
             case 'recent':
