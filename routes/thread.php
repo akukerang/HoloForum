@@ -12,4 +12,6 @@ Route::middleware(['auth', 'verified', NotBanned::class])->group(function () {
     Route::post('thread', [ThreadController::class, 'store'])->name('thread.storeThread');
     Route::put('thread/{thread}', [ThreadController::class, 'update'])->name('thread.updateThread');
     Route::delete('thread/{thread}', [ThreadController::class, 'destroy'])->name('thread.deleteThread');
+
+    Route::get('search', [ThreadController::class, 'searchPage'])->name('thread.searchPage');
 });

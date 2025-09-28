@@ -15,6 +15,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid, Menu, Search, MessagesSquare } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { searchPage } from '@/routes/thread';
 
 const mainNavItems: NavItem[] = [
 
@@ -130,7 +131,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     <div className="ml-auto flex items-center space-x-2">
                         <div className="relative flex items-center space-x-1">
                             <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                                <Link href={searchPage()} >
+                                    <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                                </Link>
                             </Button>
                             <div className="hidden lg:flex">
                                 {rightNavItems.map((item) => (

@@ -186,4 +186,9 @@ class ThreadController extends Controller
         $thread->save();
         return redirect()->back();
     }
+
+    public function searchPage()
+    {
+        return Inertia::render('Search/Search');
+    }
 }
