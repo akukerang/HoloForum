@@ -20,6 +20,7 @@ return new class extends Migration
                 ->constrained('forums')
                 ->nullOnDelete();
             $table->timestamps();
+            $table->string('slug')->nullable();
         });
     }
 
