@@ -22,8 +22,8 @@ A full stack forum website built with **Laravel** and **React**.
 1. Clone the repository
 
 ```bash
-git clone https://github.com/akukerang/holoforum
-cd holoforum
+git clone https://github.com/akukerang/HoloForum
+cd HoloForum
 ```
 
 2. Backend Setup
