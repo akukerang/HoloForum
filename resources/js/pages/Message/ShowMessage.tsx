@@ -1,12 +1,17 @@
-import { useInitials } from "@/hooks/use-initials";
+import InputError from "@/components/input-error";
+import MessageItem from "@/components/message-item";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import AppLayout from "@/layouts/app-layout";
-import { capitalize, formatDateNoDiff, rolesSwitch } from "@/lib/utils";
+import { sendMessage } from "@/routes";
 import { User, BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
+import { Send } from "lucide-react";
+import React from "react";
 
 interface Message {
-    sender: User;
-    receiver: User;
+    sender_id: number;
+    receiver_id: number;
     message: string;
     created_at: string;
 }
@@ -17,24 +22,79 @@ interface Props {
     messages: Message[];
 }
 
-export default function ShowUser({ currentUser, targetUser, messages }: Props) {
+
+
+export default function ShowMessage({ currentUser, targetUser, messages }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `Messages - ${targetUser.name}`,
             href: `/messages/${targetUser.name}`,
         },
     ];
-    const getInitials = useInitials();
+
+    const { data, setData, post, processing, errors } = useForm({
+        message: '',
+    })
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(sendMessage.url({ user: targetUser.name }));
+    }
+
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Messages - ${targetUser.name}`} />
             <div className="flex h-full flex-1 flex-col gap-2 overflow-x-auto lg:px-4 pt-4 items-center">
-                <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col'>
-                    <h1 className="text-2xl font-bold text-blue mb-1">Messages</h1>
+                <div className='w-full md:w-7/8 lg:w-3/4 flex flex-col bg-baseColor'>
+                    <div className="bg-text text-baseColor dark:bg-crust dark:text-text px-4 py-2">
+                        <h1 className="text-2xl font-bold">{targetUser.name}</h1>
+                    </div>
+                    <div className="h-[50vh] flex flex-col gap-4 overflow-y-auto p-4">
+                        {/* Message */}
+                        {messages && messages.map((message) => (
+                            message.sender_id === currentUser.id ? (
+                                // Message sent by current user
+                                <MessageItem
+                                    message={message.message}
+                                    sender={true}
+                                    user={currentUser}
+                                    date={message.created_at}
+                                />
+                            ) : (
+                                // Message received
+                                <MessageItem
+                                    message={message.message}
+                                    sender={false}
+                                    user={targetUser}
+                                    date={message.created_at}
+                                />
+                            )
+                        ))}
+
+                    </div>
+
+                    <div className="p-2">
+                        {errors.message ? (
+                            <InputError message={errors.message} className="mb-1.5" />
+                        ) : null}
+                        <form onSubmit={handleSubmit}>
+                            <div className="flex flex-col gap-1 lg:flex-row ">
+                                <Textarea
+                                    onChange={e => setData('message', e.target.value)}
+                                    value={data.message}
+                                    name="message" maxLength={255} placeholder="Send a Message" required autoFocus className="resize-none" />
+                                <Button className="rounded-lg" type="submit" disabled={processing}>
+                                    <Send /> Send
+                                </Button>
+                            </div>
+                        </form>
+
+                    </div>
 
                 </div>
             </div>
-        </AppLayout>
+        </AppLayout >
     )
 
 

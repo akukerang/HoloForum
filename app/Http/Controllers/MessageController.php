@@ -16,7 +16,7 @@ class MessageController extends Controller
         // Gets current user by auth
         $currentUser = auth()->user();
 
-        $messages = Message::with(['sender', 'receiver'])->where(
+        $messages = Message::where(
             // Gets message where receiver is currentUser and sender is the user messaged
             function ($query) use ($currentUser, $user) {
                 $query->where("receiver_id", $currentUser->id)
@@ -53,7 +53,5 @@ class MessageController extends Controller
             'sender_id' => $currentUser->id,
             'message' => $data['message'],
         ]);
-
-        dd($message);
     }
 }
