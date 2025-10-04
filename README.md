@@ -1,4 +1,4 @@
-# Holoforum
+# HoloForum
 
 A full stack forum website built with **Laravel** and **React**.
 
