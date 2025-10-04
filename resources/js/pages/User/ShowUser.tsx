@@ -1,9 +1,11 @@
 import { ThreadList } from "@/components/thread-list";
+import { Button } from "@/components/ui/button";
 import { useInitials } from "@/hooks/use-initials";
 import AppLayout from "@/layouts/app-layout";
 import { capitalize, formatDateNoDiff, rolesSwitch } from "@/lib/utils";
+import { getMessage } from "@/routes";
 import { User, BreadcrumbItem, ThreadPaginate } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 interface Props {
     user: User;
@@ -58,7 +60,11 @@ export default function ShowUser({ user, threads }: Props) {
                             <p className="text-sm p-4">Posts: {user.posts_count ? user.posts_count : 0}</p>
                         </div>
                     </div>
-
+                    <div>
+                        <Link href={getMessage({ user: user.name }).url}>
+                            <Button variant="default">Message</Button>
+                        </Link>
+                    </div>
                     <h1 className="text-xl font-bold text-blue mb-1">Threads</h1>
                     <ThreadList threads={threads} slug={user.name} baseRoute='user' />
                 </div>
