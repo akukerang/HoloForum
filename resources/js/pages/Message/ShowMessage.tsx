@@ -84,7 +84,7 @@ export default function ShowMessage({ currentUser, targetUser, messages }: Props
                 <div className="bg-text text-baseColor dark:bg-crust dark:text-text px-4 py-2">
                     <h1 className="text-2xl font-bold">{targetUser.name}</h1>
                 </div>
-                <div className="flex flex-col gap-4 overflow-y-auto p-4">
+                <div className="min-h-full flex flex-col gap-4 overflow-y-auto p-4">
                     {/* Message */}
                     {liveMessages && liveMessages.map((message) => (
                         message.sender_id === currentUser.id ? (
