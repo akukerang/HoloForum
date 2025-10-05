@@ -66,4 +66,14 @@ class User extends Authenticatable
     {
         return 'name';
     }
+
+    public function bookmarked()
+    {
+        return $this->belongsToMany(Thread::class, 'bookmarked_threads');
+    }
+
+    public function isBookmarked(Thread $thread): bool
+    {
+        return $this->bookmarked->contains($thread->id);
+    }
 }

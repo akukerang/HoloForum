@@ -93,6 +93,7 @@ class ThreadController extends Controller
         return Inertia::render('Thread/ShowThread', [
             'thread' => $thread,
             'posts' => $posts,
+            'bookmarked' => auth()->check() ? auth()->user()->isBookmarked($thread) : false,
         ]);
     }
 
@@ -368,5 +369,16 @@ class ThreadController extends Controller
                 ]
             );
         }
+    }
+
+    public function toggleBookmark(Thread $thread)
+    {
+        $user = auth()->user();
+        if ($user->isBookmarked($thread)) {
+            $user->bookmarked()->detach($thread->id);
+        } else {
+            $user->bookmarked()->attach($thread->id);
+        }
+        return redirect()->back();
     }
 }
