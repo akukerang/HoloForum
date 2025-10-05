@@ -1,6 +1,7 @@
 import { useInitials } from "@/hooks/use-initials";
 import { User } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { formatDateTime } from "@/lib/utils";
 
 interface Props {
     message: string;
@@ -37,7 +38,7 @@ export default function MessageItem({ message, sender, user, date }: Props) {
                     }`}
             >
                 <p>{message}</p>
-                <span className="text-xs opacity-70 block text-right mt-1">{date}</span>
+                <span className="text-xs opacity-70 block text-right mt-1">{formatDateTime(date)}</span>
             </div>
 
             {sender && (

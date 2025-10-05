@@ -11,7 +11,7 @@ export const formatDateTime = (dateString: string) => {
 
     const diffInMs = timeNow.getTime() - date.getTime();
     const diffInMinutes = Math.floor(diffInMs / 60000);
-    if (diffInMinutes < 1) return 'just now';
+    if (diffInMinutes < 1) return 'Just now';
     if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
@@ -27,7 +27,7 @@ export const formatDate = (dateString: string) => {
     
     const diffInMs = timeNow.getTime() - date.getTime();
     const diffInMinutes = Math.floor(diffInMs / 60000);
-    if (diffInMinutes < 1) return 'just now';
+    if (diffInMinutes < 1) return 'Just now';
     if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
