@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Message;
 
+use App\Events\MessageSent;
+
 class MessageController extends Controller
 {
     //
@@ -48,10 +50,13 @@ class MessageController extends Controller
 
         $currentUser = auth()->user();
 
-        Message::create([
+        $message = Message::create([
             'receiver_id' => $user->id,
             'sender_id' => $currentUser->id,
             'message' => $data['message'],
         ]);
+
+        // Broadcast new message has been sent
+        broadcast(new MessageSent($message))->toOthers();
     }
 }

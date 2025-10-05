@@ -8,6 +8,8 @@ import { User, BreadcrumbItem } from "@/types";
 import { Head, useForm } from "@inertiajs/react";
 import { Send } from "lucide-react";
 import React from "react";
+import { useEcho } from "@laravel/echo-react";
+import { useState, useEffect, useRef } from "react";
 
 interface Message {
     sender_id: number;
@@ -16,13 +18,15 @@ interface Message {
     created_at: string;
 }
 
+type MessageData = {
+    message: Message
+}
+
 interface Props {
     currentUser: User;
     targetUser: User;
     messages: Message[];
 }
-
-
 
 export default function ShowMessage({ currentUser, targetUser, messages }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -32,13 +36,44 @@ export default function ShowMessage({ currentUser, targetUser, messages }: Props
         },
     ];
 
+    const [liveMessages, setLiveMessages] = useState<Message[]>(messages);
+
+    // Listens for new messages then updates
+    useEcho<MessageData>(
+        `chat.${currentUser.id}`,
+        ".message.sent",
+        (e) => {
+            setLiveMessages((prevMessages) => [...prevMessages, e.message]);
+        },
+    );
+
+    // Scroll to new message
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [liveMessages]);
+
     const { data, setData, post, processing, errors } = useForm({
         message: '',
     })
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(sendMessage.url({ user: targetUser.name }));
+        post(sendMessage.url({ user: targetUser.name }), {
+            onSuccess: () => {
+                // Instead of refetching, just append the message to the list
+                setLiveMessages((prevMessages) => [...prevMessages,
+                {
+                    sender_id: currentUser.id,
+                    receiver_id: targetUser.id,
+                    message: data.message,
+                    created_at: new Date().toISOString(),
+                },
+                ]);
+                // clears field
+                setData('message', '')
+            },
+        });
     }
 
 
@@ -52,7 +87,7 @@ export default function ShowMessage({ currentUser, targetUser, messages }: Props
                     </div>
                     <div className="h-[50vh] flex flex-col gap-4 overflow-y-auto p-4">
                         {/* Message */}
-                        {messages && messages.map((message) => (
+                        {liveMessages && liveMessages.map((message) => (
                             message.sender_id === currentUser.id ? (
                                 // Message sent by current user
                                 <MessageItem
@@ -71,6 +106,7 @@ export default function ShowMessage({ currentUser, targetUser, messages }: Props
                                 />
                             )
                         ))}
+                        <div ref={messagesEndRef}></div>
 
                     </div>
 
