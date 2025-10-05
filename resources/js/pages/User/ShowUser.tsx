@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useInitials } from "@/hooks/use-initials";
 import AppLayout from "@/layouts/app-layout";
 import { capitalize, formatDateNoDiff, rolesSwitch } from "@/lib/utils";
-import { getMessage } from "@/routes";
+import { showMessage } from "@/routes";
 import { User, BreadcrumbItem, ThreadPaginate } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 
@@ -61,7 +61,7 @@ export default function ShowUser({ user, threads }: Props) {
                         </div>
                     </div>
                     <div>
-                        <Link href={getMessage({ user: user.name }).url}>
+                        <Link href={showMessage({ user: user.name }).url}>
                             <Button variant="default">Message</Button>
                         </Link>
                     </div>

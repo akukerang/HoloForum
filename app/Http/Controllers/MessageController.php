@@ -48,7 +48,7 @@ class MessageController extends Controller
 
         $currentUser = auth()->user();
 
-        $message = Message::create([
+        Message::create([
             'receiver_id' => $user->id,
             'sender_id' => $currentUser->id,
             'message' => $data['message'],
