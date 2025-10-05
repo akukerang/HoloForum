@@ -11,10 +11,12 @@ import { cn } from '@/lib/utils';
 import { login } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Menu, Search, MessagesSquare, Bell, Bookmark } from 'lucide-react';
+import { LayoutGrid, Menu, Search, MessagesSquare, Bell, Bookmark, BellDot } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { searchPage } from '@/routes/thread';
+import { useEffect, useState } from 'react';
+import { useEchoNotification } from "@laravel/echo-react";
 
 const mainNavItems: NavItem[] = [
 
@@ -42,10 +44,30 @@ interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
+
+type Notification = {
+    type: string;
+    subject: string;
+    action_url: string;
+}
+
+
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const userId = auth.user ? auth.user.id : 0;
+
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
+    useEchoNotification<Notification>(
+        `App.Models.User.${userId}`,
+        (e) => {
+            setNotifications((prev) => [...prev, e]);
+        }
+    );
+
+
     return (
         <>
             <div className="border-b border-crust bg-baseColor">
@@ -126,12 +148,23 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
                                             <Link href="#" >
-                                                <Bell className="!size-5 opacity-80 group-hover:opacity-100" />
+                                                {notifications.length > 0 ? (
+                                                    <BellDot className="!size-5 opacity-80 group-hover:opacity-100" />
+                                                ) :
+                                                    <Bell className="!size-5 opacity-80 group-hover:opacity-100" />
+
+                                                }
                                             </Link>
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-56" align="end">
-                                        No New Notifications
+                                        {notifications.length > 0 ? (
+                                            notifications.map((notification, index) => (
+                                                <div key={index}>{notification.subject}</div>
+                                            ))
+                                        ) : (
+                                            <div>No New Notifications</div>
+                                        )}
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             ) : null}
