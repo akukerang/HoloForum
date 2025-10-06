@@ -30,7 +30,6 @@ export default function ShowThread({ thread, posts, flash, bookmarked }: Props) 
         }
     }, [flash?.message]);
 
-
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `${thread.title} - ${thread.forum.title}`,
@@ -38,16 +37,13 @@ export default function ShowThread({ thread, posts, flash, bookmarked }: Props) 
         },
     ];
 
-    const { put } = useForm();
+    const { post, processing } = useForm();
 
     const handleBookmark = (id: number) => {
-        put(toggleBookmark.url({ id }), {
+        post(toggleBookmark.url({ id }), {
             preserveScroll: true,
         });
     }
-
-
-
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -61,7 +57,9 @@ export default function ShowThread({ thread, posts, flash, bookmarked }: Props) 
                                 {thread.locked ? <Lock className="h-[1em] w-[1em] inline-block mr-1.5 text-yellow" /> : null}
                                 {thread.title}
                             </h1>
-                            <Bookmark className={`h-5 w-5 hover:cursor-pointer ${bookmarked ? 'text-yellow' : 'text-text'}`} onClick={() => handleBookmark(thread.id)} />
+                            <button onClick={() => handleBookmark(thread.id)} className="hover:cursor-pointer" disabled={processing}>
+                                <Bookmark className={`h-5 w-5 ${bookmarked ? 'text-yellow' : 'text-text'}`} />
+                            </button>
 
                         </div>
                         <p className="text-sm ">By {thread.user.name}</p>

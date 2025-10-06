@@ -160,13 +160,14 @@ export function PostItem({ postData, locked }: Props) {
 
                 {/* Reactions */}
                 <div className="flex flex-row items-center gap-x-1 text-sm">
-                    {postData.liked ? (
-                        <ThumbsUp className="w-4 h-4 text-green hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
-                    ) : (
-                        <ThumbsUp className="w-4 h-4 text-subtext0 hover:cursor-pointer" onClick={() => handleLike(postData.id)} />
-                    )}
+                    <button onClick={() => handleLike(postData.id)} disabled={processing}>
+                        {postData.liked ? (
+                            <ThumbsUp className="w-4 h-4 text-green hover:cursor-pointer" />
+                        ) : (
+                            <ThumbsUp className="w-4 h-4 text-subtext0 hover:cursor-pointer" />
+                        )}
+                    </button>
                     {postData.reactions_count && postData.reactions_count > 0 ? postData.reactions_count : null}
-
                 </div>
             </div>
         </li >

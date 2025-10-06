@@ -17,6 +17,8 @@ import AppLogoIcon from './app-logo-icon';
 import { searchPage } from '@/routes/thread';
 import { useEffect, useState } from 'react';
 import { useEchoNotification } from "@laravel/echo-react";
+import { unread } from '@/routes/user';
+import NotificationItem from './notification-item';
 
 const mainNavItems: NavItem[] = [
 
@@ -59,6 +61,27 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const userId = auth.user ? auth.user.id : 0;
 
     const [notifications, setNotifications] = useState<Notification[]>([]);
+
+
+    useEffect(() => {
+        if (auth.user) {
+            // Get database notifications
+            fetch(unread().url)
+                .then(response => response.json())
+                .then(data => {
+                    const mapped = data[0].map((notif: any) => ({
+                        type: notif.type,
+                        subject: notif.data.subject,
+                        action_url: notif.data.action_url
+                    }));
+                    setNotifications(mapped);
+
+                }).catch(error => {
+                    console.error('Error fetching notifications:', error);
+                });
+        }
+
+    }, [auth.user]);
 
     useEchoNotification<Notification>(
         `App.Models.User.${userId}`,
@@ -157,10 +180,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             </Link>
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-56" align="end">
+                                    <DropdownMenuContent className="w-96 max-h-96 overflow-y-auto" align="end">
                                         {notifications.length > 0 ? (
                                             notifications.map((notification, index) => (
-                                                <div key={index}>{notification.subject}</div>
+                                                <NotificationItem key={index} type={notification.type} subject={notification.subject} message={""} action={notification.action_url} />
                                             ))
                                         ) : (
                                             <div>No New Notifications</div>
