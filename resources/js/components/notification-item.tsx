@@ -1,5 +1,6 @@
 import { Link, useForm } from "@inertiajs/react";
 import { markRead } from "@/routes/user";
+import { formatDateTime } from "@/lib/utils";
 
 interface Props {
     id: string;
@@ -7,6 +8,7 @@ interface Props {
     subject: string;
     message: string;
     action: string;
+    created_at: string;
 }
 
 
@@ -23,7 +25,7 @@ function getType(type: string) {
     }
 }
 
-export default function NotificationItem({ id, type, subject, action }: Props) {
+export default function NotificationItem({ id, type, subject, action, created_at }: Props) {
     const { post, processing } = useForm();
 
     const markAsRead = () => {
@@ -33,9 +35,12 @@ export default function NotificationItem({ id, type, subject, action }: Props) {
 
     return <div className="flex flex-col items-start gap-y-2 px-4 py-3 border-b-1">
         {/* This should also mark it as read */}
-        <Link href={action} className="hover:underline">
-            <h4 className="text-sm font-semibold">{getType(type)}</h4>
-        </Link>
+        <div className="flex flex-row justify-between w-full">
+            <Link href={action} className="hover:underline">
+                <h4 className="text-sm font-semibold">{getType(type)}</h4>
+            </Link>
+            <span className="text-xs text-gray-500">{formatDateTime(created_at, true)}</span>
+        </div>
         <p className="text-xs">{subject}</p>
         <button onClick={markAsRead} disabled={processing} className="text-xs text-green underline hover:cursor-pointer hover:opacity-85">Mark as Read</button>
     </div>

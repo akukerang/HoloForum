@@ -52,6 +52,17 @@ type Notification = {
     type: string;
     subject: string;
     action_url: string;
+    created_at: string;
+}
+
+interface DatabaseNotification {
+    id: string;
+    type: string;
+    data: {
+        subject: string;
+        action_url: string;
+    };
+    created_at: string;
 }
 
 
@@ -64,31 +75,42 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
 
+    // Unread Notifications from Database
     useEffect(() => {
         if (auth.user) {
             // Get database notifications
             fetch(unread().url)
                 .then(response => response.json())
                 .then(data => {
-                    const mapped = data[0].map((notif: any) => ({
-                        id: notif.id,
-                        type: notif.type,
-                        subject: notif.data.subject,
-                        action_url: notif.data.action_url
+                    const mapped = data[0].map((n: DatabaseNotification) => ({
+                        id: n.id,
+                        type: n.type,
+                        subject: n.data.subject,
+                        action_url: n.data.action_url,
+                        created_at: n.created_at,
                     }));
                     setNotifications(mapped);
-
                 }).catch(error => {
                     console.error('Error fetching notifications:', error);
                 });
         }
-
     }, [auth.user]);
 
+    // For real-time notifications (Clears when refreshed)
     useEchoNotification<Notification>(
         `App.Models.User.${userId}`,
         (e) => {
-            setNotifications((prev) => [...prev, e]);
+            setNotifications((prev) => {
+                // Remove duplicates
+                const filtered = prev.filter(n => n.subject !== e.subject);
+
+                // Timestamp
+                const now = new Date().toISOString();
+                e.created_at = now
+
+                // Add to top
+                return [e, ...filtered];
+            });
         }
     );
 
@@ -183,12 +205,19 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto" align="end">
+                                        <div className='border-b-1 border-subtext1 px-2 py-1'>
+                                            <h1 className='text-base'>Notifications</h1>
+                                        </div>
                                         {notifications.length > 0 ? (
                                             notifications.map((notification, index) => (
-                                                <NotificationItem key={index} id={notification.id} type={notification.type} subject={notification.subject} message={""} action={notification.action_url} />
+                                                <NotificationItem key={index} id={notification.id}
+                                                    type={notification.type} subject={notification.subject} message={""}
+                                                    created_at={notification.created_at} action={notification.action_url} />
                                             ))
                                         ) : (
-                                            <div>No New Notifications</div>
+                                            <div className='flex h-24 w-full flex-col items-center justify-center'>
+                                                <p className='text-subtext0 text-sm'>No New Notifications</p>
+                                            </div>
                                         )}
                                     </DropdownMenuContent>
                                 </DropdownMenu>

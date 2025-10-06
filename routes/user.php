@@ -9,14 +9,23 @@ Route::get('user/{user}', [RegisteredUserController::class, 'show'])->name('user
 Route::middleware(['auth', 'verified'])->group(function () {
     // Unread notifications
     Route::get('notifications/unread', function () {
-        // dd(auth()->user()->unreadNotifications())
+
+        $notifications = auth()->user()
+            ->unreadNotifications()
+            ->orderBy('created_at', 'desc')
+            ->get()
+            // Unique based off subject
+            ->unique(function ($n) {
+                return data_get($n, 'data.subject');
+            })
+            ->values();
+
         return response()->json([
-            auth()->user()->unreadNotifications
+            $notifications
         ]);
     })->name('user.unread');
 
     // All notifications
-
 
     // Mark all as read
     Route::post('notifications/mark-all-read', function () {
@@ -30,13 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Mark single as read
     Route::post('notifications/mark-read/{id}', function ($id) {
         $user = auth()->user();
-
         $notification = $user->notifications()->findOrFail($id);
         $subject = $notification->data['subject'];
-
-        // TODO: This seems like wrong way to do it?
-        $user->unreadNotifications()
-            ->whereRaw("json_extract(data, '$.subject') = ?", [$subject])
-            ->update(['read_at' => now()]);
+        // Finds all with the same subject and marks them as read
+        $user->unreadNotifications()->where('data->subject', $subject)->update(['read_at' => now()]);
     })->name('user.markRead');
 });
