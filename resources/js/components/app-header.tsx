@@ -48,6 +48,7 @@ interface AppHeaderProps {
 
 
 type Notification = {
+    id: string;
     type: string;
     subject: string;
     action_url: string;
@@ -70,6 +71,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 .then(response => response.json())
                 .then(data => {
                     const mapped = data[0].map((notif: any) => ({
+                        id: notif.id,
                         type: notif.type,
                         subject: notif.data.subject,
                         action_url: notif.data.action_url
@@ -180,10 +182,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             </Link>
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-96 max-h-96 overflow-y-auto" align="end">
+                                    <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto" align="end">
                                         {notifications.length > 0 ? (
                                             notifications.map((notification, index) => (
-                                                <NotificationItem key={index} type={notification.type} subject={notification.subject} message={""} action={notification.action_url} />
+                                                <NotificationItem key={index} id={notification.id} type={notification.type} subject={notification.subject} message={""} action={notification.action_url} />
                                             ))
                                         ) : (
                                             <div>No New Notifications</div>
