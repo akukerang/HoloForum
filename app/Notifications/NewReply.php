@@ -4,15 +4,17 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use App\Models\User;
+use App\Models\Thread;
+use App\Models\Post;
 
-class NewMessage extends Notification
+
+class NewReply extends Notification
 {
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public User $sender)
+    public function __construct(public Thread $thread, public Post $post)
     {
         //
     }
@@ -30,18 +32,19 @@ class NewMessage extends Notification
     public function toDatabase($notifiable): array
     {
         return [
-            'type' => 'message',
-            'subject' => "{$this->sender->name}",
-            'action_url' => route('showMessage', $this->sender->name),
+            'type' => 'reply',
+            'subject' => "{$this->thread->title}",
+            'action_url' => route('post.showPost', [$this->thread->id, $this->post->id]),
+
         ];
     }
 
     public function toBroadcast(object $notifiable)
     {
         return new BroadcastMessage([
-            'type' => 'message',
-            'subject' => "{$this->sender->name}",
-            'action_url' => route('showMessage', $this->sender->name),
+            'type' => 'post',
+            'subject' => "{$this->thread->title}",
+            'action_url' => route('thread.showThread', $this->thread->id),
         ]);
     }
 }

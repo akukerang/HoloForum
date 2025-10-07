@@ -41,7 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $user = auth()->user();
         $notification = $user->notifications()->findOrFail($id);
         $subject = $notification->data['subject'];
+        $type = $notification->data['type'];
+
         // Finds all with the same subject and marks them as read
-        $user->unreadNotifications()->where('data->subject', $subject)->update(['read_at' => now()]);
+        $user->unreadNotifications()->where('data->type', $type)->where('data->subject', $subject)->update(['read_at' => now()]);
     })->name('user.markRead');
 });

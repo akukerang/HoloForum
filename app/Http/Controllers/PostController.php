@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Thread;
+use App\Notifications\NewPost;
+use App\Notifications\NewReply;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -70,6 +72,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
         $data = $request->validate([
             'content' => [
                 'required',
@@ -80,7 +83,6 @@ class PostController extends Controller
                 },
             ],
             'thread_id' => 'required|numeric|exists:threads,id',
-            'user_id'   => 'required|numeric|exists:users,id',
         ]);
 
         // Check locked
@@ -89,12 +91,25 @@ class PostController extends Controller
             abort(403, 'Thread is locked.');
         }
 
-        $post = Post::create($data);
+        $post = Post::create([
+            'content' => $data['content'],
+            'thread_id' => $data['thread_id'],
+            'user_id' => $user->id,
+        ]);
 
         // Redirects to Last Page
         $totalPosts = Post::where('thread_id', $data['thread_id'])->count();
         $perPage = 10;
         $lastPage = ceil($totalPosts / $perPage);
+
+
+        // Notify users who bookmarked the thread
+        $thread->bookmarkedUsers()->where('id', '!=', $user->id) // Exclude user making the post
+            ->each(
+                function ($user) use ($thread, $post) {
+                    $user->notify(new NewPost($thread, $post));
+                }
+            );
 
         return redirect()->route('thread.showThread', [
             'thread' => $data['thread_id'],
@@ -114,9 +129,10 @@ class PostController extends Controller
                 },
             ],
             'thread_id' => 'required|numeric|exists:threads,id',
-            'user_id'   => 'required|numeric|exists:users,id',
             'parent_id' => 'required|numeric|exists:posts,id'
         ]);
+
+        $user = auth()->user();
 
         // Check locked
         $thread = Thread::findOrFail($data['thread_id']);
@@ -124,8 +140,35 @@ class PostController extends Controller
             abort(403, 'Thread is locked.');
         }
 
+        $post = Post::create([
+            'content' => $data['content'],
+            'thread_id' => $data['thread_id'],
+            'user_id' => $user->id,
+            'parent_id' => $data['parent_id']
+        ]);
 
-        $post = Post::create($data);
+
+
+        // Notify user being replied to 
+        $parentPost = $thread->posts()->where('id', $data['parent_id'])->first();
+        // If parent post user is the same as replier, do not notify
+        $parentUser = $parentPost->user;
+        if ($parentUser->id !== $user->id) {
+            $parentUser->notify(new NewReply($thread, $post));
+        }
+
+
+        // Notify bookmarked
+        $excludeId = [$user->id, $parentUser->id];
+
+        $thread->bookmarkedUsers()->whereNotIn('id', $excludeId) // Exclude user making the post, and user being replied to
+            ->each(
+                function ($user) use ($thread, $post) {
+                    $user->notify(new NewPost($thread, $post));
+                }
+            );
+
+
 
         // Redirects to Last Page
         $totalPosts = Post::where('thread_id', $data['thread_id'])->count();

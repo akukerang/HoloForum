@@ -102,7 +102,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
         (e) => {
             setNotifications((prev) => {
                 // Remove duplicates
-                const filtered = prev.filter(n => n.subject !== e.subject);
+                const filtered = prev.filter(
+                    (n) => !(n.type === e.type && n.subject === e.subject)
+                );
 
                 // Timestamp
                 const now = new Date().toISOString();
