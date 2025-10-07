@@ -7,6 +7,7 @@ use App\Models\Thread;
 use App\Notifications\NewPost;
 use App\Notifications\NewReply;
 use Illuminate\Http\Request;
+use Stevebauman\Purify\Facades\Purify;
 
 class PostController extends Controller
 {
@@ -91,8 +92,10 @@ class PostController extends Controller
             abort(403, 'Thread is locked.');
         }
 
+        $sanitizedContent = Purify::clean($data['content']);
+
         $post = Post::create([
-            'content' => $data['content'],
+            'content' => $sanitizedContent,
             'thread_id' => $data['thread_id'],
             'user_id' => $user->id,
         ]);
@@ -140,14 +143,14 @@ class PostController extends Controller
             abort(403, 'Thread is locked.');
         }
 
+        $sanitizedContent = Purify::clean($data['content']);
+
         $post = Post::create([
-            'content' => $data['content'],
+            'content' => $sanitizedContent,
             'thread_id' => $data['thread_id'],
             'user_id' => $user->id,
             'parent_id' => $data['parent_id']
         ]);
-
-
 
         // Notify user being replied to 
         $parentPost = $thread->posts()->where('id', $data['parent_id'])->first();
@@ -192,7 +195,11 @@ class PostController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $post->update($data);
+        $sanitizedContent = Purify::clean($data['content']);
+
+        $post->update(
+            ['content' => $sanitizedContent]
+        );
         $thread = $post->thread->posts()->orderBy('created_at', 'ASC')->get();
 
         // Goes to the page post is on

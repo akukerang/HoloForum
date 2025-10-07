@@ -116,7 +116,14 @@ export default function ShowMessage({ currentUser, targetUser, messages }: Props
                             <Textarea
                                 onChange={e => setData('message', e.target.value)}
                                 value={data.message}
-                                name="message" maxLength={255} placeholder="Send a Message" required autoFocus className="resize-none h-20" />
+                                name="message" maxLength={255} placeholder="Send a Message" required autoFocus className="resize-none h-20"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault(); // stop newline and submit
+                                        handleSubmit(e);
+                                    }
+                                }}
+                            />
                             <Button className="rounded-lg" type="submit" disabled={processing}>
                                 <Send /> Send
                             </Button>
