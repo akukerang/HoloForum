@@ -53,15 +53,15 @@ export default function Index({ forums, threads, users }: PageProps) {
     }
     const forumColumns: ColumnDef<Forum>[] = [
         {
-            accessorKey: "id",
+            accessorKey: "slug",
             header: ({ column }) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        ID
-                        <ArrowUpDown className=" h-4 w-4" />
+                        Slug
+                        <ArrowUpDown className="h-4 w-4" />
                     </Button>
                 )
             },
@@ -83,18 +83,14 @@ export default function Index({ forums, threads, users }: PageProps) {
             }
         },
         {
-            accessorKey: "slug",
-            header: 'Slug'
-        },
-        {
-            accessorKey: "parent_forum_id",
+            accessorKey: "parent_forum_slug",
             header: ({ column }) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Parent ID
+                        Parent Forum
                         <ArrowUpDown className="h-4 w-4" />
                     </Button>
                 )
@@ -139,8 +135,9 @@ export default function Index({ forums, threads, users }: PageProps) {
             accessorKey: 'title',
             header: 'Title',
         },
+
         {
-            accessorKey: "forum_id",
+            accessorKey: "forum_slug",
             header: ({ column }) => {
                 return (
                     <Button

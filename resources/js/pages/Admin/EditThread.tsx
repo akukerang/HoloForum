@@ -13,7 +13,7 @@ interface Props {
         title: string;
         description: string;
         user_id: number;
-        forum_id: number;
+        forum_slug: string;
     };
 }
 
@@ -28,7 +28,7 @@ export default function EditThread({ thread }: Props) {
 
     const { data, setData, put, processing, errors } = useForm({
         user_id: thread.user_id,
-        forum_id: thread.forum_id,
+        forum_slug: thread.forum_slug,
         title: thread.title,
     })
 
@@ -51,10 +51,10 @@ export default function EditThread({ thread }: Props) {
                 />
                 <Input
                     table="thread"
-                    name="forum_id"
-                    value={String(data.forum_id)}
-                    placeholder="Forum ID"
-                    onChange={(e) => setData('forum_id', Number(e.target.value))}
+                    name="forum_slug"
+                    value={String(data.forum_slug)}
+                    placeholder="Forum Slug"
+                    onChange={(e) => setData('forum_slug', e.target.value)}
                     errors={errors}
                 />
                 <Input

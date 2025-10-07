@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Created by
-            $table->foreignId('forum_id')->constrained('forums')->cascadeOnDelete(); // Parent Forum
+            $table->string('forum_slug');
+            $table->foreign('forum_slug')
+                ->references('slug')
+                ->on('forums')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->string('title');
             $table->boolean('locked')->default(false);
             $table->timestamps();

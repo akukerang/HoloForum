@@ -12,7 +12,7 @@ interface Props {
         title: string;
         description: string;
         user_id: number;
-        forum_id: number;
+        forum_slug: string;
     };
 }
 

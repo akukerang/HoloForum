@@ -26,7 +26,7 @@ export default function CreateThread({ forum }: Props) {
 
     const { data, setData, post, processing, errors } = useForm({
         user_id: auth.user.id,
-        forum_id: forum.id,
+        forum_slug: forum.slug,
         title: '',
         content: '',
     })

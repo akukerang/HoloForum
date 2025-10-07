@@ -48,13 +48,12 @@ export interface User {
 }
 
 export interface Forum {
-    id: number;
+    slug: string;
     title: string;
     description: string;
-    parent_forum_id: number | null;
+    parent_forum_slug: string | null;
     threads_count: number;
     created_at: string;
-    slug: string;
 }
 
 export interface Thread {

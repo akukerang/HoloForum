@@ -17,7 +17,7 @@ export default function CreateThread() {
 
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
-        forum_id: '',
+        forum_slug: '',
         title: '',
     })
 
@@ -40,10 +40,10 @@ export default function CreateThread() {
                 />
                 <Input
                     table="thread"
-                    name="forum_id"
-                    value={data.forum_id}
-                    placeholder="Forum ID"
-                    onChange={(e) => setData('forum_id', e.target.value)}
+                    name="forum_slug"
+                    value={data.forum_slug}
+                    placeholder="Forum Slug"
+                    onChange={(e) => setData('forum_slug', e.target.value)}
                     errors={errors}
                 />
                 <Input

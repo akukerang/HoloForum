@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface Category {
-    id: number;
+    slug: string;
     title: string;
     children: Forum[];
 }
@@ -36,7 +36,7 @@ export default function Index() {
                     {categories.length > 0 ? (
                         <>
                             {categories.map((category) => (
-                                <Category key={category.id} category={category} />
+                                <Category key={category.slug} category={category} />
                             ))}
                         </>
                     ) : null

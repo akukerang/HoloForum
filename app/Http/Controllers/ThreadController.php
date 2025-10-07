@@ -31,7 +31,7 @@ class ThreadController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:64',
-            'forum_id' => 'required|numeric|exists:forums,id',
+            'forum_slug' => 'required|string|exists:forums,slug',
             'user_id' => 'required|numeric|exists:users,id',
         ]);
         Thread::create($data);
@@ -42,7 +42,7 @@ class ThreadController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:64',
-            'forum_id' => 'required|numeric|exists:forums,id',
+            'forum_slug' => 'required|string|exists:forums,slug',
             'user_id' => 'required|numeric|exists:users,id',
             'content' => [
                 'required',
@@ -137,7 +137,7 @@ class ThreadController extends Controller
         //
         $data = $request->validate([
             'title' => 'required|string|max:64',
-            'forum_id' => 'required|numeric|exists:forums,id',
+            'forum_slug' => 'required|string|exists:forums,slug',
             'user_id' => 'required|numeric|exists:users,id',
         ]);
         $thread->update($data);
@@ -213,15 +213,15 @@ class ThreadController extends Controller
         }
 
         // Check if forum is a forum or category (no parent_id)
-        $forum_ids = null;
+        $forum_slugs = null;
         if (!empty($data['forum'])) {
             $temp = Forum::where('slug', $data['forum'])->first();
             if (empty($temp)) { // no matching forum (maybe unnecessary because of exists check)
-                $forum_ids = null;
-            } else if ($temp->parent_forum_id === null) { // category
-                $forum_ids = Forum::where('parent_forum_id', $temp->id)->pluck('id');
+                $forum_slugs = null;
+            } else if ($temp->parent_forum_slug === null) { // category
+                $forum_slugs = Forum::where('parent_forum_slug', $temp->id)->pluck('slug');
             } else { //specific forum
-                $forum_ids = [$temp->id]; // expects array
+                $forum_slugs = [$temp->slug]; // expects array
             }
         }
 
@@ -248,9 +248,9 @@ class ThreadController extends Controller
             });
 
             // Checks by parent forum id gotten from thread
-            if ($forum_ids) {
-                $query->whereHas('thread', function ($q2) use ($forum_ids) {
-                    $q2->whereIn('forum_id', $forum_ids);
+            if ($forum_slugs) {
+                $query->whereHas('thread', function ($q2) use ($forum_slugs) {
+                    $q2->whereIn('forum_slug', $forum_slugs);
                 });
             }
 
@@ -301,8 +301,8 @@ class ThreadController extends Controller
             });
 
             // Forum/category restriction
-            if ($forum_ids) {
-                $query->whereIn('forum_id', $forum_ids);
+            if ($forum_slugs) {
+                $query->whereIn('forum_slug', $forum_slugs);
             }
 
             // Sort Threads

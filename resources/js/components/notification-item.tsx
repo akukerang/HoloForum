@@ -24,7 +24,7 @@ function getType(type: string): TypeReturn {
         case "App\\Notifications\\NewPost":
             return { typeFormat: "New Post", subjectTemplate: "New post in " };
         case "App\\Notifications\\NewReply":
-            return { typeFormat: "New Reply", subjectTemplate: "You have a new reply from" };
+            return { typeFormat: "New Reply", subjectTemplate: "You have a new reply in " };
         default:
             return { typeFormat: "Notification", subjectTemplate: "Default Subject" };
     }

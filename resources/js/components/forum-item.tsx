@@ -5,7 +5,7 @@ import { Forum } from "@/types";
 
 export function ForumItem({ forum }: { forum: Forum }) {
     return (
-        <li className="py-4 px-6 w-full flex gap-x-8 items-center border-b" id={forum.id.toString()}>
+        <li className="py-4 px-6 w-full flex gap-x-8 items-center border-b" id={forum.slug}>
             <div className="flex items-center justify-center w-12 h-12">
                 <MessagesSquare className="text-peach" />
             </div>

@@ -20,7 +20,7 @@ export default function CreateForum() {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         description: '',
-        parent_forum_id: '',
+        parent_forum_slug: '',
     })
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -50,10 +50,10 @@ export default function CreateForum() {
                 />
                 <Input
                     table="forum"
-                    name="parent_forum_id"
-                    value={data.parent_forum_id}
-                    placeholder="Parent ID"
-                    onChange={e => setData('parent_forum_id', e.target.value)}
+                    name="parent_forum_slug"
+                    value={data.parent_forum_slug}
+                    placeholder="Parent Slug"
+                    onChange={e => setData('parent_forum_slug', e.target.value)}
                     errors={errors}
                 />
                 <Submit processing={processing} text='Create' />

@@ -23,7 +23,7 @@ export default function EditForum({ forum }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         title: forum.title,
         description: forum.description,
-        parent_forum_id: forum.parent_forum_id,
+        parent_forum_slug: forum.parent_forum_slug,
     })
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -53,10 +53,10 @@ export default function EditForum({ forum }: Props) {
                 />
                 <Input
                     table="forum"
-                    name="parent_forum_id"
-                    value={String(data.parent_forum_id ?? '')}
-                    placeholder="Parent ID"
-                    onChange={e => setData('parent_forum_id', Number(e.target.value))}
+                    name="parent_forum_slug"
+                    value={String(data.parent_forum_slug ?? '')}
+                    placeholder="Parent Slug"
+                    onChange={e => setData('parent_forum_slug', e.target.value)}
                     errors={errors}
                 />
                 <Submit processing={processing} text='Update' />

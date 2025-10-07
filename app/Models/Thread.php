@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
     //
-    protected $fillable = ['title', 'forum_id', 'user_id'];
+    protected $fillable = ['title', 'forum_slug', 'user_id'];
     public function forum()
     { // which forum thread belongs to
-        return $this->belongsTo(Forum::class);
+        return $this->belongsTo(Forum::class, 'forum_slug', 'slug');
     }
 
     public function user()

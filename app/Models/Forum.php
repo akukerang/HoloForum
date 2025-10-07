@@ -10,22 +10,25 @@ use Spatie\Sluggable\SlugOptions;
 class Forum extends Model
 {
     //
-    protected $fillable = ['title', 'description', 'parent_forum_id'];
+    protected $fillable = ['title', 'description', 'parent_forum_slug', 'slug'];
+    protected $primaryKey = 'slug';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
 
     public function children()
     {
-        return $this->hasMany(Forum::class, 'parent_forum_id');
+        return $this->hasMany(Forum::class, 'parent_forum_slug', 'slug');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Forum::class, 'parent_forum_id');
+        return $this->belongsTo(Forum::class, 'parent_forum_slug', 'slug');
     }
 
     public function threads()
     {
-        return $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class, 'forum_slug', 'slug');
     }
 
     public function posts()
@@ -46,7 +49,6 @@ class Forum extends Model
             ->saveSlugsTo('slug')
             ->usingSeparator('-');
     }
-
     public function getRouteKeyName()
     {
         return 'slug';

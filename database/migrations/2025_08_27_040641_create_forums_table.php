@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('forums', function (Blueprint $table) {
-            $table->id();
+            $table->string('slug')->primary();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('parent_forum_id') // parent forum
-                ->nullable()
-                ->constrained('forums')
+            $table->string('parent_forum_slug')->nullable();
+            $table->foreign('parent_forum_slug')
+                ->references('slug')
+                ->on('forums')
+                ->cascadeOnUpdate()
                 ->nullOnDelete();
             $table->timestamps();
-            $table->string('slug')->nullable();
         });
     }
 

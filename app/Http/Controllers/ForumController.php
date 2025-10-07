@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+
 
 class ForumController extends Controller
 {
     // ! Everything except index and show is admin only
-
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +18,7 @@ class ForumController extends Controller
     {
         $categories = Forum::with(['children' => function ($query) {
             $query->withCount('threads');
-        }])->withCount('threads')->whereNull('parent_forum_id')->get();
+        }])->withCount('threads')->whereNull('parent_forum_slug')->get();
 
         return Inertia::render('Forum/Index', [
             'categories' => $categories
@@ -41,7 +42,7 @@ class ForumController extends Controller
         $data =  $request->validate([
             'title' => 'required|string|max:64',
             'description' => 'string|nullable',
-            'parent_forum_id' => 'numeric|nullable',
+            'parent_forum_slug' => 'string|nullable|exists:forums,slug',
         ]);
         Forum::create($data);
         return redirect()->route('admin.index');
@@ -130,16 +131,12 @@ class ForumController extends Controller
     public function update(Request $request, Forum $forum)
     {
         //
-        $request->validate([
+        $data = $request->validate([
             'title' => 'required|string|max:64',
             'description' => 'string|nullable',
-            'parent_forum_id' => 'numeric|nullable',
+            'parent_forum_slug' => 'string|nullable|exists:forums,slug',
         ]);
-        $forum->update([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'parent_forum_id' => $request->input('parent_forum_id'),
-        ]);
+        $forum->update($data);
         return redirect()->route(route: 'admin.index');
     }
 

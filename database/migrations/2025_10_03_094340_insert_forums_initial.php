@@ -17,7 +17,7 @@ return new class extends Migration
                 [
                     'title' => 'Hololive JP Gen 0',
                     'description' => 'Hololive Generation 0 (ホロライブ0期生), previously known as Hololive Affiliated Talents',
-                    'parent_forum_id' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-0',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -25,7 +25,7 @@ return new class extends Migration
                 [
                     'title' => 'Hoshimachi Suisei',
                     'description' => 'A virtual idol with an exceptional love for songs and idols. She works tirelessly towards her dreams of performing in Tokyo Dome one day.',
-                    'parent_forum_id' => 1,
+                    'parent_forum_slug' => 'hololive-jp-gen-0',
                     'slug' => 'hoshimachi-suisei',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -33,7 +33,7 @@ return new class extends Migration
                 [
                     'title' => 'Tokino Sora',
                     'description' => 'hololive Production\'s first virtual idol, debuting on September 7, 2017. She loves horror games and singing, and has always dreamed of performing in Yokohama Arena.',
-                    'parent_forum_id' => 1,
+                    'parent_forum_slug' => 'hololive-jp-gen-0',
                     'slug' => 'tokino-sora',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -41,7 +41,7 @@ return new class extends Migration
                 [
                     'title' => 'Roboco-san',
                     'description' => 'Hellobo! It\'s me, the high-spec hololive VTuber Roboco! I showed up from a faraway wasteland having lost all my memories.',
-                    'parent_forum_id' => 1,
+                    'parent_forum_slug' => 'hololive-jp-gen-0',
                     'slug' => 'roboco-san',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -49,7 +49,7 @@ return new class extends Migration
                 [
                     'title' => 'Sakura Miko',
                     'description' => 'A shrine maiden from the Virtual Sakura Shrine. With a vivid admiration for idols, she constantly pushes herself to greater heights to become a top elite shrine maiden-idol like no other!',
-                    'parent_forum_id' => 1,
+                    'parent_forum_slug' => 'hololive-jp-gen-0',
                     'slug' => 'sakura-miko',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -57,7 +57,7 @@ return new class extends Migration
                 [
                     'title' => 'AZKi',
                     'description' => 'A diva who became reborn into the virtual world in order to fabricate a new world. No matter the time, place, or position, she warps through all the barricades with her dazzling talent.',
-                    'parent_forum_id' => 1,
+                    'parent_forum_slug' => 'hololive-jp-gen-0',
                     'slug' => 'azki',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -65,7 +65,7 @@ return new class extends Migration
                 [
                     'title' => 'Hololive JP Gen 1',
                     'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-1',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -73,7 +73,7 @@ return new class extends Migration
                 [
                     'title' => 'Natsuiro Matsuri',
                     'description' => 'A rookie member of her school cheerleading team. Her cheerful, energetic, and affectionate personality means she gets along with everyone and has lots of friends. Loves festivals, events, and other fun things.',
-                    'parent_forum_id' => 7,
+                    'parent_forum_slug' => 'hololive-jp-gen-1',
                     'slug' => 'natsuiro-matsuri',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -81,7 +81,7 @@ return new class extends Migration
                 [
                     'title' => 'Shirakami Fubuki',
                     'description' => 'White-haired animal-eared otaku fox. She loves talking with people and will be happy if you give her the time of day. She aims to become a top otaku idol while enjoying each and every day.',
-                    'parent_forum_id' => 7,
+                    'parent_forum_slug' => 'hololive-jp-gen-1',
                     'slug' => 'shirakami-fubuki',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -89,7 +89,7 @@ return new class extends Migration
                 [
                     'title' => 'Aki Rosenthal',
                     'description' => 'A half-elf from another world, she has an insatiable curiosity and cannot resist exploring anything that piques her interest. Her trademark pigtails float due to some sort of supernatural power.',
-                    'parent_forum_id' => 7,
+                    'parent_forum_slug' => 'hololive-jp-gen-1',
                     'slug' => 'aki-rosenthal',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -97,15 +97,15 @@ return new class extends Migration
                 [
                     'title' => 'Akai Haato',
                     'description' => 'A sassy kouhai. She is often prickly, but she\'ll try to get a lot of attention from those who have made friends with her. She loves red ribbons and heart shapes, and she\'ll wear them often in her hair and on her clothes.',
-                    'parent_forum_id' => 7,
+                    'parent_forum_slug' => 'hololive-jp-gen-1',
                     'slug' => 'akai-haato',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP Gen 2',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-2',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -113,7 +113,7 @@ return new class extends Migration
                 [
                     'title' => 'Nakiri Ayame',
                     'description' => 'A kimono-clad Oni girl from the Underworld Academy. As she loves to prank people, she always uses will-o’-the-wisp on them just to have fun. Many may not realize it, but she is actually the president of the student council.',
-                    'parent_forum_id' => 12,
+                    'parent_forum_slug' => 'hololive-jp-gen-2',
                     'slug' => 'nakiri-ayame',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -121,7 +121,7 @@ return new class extends Migration
                 [
                     'title' => 'Yuzuki Choco',
                     'description' => 'The school nurse at the Underworld Academy. Is incredibly popular among the students, with the boys in particular coming to get checked up all the time. Loves sweets, and often gets into trouble for leaving them strewn about on her desk.',
-                    'parent_forum_id' => 12,
+                    'parent_forum_slug' => 'hololive-jp-gen-2',
                     'slug' => 'yuzuki-choco',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -129,7 +129,7 @@ return new class extends Migration
                 [
                     'title' => 'Oozora Subaru',
                     'description' => 'The manager of an MMA team and an e-sports club. A bright and cheerful girl full of spirit, she can interact with anyone and everyone without hesitation. She\'s currently working hard on her own pro-gamer skills.',
-                    'parent_forum_id' => 12,
+                    'parent_forum_slug' => 'hololive-jp-gen-2',
                     'slug' => 'oozora-subaru',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -137,7 +137,7 @@ return new class extends Migration
                 [
                     'title' => '[Alum] Minato Aqua',
                     'description' => 'A marine maid-styled virtual maid. She is trying her very best, yet is still sometimes awkward and clumsy.',
-                    'parent_forum_id' => 12,
+                    'parent_forum_slug' => 'hololive-jp-gen-2',
                     'slug' => 'alum-minato-aqua',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -145,15 +145,15 @@ return new class extends Migration
                 [
                     'title' => '[Alum] Murasaki Shion',
                     'description' => 'A child that randomly appears around the Underworld Academy... though she\'s actually an adult (or so she says). A self-proclaimed talented dark magician of noble birth (or so she says).',
-                    'parent_forum_id' => 12,
+                    'parent_forum_slug' => 'hololive-jp-gen-2',
                     'slug' => 'alum-murasaki-shion',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP GAMERS',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gamers',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -161,7 +161,7 @@ return new class extends Migration
                 [
                     'title' => 'Ookami Mio',
                     'description' => 'A black-haired wolf girl who appeared on our radar randomly. She often shows up around shrines. She likes gaming.',
-                    'parent_forum_id' => 18,
+                    'parent_forum_slug' => 'hololive-jp-gamers',
                     'slug' => 'ookami-mio',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -169,7 +169,7 @@ return new class extends Migration
                 [
                     'title' => 'Nekomata Okayu',
                     'description' => 'A cat being raised by an old woman that runs an onigiri store. She streams from the computer in her grandma\'s room.',
-                    'parent_forum_id' => 18,
+                    'parent_forum_slug' => 'hololive-jp-gamers',
                     'slug' => 'nekomata-okayu',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -177,15 +177,15 @@ return new class extends Migration
                 [
                     'title' => 'Inugami Korone',
                     'description' => 'A dog from a bakery in the city. She likes to play games during her free time while watchdogging.',
-                    'parent_forum_id' => 18,
+                    'parent_forum_slug' => 'hololive-jp-gamers',
                     'slug' => 'inugami-korone',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP Gen 3',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-3',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -193,7 +193,7 @@ return new class extends Migration
                 [
                     'title' => 'Usada Pekora',
                     'description' => 'A lonely rabbit-eared girl who loves carrots. She loves them so much that she always brings a few anywhere she goes.',
-                    'parent_forum_id' => 22,
+                    'parent_forum_slug' => 'hololive-jp-gen-3',
                     'slug' => 'usada-pekora',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -201,7 +201,7 @@ return new class extends Migration
                 [
                     'title' => 'Shiranui Flare',
                     'description' => 'A half-elf born to a human and elf. Usually enjoys life as she pleases. Wants to be a source of comfort so rely on her whenever you\'re in trouble. She may be passionate and overly sentimental, but praising her will bring her joy, even if also a little embarrassment!',
-                    'parent_forum_id' => 22,
+                    'parent_forum_slug' => 'hololive-jp-gen-3',
                     'slug' => 'shiranui-flare',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -209,7 +209,7 @@ return new class extends Migration
                 [
                     'title' => 'Shirogane Noel',
                     'description' => 'As much as this fluffy, meatheaded knight may be easy-going, she has the dangerous habit of attempting to muscle her way through her problems. Hungering for power, she came to train to the VTuber world where all the stronk people are.',
-                    'parent_forum_id' => 22,
+                    'parent_forum_slug' => 'hololive-jp-gen-3',
                     'slug' => 'shirogane-noel',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -217,15 +217,15 @@ return new class extends Migration
                 [
                     'title' => 'Houshou Marine',
                     'description' => 'Loves jewels, treasure, and money. Her dream is to become a pirate and go treasure hunting. In order to get a pirate ship, she is now stacking up money as a VTuber on the great lands, just like how the other land-lovers do (which also means she is currently just a girl cosplayer).',
-                    'parent_forum_id' => 22,
+                    'parent_forum_slug' => 'hololive-jp-gen-3',
                     'slug' => 'houshou-marine',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP Gen 4',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-4',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -233,7 +233,7 @@ return new class extends Migration
                 [
                     'title' => 'Amane Kanata',
                     'description' => 'An angel from the Celestial Academy. She is cheerful in front of close friends but becomes quiet and introverted when in crowds. She stays at home on her days off. She works hard with the goal of holding a concert at Saitama Super Arena someday.',
-                    'parent_forum_id' => 27,
+                    'parent_forum_slug' => 'hololive-jp-gen-4',
                     'slug' => 'amane-kanata',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -241,7 +241,7 @@ return new class extends Migration
                 [
                     'title' => 'Tsunomaki Watame',
                     'description' => 'Loves singing, and as she continued uploading song covers and having weekly singing streams titled \\"Watameh Night Fever!!,\\" she started wanting to stand on Tokyo Budokan\'s stage someday.',
-                    'parent_forum_id' => 27,
+                    'parent_forum_slug' => 'hololive-jp-gen-4',
                     'slug' => 'tsunomaki-watame',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -249,7 +249,7 @@ return new class extends Migration
                 [
                     'title' => 'Tokoyami Towa',
                     'description' => 'A young devil who is visiting human society to gain experience and develop her skills. But instead of studying, she became addicted to video games! After learning about a tool for communicating with humans called \\"streaming,\\" she\'s trying it out to help with her studies.',
-                    'parent_forum_id' => 27,
+                    'parent_forum_slug' => 'hololive-jp-gen-4',
                     'slug' => 'tokoyami-towa',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -257,7 +257,7 @@ return new class extends Migration
                 [
                     'title' => 'Himemori Luna',
                     'description' => 'The princess of Candy Kingdom. She\'s affectionate and loves being pampered, but her butler often scolds her for acting too spoiled.',
-                    'parent_forum_id' => 27,
+                    'parent_forum_slug' => 'hololive-jp-gen-4',
                     'slug' => 'himemori-luna',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -265,15 +265,15 @@ return new class extends Migration
                 [
                     'title' => '[Alum] Kiryu Coco',
                     'description' => 'A kid dragon who came to Japan from another world as a language exchange student. Holds a deep interest in human culture. She is a dragon with a strict code of honor, and keeps her human form through sheer force of willpower.',
-                    'parent_forum_id' => 27,
+                    'parent_forum_slug' => 'hololive-jp-gen-4',
                     'slug' => 'alum-kiryu-coco',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP Gen 5',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-gen-5',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -281,7 +281,7 @@ return new class extends Migration
                 [
                     'title' => 'Yukihana Lamy',
                     'description' => 'The daughter of a noble snow family living in the vast, white, icy lands far from civilization. Struck by the smiles and vibrant live streams by the talents from hololive, she burst out of the comforts of her home with her companion, Daifuku. Her serious facade belies her clueless and empty-headed side of her.',
-                    'parent_forum_id' => 33,
+                    'parent_forum_slug' => 'hololive-jp-gen-5',
                     'slug' => 'yukihana-lamy',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -289,7 +289,7 @@ return new class extends Migration
                 [
                     'title' => 'Momosuzu Nene',
                     'description' => 'A girl who came from another world in order to become an idol. She loves singing and dancing, and drawing. She is training hard every day to become someone loved by many.',
-                    'parent_forum_id' => 33,
+                    'parent_forum_slug' => 'hololive-jp-gen-5',
                     'slug' => 'momosuzu-nene',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -297,7 +297,7 @@ return new class extends Migration
                 [
                     'title' => 'Shishiro Botan',
                     'description' => 'Contrary to her sporty appearance, she\'s a white lion who prefers lazing around. Despite her typically hands-off attitude, once she has made up her mind she will always follow through to the end. Her favorite phrase is \\"Wealth isn\'t measured with money.\\" Born in a rough neighborhood, she\'s a bit of a gaming addict. She\'s the type to set aside powerful heals even at the end game.',
-                    'parent_forum_id' => 33,
+                    'parent_forum_slug' => 'hololive-jp-gen-5',
                     'slug' => 'shishiro-botan',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -305,15 +305,15 @@ return new class extends Migration
                 [
                     'title' => 'Omaru Polka',
                     'description' => 'A circus performer who joined hololive in hopes of becoming the ringmaster of the VTuber world. She enjoys wowing audiences with acrobatics, and she lives by the words, \\"When you\'ve decided you\'re gonna do something, follow through!\\" Her natural charm glosses over her occasional mess-ups.',
-                    'parent_forum_id' => 33,
+                    'parent_forum_slug' => 'hololive-jp-gen-5',
                     'slug' => 'omaru-polka',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
                 ],
                 [
                     'title' => 'Hololive JP HoloX',
-                    'description' => 'nan',
-                    'parent_forum_id' => null,
+                    'description' => null,
+                    'parent_forum_slug' => null,
                     'slug' => 'hololive-jp-holox',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -321,7 +321,7 @@ return new class extends Migration
                 [
                     'title' => 'La+ Darknesss',
                     'description' => 'The one who established Secret Society holoX.  She was originally known for her vast power and intelligence, but most of it is now sealed away. She is vaguely aware of the debilitating nature of her shackles but does not remember when or how they got there.',
-                    'parent_forum_id' => 38,
+                    'parent_forum_slug' => 'hololive-jp-holox',
                     'slug' => 'la-darknesss',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -329,7 +329,7 @@ return new class extends Migration
                 [
                     'title' => 'Takane Lui',
                     'description' => 'The executive officer of Secret Society holoX.  As holoX\'s point of contact and the one in charge of external affairs, she is the de facto leader of the group, handling matters that the founder cannot.  While she may seem aloof and standoffish at first glance, she is a compassionate person who cares a lot for her subordinates.  Unfortunately, she is also rather prone to screwing up in crucial moments.',
-                    'parent_forum_id' => 38,
+                    'parent_forum_slug' => 'hololive-jp-holox',
                     'slug' => 'takane-lui',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -337,7 +337,7 @@ return new class extends Migration
                 [
                     'title' => 'Hakui Koyori',
                     'description' => 'The one in charge of R&D in Secret Society holoX.  As part of her studies into human behavior, she meddles in the other members\' affairs and tries to help them out at every turn.  Possessed by an insatiable thirst for knowledge, she may sometimes also deliberately mess with people just to see how they react.  The self-proclaimed \\"brains of the operation.\\" Her areas of expertise, however, are pretty limited.',
-                    'parent_forum_id' => 38,
+                    'parent_forum_slug' => 'hololive-jp-holox',
                     'slug' => 'hakui-koyori',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -345,7 +345,7 @@ return new class extends Migration
                 [
                     'title' => '[Affiliate] Sakamata Chloe',
                     'description' => 'An intern who acts as a fixer and cleaner for Secret Society holoX.  Calm and composed at all times, she carries out her orders without so much as batting an eyelid.  She loves music and can be found listening to it every chance she gets.  And while she denies it vehemently, she apparently tends to come across as guarded and not very upfront with her thoughts, only letting people get very occasional glimpses into how she really feels.',
-                    'parent_forum_id' => 38,
+                    'parent_forum_slug' => 'hololive-jp-holox',
                     'slug' => 'affiliate-sakamata-chloe',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),
@@ -353,7 +353,7 @@ return new class extends Migration
                 [
                     'title' => 'Kazama Iroha',
                     'description' => 'Secret Society holoX\'s insurance policy.  Hailing from a remote mountainous area, she left her home behind and, along with her companion, set off on a journey to achieve her dream of seeing and learning more about the outside world.  Nowadays, she handles security detail and bodyguard missions for holoX, making enough money to get by.',
-                    'parent_forum_id' => 38,
+                    'parent_forum_slug' => 'hololive-jp-holox',
                     'slug' => 'kazama-iroha',
                     'created_at' => NOW(),
                     'updated_at' => NOW(),

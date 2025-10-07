@@ -9,7 +9,7 @@ import {
 
 
 interface Category {
-    id: number;
+    slug: string;
     title: string;
     children: Forum[];
 }
@@ -17,13 +17,13 @@ interface Category {
 export function Category({ category }: { category: Category }) {
     return (
         <Accordion type="single" collapsible className="w-full shadow-sm">
-            <AccordionItem value={`category-${category.id}`}>
+            <AccordionItem value={`category-${category.slug}`}>
                 <AccordionTrigger className="p-4 border-b rounded-none bg-crust hover:bg-crust/80">
                     <div className="text-lg">{category.title}</div>
                 </AccordionTrigger>
                 <AccordionContent className="gap-1 flex flex-col p-0 bg-baseColor">
                     {category.children.map((forum) => (
-                        <ForumItem key={forum.id} forum={forum} />
+                        <ForumItem key={forum.slug} forum={forum} />
                     ))}
                 </AccordionContent>
             </AccordionItem>
