@@ -219,7 +219,7 @@ class ThreadController extends Controller
             if (empty($temp)) { // no matching forum (maybe unnecessary because of exists check)
                 $forum_slugs = null;
             } else if ($temp->parent_forum_slug === null) { // category
-                $forum_slugs = Forum::where('parent_forum_slug', $temp->id)->pluck('slug');
+                $forum_slugs = Forum::where('parent_forum_slug', $temp->slug)->pluck('slug');
             } else { //specific forum
                 $forum_slugs = [$temp->slug]; // expects array
             }
