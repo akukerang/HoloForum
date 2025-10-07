@@ -71,7 +71,7 @@ class ThreadController extends Controller
         $thread->load('user');
         $thread->load('forum');
 
-        $query = $thread->posts()->with(['user:id,avatar,name,bio,status,role', 'parent'])->withCount('reactions');
+        $query = $thread->posts()->with(['user:id,avatar,name,bio,status,role', 'parent'])->withCount(relations: 'reactions');
         $sort = $request->query('sort', 'oldest');
         switch ($sort) {
             case 'latest':
@@ -380,5 +380,79 @@ class ThreadController extends Controller
             $user->bookmarked()->attach($thread->id);
         }
         return redirect()->back();
+    }
+
+    public function showBookmarks(Request $request)
+    {
+        $user = auth()->user();
+        $query = $user->bookmarked();
+
+
+
+        // Sort Threads
+        $sort = $request->query('sort', 'recent');
+
+        $query = $query
+            ->withCount('posts') # post count
+            ->with('latestPost.user:id,avatar,name')
+            ->withMax('posts', 'created_at') # latest post date 
+            ->with('user:id,name'); # user data
+
+        switch ($sort) {
+            case 'recent':
+                $query
+                    ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                    ->orderByDesc('posts_max_created_at')
+                    ->orderByDesc('created_at');
+                break;
+            case 'latest':
+                $query->orderBy('created_at', 'DESC');
+                break;
+            case 'title':
+                $query->orderByRaw('LOWER(title) asc'); # ignore case
+                break;
+            case 'replies':
+                $query
+                    ->orderByRaw('
+                    CASE 
+                        WHEN posts_count = 0 THEN 1 
+                        ELSE 0 
+                    END ASC
+                ') // threads with posts first (0 → has posts, 1 → no posts)
+                    ->orderByDesc('posts_count')   // then sort by most posts
+                    ->orderByDesc('created_at');   // finally, newest threads if tied
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'ASC');
+                break;
+            default:
+                $query
+                    ->orderByRaw('
+                        CASE 
+                            WHEN posts_max_created_at IS NULL THEN 1 
+                            ELSE 0 
+                        END ASC
+                    ') // threads with posts = 0, no posts = 1
+                    ->orderByDesc('posts_max_created_at')
+                    ->orderByDesc('created_at');
+                break;
+        }
+
+        $bookmarked = $query->paginate(perPage: 10)->onEachSide(1)->withQueryString();
+
+
+
+
+        return Inertia::render(
+            'Thread/ShowBookmarks',
+            [
+                'threads' => $bookmarked
+            ]
+        );
     }
 }
