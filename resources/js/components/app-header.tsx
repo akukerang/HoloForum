@@ -5,17 +5,20 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { login } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Menu, Search, MessagesSquare } from 'lucide-react';
+import { LayoutGrid, Menu, Search, MessagesSquare, Bell, Bookmark, BellDot } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { searchPage } from '@/routes/thread';
+import { useEffect, useState } from 'react';
+import { useEchoNotification } from "@laravel/echo-react";
+import { unread } from '@/routes/user';
+import NotificationItem from './notification-item';
 
 const mainNavItems: NavItem[] = [
 
@@ -25,15 +28,16 @@ const mainNavItems: NavItem[] = [
         icon: MessagesSquare,
     },
     {
+        title: 'Bookmarks',
+        href: '/bookmarks',
+        icon: Bookmark,
+    },
+    {
         title: 'Dashboard',
         href: '/admin',
         icon: LayoutGrid,
         requireAdmin: true,
     }
-];
-
-const rightNavItems: NavItem[] = [
-
 ];
 
 const activeItemStyles = 'text-blue';
@@ -42,10 +46,77 @@ interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
+
+type Notification = {
+    id: string;
+    type: string;
+    subject: string;
+    action_url: string;
+    created_at: string;
+}
+
+interface DatabaseNotification {
+    id: string;
+    type: string;
+    data: {
+        subject: string;
+        action_url: string;
+    };
+    created_at: string;
+}
+
+
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const userId = auth.user ? auth.user.id : 0;
+
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
+
+    // Unread Notifications from Database
+    useEffect(() => {
+        if (auth.user) {
+            // Get database notifications
+            fetch(unread().url)
+                .then(response => response.json())
+                .then(data => {
+                    const mapped = data[0].map((n: DatabaseNotification) => ({
+                        id: n.id,
+                        type: n.type,
+                        subject: n.data.subject,
+                        action_url: n.data.action_url,
+                        created_at: n.created_at,
+                    }));
+                    setNotifications(mapped);
+                }).catch(error => {
+                    console.error('Error fetching notifications:', error);
+                });
+        }
+    }, [auth.user]);
+
+    // For real-time notifications (Clears when refreshed)
+    useEchoNotification<Notification>(
+        `App.Models.User.${userId}`,
+        (e) => {
+            setNotifications((prev) => {
+                // Remove duplicates
+                const filtered = prev.filter(
+                    (n) => !(n.type === e.type && n.subject === e.subject)
+                );
+
+                // Timestamp
+                const now = new Date().toISOString();
+                e.created_at = now
+
+                // Add to top
+                return [e, ...filtered];
+            });
+        }
+    );
+
+
     return (
         <>
             <div className="border-b border-crust bg-baseColor">
@@ -73,21 +144,6 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                         <span>{item.title}</span>
                                                     </Link>
                                                 ) : null
-                                            ))}
-                                        </div>
-
-                                        <div className="flex flex-col space-y-4">
-                                            {rightNavItems.map((item) => (
-                                                <a
-                                                    key={item.title}
-                                                    href={typeof item.href === 'string' ? item.href : item.href.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
-                                                    <span>{item.title}</span>
-                                                </a>
                                             ))}
                                         </div>
                                     </div>
@@ -135,28 +191,39 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                                 </Link>
                             </Button>
-                            <div className="hidden lg:flex">
-                                {rightNavItems.map((item) => (
-                                    <TooltipProvider key={item.title} delayDuration={0}>
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <a
-                                                    href={typeof item.href === 'string' ? item.href : item.href.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="group ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-mantle hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                                >
-                                                    <span className="sr-only">{item.title}</span>
-                                                    {item.icon && <Icon iconNode={item.icon} className="size-5 opacity-80 group-hover:opacity-100" />}
-                                                </a>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>{item.title}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                ))}
-                            </div>
+                            {/* Notifications */}
+                            {auth.user ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
+                                            <Link href="#" >
+                                                {notifications.length > 0 ? (
+                                                    <BellDot className="!size-5 opacity-80 group-hover:opacity-100" />
+                                                ) :
+                                                    <Bell className="!size-5 opacity-80 group-hover:opacity-100" />
+
+                                                }
+                                            </Link>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto" align="end">
+                                        <div className='border-b-1 border-subtext1 px-2 py-1'>
+                                            <h1 className='text-base'>Notifications</h1>
+                                        </div>
+                                        {notifications.length > 0 ? (
+                                            notifications.map((notification, index) => (
+                                                <NotificationItem key={index} id={notification.id}
+                                                    type={notification.type} subject={notification.subject} message={""}
+                                                    created_at={notification.created_at} action={notification.action_url} />
+                                            ))
+                                        ) : (
+                                            <div className='flex h-24 w-full flex-col items-center justify-center'>
+                                                <p className='text-subtext0 text-sm'>No New Notifications</p>
+                                            </div>
+                                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : null}
                         </div>
                         {auth.user ? (
                             <DropdownMenu>

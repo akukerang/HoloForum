@@ -15,4 +15,8 @@ Route::middleware(['auth', 'verified', NotBanned::class])->group(function () {
 
     Route::get('search', [ThreadController::class, 'searchPage'])->name('thread.searchPage');
     Route::get('results', [ThreadController::class, 'search'])->name('thread.results');
+
+    Route::post('thread/{thread}/bookmark', [ThreadController::class, 'toggleBookmark'])->name('thread.toggleBookmark');
+
+    Route::get('bookmarks', [ThreadController::class, 'showBookmarks'])->name('thread.showBookmarks');
 });

@@ -27,4 +27,9 @@ class Thread extends Model
     { // get latest post
         return $this->hasOne(Post::class)->latestOfMany();
     }
+
+    public function bookmarkedUsers()
+    {
+        return $this->belongsToMany(User::class, 'bookmarked_threads');
+    }
 }

@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
-import { SharedData, type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 import { Thread } from "@/types";
 import { store } from '@/routes/post';
 import Editor from '@/components/editor';
@@ -14,10 +14,6 @@ interface Props {
 }
 
 export default function CreatePost({ thread }: Props) {
-
-    const page = usePage<SharedData>();
-    const { auth } = page.props;
-
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: `Reply to ${thread.title}`,
@@ -26,7 +22,6 @@ export default function CreatePost({ thread }: Props) {
     ];
 
     const { data, setData, post, processing, errors } = useForm({
-        user_id: auth.user.id,
         thread_id: thread.id,
         content: '',
     })

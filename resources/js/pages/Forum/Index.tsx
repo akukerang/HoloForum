@@ -29,7 +29,10 @@ export default function Index() {
             <Head title="Forums" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 items-center">
                 <div className='w-3/4 flex flex-col gap-4'>
-                    <h1 className='text-2xl text-blue font-bold'>Forums</h1>
+                    <div className='bg-baseColor p-6 flex flex-col gap-y-2 rounded-xl shadow-md'>
+                        <h1 className="text-2xl font-bold text-blue">HoloForum</h1>
+                        <p className="text-sm">Welcome to HoloForum, a place to discuss all things Hololive.</p>
+                    </div>
                     {categories.length > 0 ? (
                         <>
                             {categories.map((category) => (

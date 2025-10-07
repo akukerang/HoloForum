@@ -1,6 +1,7 @@
 import { useInitials } from "@/hooks/use-initials";
 import { User } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { formatDateTime } from "@/lib/utils";
 
 interface Props {
     message: string;
@@ -32,12 +33,12 @@ export default function MessageItem({ message, sender, user, date }: Props) {
 
             <div
                 className={`max-w-[70%] rounded-2xl px-4 py-2 text-sm shadow-md ${sender
-                    ? "bg-blue text-white"
+                    ? "bg-blue text-white dark:bg-blue/60 "
                     : "bg-crust text-text"
                     }`}
             >
                 <p>{message}</p>
-                <span className="text-xs opacity-70 block text-right mt-1">{date}</span>
+                <span className="text-xs opacity-70 block text-right mt-1">{formatDateTime(date)}</span>
             </div>
 
             {sender && (

@@ -7,6 +7,6 @@ use App\Http\Middleware\NotBanned;
 
 Route::middleware(['auth', 'verified', NotBanned::class])->group(function () {
 
-    Route::get('messages/{user}', [MessageController::class, 'show'])->name('getMessage');
+    Route::get('messages/{user}', [MessageController::class, 'show'])->name('showMessage');
     Route::post('messages/{user}', [MessageController::class, 'store'])->name('sendMessage');
 });

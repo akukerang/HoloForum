@@ -7,6 +7,9 @@ use Inertia\Inertia;
 
 use App\Models\User;
 use App\Models\Message;
+use App\Notifications\NewMessage;
+
+use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
@@ -43,7 +46,7 @@ class MessageController extends Controller
     public function store(Request $request, User $user)
     {
         $data = $request->validate([
-            'message' => 'required|string|max:255'
+            'message' => 'required|string|max:1024'
         ]);
 
         $currentUser = auth()->user();
@@ -53,5 +56,12 @@ class MessageController extends Controller
             'sender_id' => $currentUser->id,
             'message' => $data['message'],
         ]);
+
+        // sends a notification to the user being messaged
+        $user->notify(new NewMessage($currentUser));
+
+
+        // Broadcast new message has been sent
+        broadcast(new MessageSent($message))->toOthers();
     }
 }
