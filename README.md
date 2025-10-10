@@ -5,12 +5,27 @@ A full stack forum website built with **Laravel** and **React**.
 ## Features
 
 - **Authentication**: Secure login and registration
+- **Direct Messaging**: Realtime messaging
+- **Notifications**: Realtime notifications
 - **Profiles**: Customizable user profiles
 - **Moderation Tools**: Lock and remove posts and threads, and ban users.
 - **Search**: Filter threads and posts by keywords, users, or forum
 - **Threads**: Create and manage discussion threads
 - **Posts**: Replies to a thread
 - **Reaction**: Like system for posts
+- **Bookmarks**: Get notifications for new posts in bookmarked threads
+
+## Pictures
+
+<p align="center">
+  <img src="assets/HomePage.png" width="45%" style="margin: 10px"/>
+  <img src="assets/Threads.png" width="45%" style="margin: 10px"/>
+</p>
+
+<p align="center">
+  <img src="assets/Posts.png" width="45%" style="margin: 10px"/>
+  <img src="assets/Chat.png" width="45%" style="margin: 10px"/>
+</p>
 
 ## Stack
 
